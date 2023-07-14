@@ -1,0 +1,70 @@
+import { Link } from "@inertiajs/react";
+import styles from "../ui/Aside.module.css";
+import { useState } from "react";
+
+export default function StreamAside({
+    episodes,
+    onHandleChangeScreen,
+    onHandleChangeEpisode,
+}) {
+    const [currentEpsState, setCurrentEpsState] = useState(1);
+
+    const episodesLength = episodes.length;
+    const episodeState = Math.ceil(episodesLength / 25);
+
+    return (
+        <div
+            className={`h-full px-3 py-4 overflow-y-auto  ${styles.scrollGotoLeft} `}
+        >
+            <div className={` ${styles.scrollDefault}`}>
+                <div className="flex flex-col gap-1">
+                    <h3 className="inline text-left text-stone-50">
+                        Select episodes
+                    </h3>
+                    <select
+                        id="countries"
+                        className="block h-8 text-xs placeholder-gray-400 bg-transparent border border-gray-300 rounded-none w-28 text-stone-50 bg-gray-50 focus:ring-[#F4BEA7] focus:border-[#F4BEA7]"
+                        defaultValue="1"
+                        onChange={(e) =>
+                            setCurrentEpsState(Number(e.target.value))
+                        }
+                    >
+                        {Array.from({ length: episodeState }, (_, index) => (
+                            <option
+                                value={index + 1}
+                                className="text-stone-950"
+                                key={index}
+                            >
+                                {index * 25 + 1} -{" "}
+                                {(index + 1) * 25 <= episodesLength + 1
+                                    ? (index + 1) * 25
+                                    : episodesLength}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <ul
+                    className={`font-medium text-xs gap-0.5 text-stone-50 grid grid-cols-5 h-36 pt-1.5`}
+                >
+                    {episodes
+                        .slice((currentEpsState - 1) * 25, currentEpsState * 25)
+                        .map((episode) => (
+                            <li
+                                className="w-10 h-6  text-center duration-300 transition-all border border-stone-50 group hover:bg-[#F4BEA7] cursor-pointer"
+                                key={episode.id}
+                            >
+                                <button
+                                    className="w-full leading-6 group-hover:text-stone-950"
+                                    onClick={() =>
+                                        onHandleChangeEpisode(episode.id)
+                                    }
+                                >
+                                    {episode.number}
+                                </button>
+                            </li>
+                        ))}
+                </ul>
+            </div>
+        </div>
+    );
+}

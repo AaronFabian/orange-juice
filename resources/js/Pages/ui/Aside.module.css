@@ -1,0 +1,7 @@
+.scrollGotoLeft {
+    direction: rtl;
+}
+
+.scrollDefault {
+    direction: ltr;
+}

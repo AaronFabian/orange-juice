@@ -1,0 +1,7 @@
+.scroll-y-mod {
+    overflow-y: scroll;
+}
+
+.web-scroll-hide::-webkit-scrollbar {
+    display: none;
+}
