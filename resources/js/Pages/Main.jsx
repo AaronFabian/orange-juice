@@ -1,25 +1,45 @@
-import NavLink from "@/Components/NavLink";
-import { Link, Head, router } from "@inertiajs/react";
+import { Head } from "@inertiajs/react";
 
-import Navbar from "./partials/Navbar";
 import WindowLayout from "./partials/WindowLayout";
-import Aside from "./components/Aside";
-import Section from "./partials/Section";
-import Application from "./components/Application";
+import Login from "./login/Login";
+import Home from "./home/Home";
+import NotFound from "./NotFound";
+import Edit from "./profile/Edit";
+import Explore from "./explore/Explore";
+import { useState } from "react";
 
 export default function Main(props) {
     console.clear();
 
+    const title = props.title;
+
+    let currentPage = null;
+    switch (props.title) {
+        case "Home":
+            currentPage = <Home />;
+            break;
+
+        case "Login":
+            currentPage = <Login />;
+            break;
+
+        case "Explore":
+            currentPage = <Explore />;
+            break;
+
+        case "Profile":
+            currentPage = <Edit />;
+            break;
+
+        default:
+            currentPage = <NotFound />;
+            break;
+    }
+
     return (
         <>
-            <Head title="Home - Orange Juice" />
-            <WindowLayout>
-                <Navbar />
-                <Section>
-                    <Aside />
-                    <Application />
-                </Section>
-            </WindowLayout>
+            <Head title={`${title} - Orange Juice`} />
+            <WindowLayout>{currentPage}</WindowLayout>
         </>
     );
 }

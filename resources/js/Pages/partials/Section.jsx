@@ -1,3 +1,4 @@
 export default function Section({ children }) {
-    return <section className="flex">{children}</section>;
+    // This Section will determine the layout should horizontal (desktop) or vertical (smartphone)
+    return <section className="sm:flex">{children}</section>;
 }

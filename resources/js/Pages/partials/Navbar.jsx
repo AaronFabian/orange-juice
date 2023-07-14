@@ -14,7 +14,7 @@ export default function Navbar() {
         <>
             <nav className="h-12 pt-2 mx-auto bg-black sm:rounded-tr-md sm:rounded-tl-md">
                 {/* In desktop always shown the NavButton, but hidden in smartphone */}
-                <ul className="items-center w-11/12 h-8 m-auto sm:flex">
+                <ul className="items-center h-8 m-auto w-app_inner_width sm:flex">
                     <UserProfile
                         isOpenDrawer={isOpenDrawer}
                         onOpenDrawer={handleOpenDrawer}
@@ -22,8 +22,8 @@ export default function Navbar() {
                     <NavButton href="/">Watchlist</NavButton>
                     <NavButton href="/">Favorite</NavButton>
                     <NavButton href="/">Community</NavButton>
-                    <NavButton href="/" isSelfToRight={true}>
-                        Logout
+                    <NavButton href="/login" isSelfToRight={true}>
+                        Login
                     </NavButton>
                 </ul>
             </nav>
@@ -42,7 +42,7 @@ export default function Navbar() {
 function DesktopDrawer() {
     return (
         <div className="hidden sm:block bg-gradient-to-r from-[#C991E9] to-[#F4BEA7] h-12  mx-auto ">
-            <ul className="flex pt-2 justify-evenly">
+            <ul className="flex justify-between px-5 pt-2">
                 <li>
                     <NavLink active={true}>Ongoing</NavLink>
                 </li>
@@ -183,10 +183,10 @@ function NavButton({ children, href, isSelfToRight = false }) {
                 isSelfToRight ? "ms-auto" : ""
             }`}
         >
-            <a href={href}>
+            <Link href={href}>
                 <div className="w-4 h-4 m-auto bg-white rounded-full"></div>
                 <p className="text-xs font-medium text-white">{children}</p>
-            </a>
+            </Link>
         </li>
     );
 }
