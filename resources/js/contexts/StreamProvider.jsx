@@ -1,104 +1,126 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
 const initialState = {
-    animeList: [],
-    isLoadingRecentEp: false,
-
-    topAiringAnime: [],
-    isLoadingTopAir: false,
-
-    currentLocalPage: "home",
+    animeEpisodeData: {},
+    isLoadingEpisodeData: false,
+    currentStreamSrc: [],
+    nowWatching: "",
+    isCurrentStreamLoading: false,
+    currentQuality: null,
 };
 
 const StreamContext = createContext(initialState);
 
 function StreamProvider({ children }) {
-    const [animeList, setAnimeList] = useState([]);
-    const [isLoadingRecentEp, setIsLoadingRecentEp] = useState(false);
+    const [animeEpisodeData, setAnimeEpisodeData] = useState({});
+    const [isLoadingEpisodeData, setIsLoadingEpisodeData] = useState(true);
 
-    const [topAiringAnime, setTopAiringAnime] = useState([]);
-    const [isLoadingTopAir, setIsLoadingTopAir] = useState(false);
+    const [currentStreamSrc, setCurrentStreamSrc] = useState([]);
+    const [nowWatching, setNowWatching] = useState("");
+    const [isCurrentStreamLoading, setIsCurrentStreamLoading] = useState(false);
 
-    const [currentLocalPage, setCurrentLocalPage] = useState("home"); // local page 'home', 'stream'
+    const [currentQuality, setCurrentQuality] = useState(null);
 
-    // application
     useEffect(function () {
-        setIsLoadingRecentEp(true);
-        async function loadRecentAnime() {
+        setIsLoadingEpisodeData(true);
+
+        async function loadAnimeDetails(animeId) {
             try {
                 const res = await fetch(
-                    "https://api.consumet.org/anime/gogoanime/recent-episodes"
+                    `https://api.consumet.org/anime/gogoanime/info/${animeId}`
                 );
                 const data = await res.json();
 
-                // console.log(data);
-                setAnimeList(data.results);
+                setAnimeEpisodeData(data);
+                const defaultEpisode = data?.episodes?.[0].id;
+                if (!defaultEpisode) return setAnimeEpisodeData(null);
+
+                handleChangeEpisode(defaultEpisode);
             } catch (error) {
                 console.error(error.message);
             } finally {
-                setIsLoadingRecentEp(false);
+                setIsLoadingEpisodeData(false);
             }
         }
 
-        loadRecentAnime();
-    }, []);
+        const animeId = window.location.hash.replace("#", "");
 
-    // aside
-    useEffect(function () {
-        async function loadTopAiringAnime() {
-            setIsLoadingTopAir(true);
-
-            try {
-                const res = await fetch(
-                    "https://api.consumet.org/anime/gogoanime/top-airing"
-                );
-                const data = await res.json();
-
-                // console.log(data);
-                setTopAiringAnime(data.results);
-            } catch (error) {
-                console.error(error.message);
-            } finally {
-                setIsLoadingTopAir(false);
-            }
-        }
-
-        loadTopAiringAnime();
-    }, []);
-
-    // auto set to stream in case url is already defined
-    useEffect(function () {
-        const hash = window.location.hash;
-        if (hash) {
-            setCurrentLocalPage("stream");
+        if (animeId) loadAnimeDetails(animeId);
+        else {
+            setIsLoadingEpisodeData(false);
+            setAnimeEpisodeData(null);
         }
     }, []);
 
-    function handleChangeScreen(localScreen, localParams) {
-        setCurrentLocalPage(localScreen);
-        if (localParams) {
-            window.location.hash = localParams;
-        } else {
-            window.location.hash = "";
+    async function handleChangeEpisode(id) {
+        setIsCurrentStreamLoading(true);
+        try {
+            const res = await fetch(
+                `https://api.consumet.org/anime/gogoanime/watch/${id}`
+            );
+            const data = await res.json();
+
+            const sources = data.sources;
+            if (!sources) throw new Error("Anime not found. :(");
+
+            setCurrentStreamSrc(sources);
+
+            // initial auto play episode
+            if (sources?.[2]) {
+                // 720p
+                setNowWatching(sources[2].url);
+                setCurrentQuality(sources[2].quality);
+            } else if (sources?.[1]) {
+                // 480p
+                setNowWatching(sources[1].url);
+                setCurrentQuality(sources[1].quality);
+            } else if (sources?.[0]) {
+                // 360p
+                setNowWatching(sources[0].url);
+                setCurrentQuality(sources[0].quality);
+            } else throw new Error("Unexpected behaviour.");
+        } catch (error) {
+            console.error(error.message);
+        } finally {
+            setIsCurrentStreamLoading(false);
         }
     }
 
-    function handleSetAnimeList(list) {
-        setAnimeList(list);
+    function handleSetNowWatching(src) {
+        setNowWatching(src);
+    }
+
+    function handleSetQuality(quality) {
+        setCurrentQuality(quality);
+    }
+
+    function handlePlayerReady(player) {
+        // setNowWatching(player);
+
+        player.on("waiting", () => {
+            console.log("video is ready to play");
+        });
+
+        player.on("dispose", () => {
+            // console.log("player will dispose");
+        });
     }
 
     return (
         <StreamContext.Provider
             value={{
-                animeList,
-                isLoadingRecentEp,
-                topAiringAnime,
-                isLoadingTopAir,
-                currentLocalPage,
+                animeEpisodeData,
+                isLoadingEpisodeData,
+                currentStreamSrc,
+                nowWatching,
+                isCurrentStreamLoading,
+                currentQuality,
 
                 // function
-                handleChangeScreen,
-                handleSetAnimeList,
+                handleSetNowWatching,
+                handleChangeEpisode, // async
+                handlePlayerReady,
+                handleSetQuality,
             }}
         >
             {children}

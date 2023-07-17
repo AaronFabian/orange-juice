@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
+import { useHome } from "@/contexts/HomeProvider";
+
 import LinkPagination from "../partials/LinkPagination";
 
-export default function Application({
-    animeList,
-    isLoading,
-    onHandleChangeScreen,
-}) {
+export default function Application() {
+    const { animeList } = useHome();
+
     const [pageLength, setPageLength] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
 
@@ -33,7 +33,6 @@ export default function Application({
                     .slice((currentPage - 1) * 6, currentPage * 6)
                     .map((anime) => (
                         <AnimeCard
-                            onHandleChangeScreen={onHandleChangeScreen}
                             title={anime.title}
                             release={anime.episodeNumber}
                             imgSrc={anime.image}
@@ -74,11 +73,13 @@ export default function Application({
     );
 }
 
-function AnimeCard({ title, release, imgSrc, animeId, onHandleChangeScreen }) {
+function AnimeCard({ title, release, imgSrc, animeId }) {
+    const { handleChangeScreen } = useHome();
+
     return (
         <div
             className="relative overflow-hidden rounded-md group hover:cursor-pointer"
-            onClick={() => onHandleChangeScreen("stream", animeId)}
+            onClick={() => handleChangeScreen("stream", animeId)}
         >
             <img
                 src={`${imgSrc}`}

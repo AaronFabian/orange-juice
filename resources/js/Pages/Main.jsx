@@ -1,4 +1,6 @@
 import { Head } from "@inertiajs/react";
+import { HomeProvider } from "@/contexts/HomeProvider";
+import { StreamProvider } from "@/contexts/StreamProvider";
 
 import WindowLayout from "./partials/WindowLayout";
 import Login from "./login/Login";
@@ -6,8 +8,6 @@ import Home from "./home/Home";
 import NotFound from "./NotFound";
 import Edit from "./profile/Edit";
 import Explore from "./explore/Explore";
-import { useState } from "react";
-import { StreamProvider } from "@/contexts/StreamProvider";
 
 export default function Main(props) {
     console.clear();
@@ -18,9 +18,9 @@ export default function Main(props) {
     switch (props.title) {
         case "Home":
             currentPage = (
-                <StreamProvider>
+                <HomeProvider>
                     <Home />
-                </StreamProvider>
+                </HomeProvider>
             );
             break;
 

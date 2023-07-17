@@ -1,94 +1,44 @@
 import { useEffect, useState } from "react";
+import { useHome } from "@/contexts/HomeProvider";
+import { useStream } from "@/contexts/StreamProvider";
 
 import Aside from "../ui/Aside";
 import ApplicationLayout from "../ui/ApplicationLayout";
 import VideoJS from "@/Components/VideoJs";
 
-export default function StreamHoc({ onHandleChangeScreen }) {
-    const [animeEpisodeData, setAnimeEpisodeData] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
+export default function StreamHoc() {
+    const { handleChangeScreen } = useHome();
 
-    const [currentStreamSrc, setCurrentStreamSrc] = useState([]);
-    const [nowWatching, setNowWatching] = useState("");
-    const [isCurrentStreamLoading, setIsCurrentStreamLoading] = useState(false);
+    const {
+        animeEpisodeData,
+        isLoadingEpisodeData: isLoading,
+        currentStreamSrc,
+        nowWatching,
+        isCurrentStreamLoading,
+        currentQuality,
 
-    const [currentQuality, setCurrentQuality] = useState(null);
+        // function
+        handleSetNowWatching,
+        handleChangeEpisode,
+        handlePlayerReady,
+    } = useStream();
 
-    useEffect(function () {
-        setIsLoading(true);
-
-        async function loadAnimeDetails(animeId) {
-            try {
-                const res = await fetch(
-                    `https://api.consumet.org/anime/gogoanime/info/${animeId}`
-                );
-                const data = await res.json();
-
-                console.log(data);
-                setAnimeEpisodeData(data);
-                const defaultEpisode = data?.episodes?.[0].id;
-                if (!defaultEpisode)
-                    return console.warn("Data not found StreamAside:21");
-
-                handleChangeEpisode(defaultEpisode);
-            } catch (error) {
-                console.error(error.message);
-            } finally {
-                setIsLoading(false);
-            }
-        }
-
-        const animeId = window.location.hash.replace("#", "");
-
-        if (animeId) loadAnimeDetails(animeId);
-        else setIsLoading(false);
-    }, []);
-
-    async function handleChangeEpisode(id) {
-        setIsCurrentStreamLoading(true);
-        try {
-            const res = await fetch(
-                `https://api.consumet.org/anime/gogoanime/watch/${id}`
-            );
-            const data = await res.json();
-
-            const sources = data.sources;
-            if (!sources) throw new Error("Anime not found. :(");
-
-            setCurrentStreamSrc(sources);
-
-            // initial auto play episode
-            if (sources?.[2]) {
-                setNowWatching(sources[2].url);
-                setCurrentQuality(sources[2].quality);
-            } else if (sources?.[1]) {
-                setNowWatching(sources[1].url);
-                setCurrentQuality(sources[1].quality);
-            } else if (sources?.[0]) {
-                setNowWatching(sources[0].url);
-                setCurrentQuality(sources[0].quality);
-            } else throw new Error("Unexpected behaviour.");
-        } catch (error) {
-            console.error(error.message);
-        } finally {
-            setIsCurrentStreamLoading(false);
-        }
+    if (isLoading) {
+        return <h1>Loading data...</h1>;
     }
 
-    function handleSetNowWatching(src) {
-        setNowWatching(src);
-    }
-
-    function handlePlayerReady(player) {
-        // setNowWatching(player);
-
-        player.on("waiting", () => {
-            console.log("player is ready to play");
-        });
-
-        player.on("dispose", () => {
-            console.log("player will dispose");
-        });
+    if (!animeEpisodeData) {
+        return (
+            <div>
+                <h1>Anime not found 😓</h1>
+                <button
+                    className="text-sm hover:text-stone-50 active:text-gray-400"
+                    onClick={() => handleChangeScreen("home")}
+                >
+                    &larr; Back to home
+                </button>
+            </div>
+        );
     }
 
     const videoJsOptions = {
@@ -104,40 +54,17 @@ export default function StreamHoc({ onHandleChangeScreen }) {
         ],
     };
 
-    if (isLoading) {
-        return <h1>Loading data...</h1>;
-    }
-
-    const {
-        id,
-        title,
-        url,
-        genres,
-        totalEpisodes,
-        image,
-        type,
-        status,
-        episodes,
-        description,
-    } = animeEpisodeData;
-    const [season = "-", year = "-"] = type.split(" ", 2);
+    const { title, genres, totalEpisodes, image, type, status, description } =
+        animeEpisodeData;
+    const [season = "-", year = "-"] = type?.split(" ", 2);
 
     return (
         <>
-            <Aside
-                localScreen="stream"
-                episodes={episodes}
-                isLoading={isLoading}
-                currentQuality={currentQuality}
-                currentStreamSrc={currentStreamSrc}
-                onHandleChangeScreen={onHandleChangeScreen}
-                onHandleChangeEpisode={handleChangeEpisode}
-                onHandleSetNowWatching={handleSetNowWatching}
-            />
+            <Aside localScreen="stream" />
             <ApplicationLayout isAllowScroll={true}>
                 <button
                     className="text-sm hover:text-stone-50 active:text-gray-400"
-                    onClick={() => onHandleChangeScreen("home")}
+                    onClick={() => handleChangeScreen("home")}
                 >
                     &larr; Back to home
                 </button>

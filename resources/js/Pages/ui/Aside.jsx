@@ -3,34 +3,16 @@ import { useEffect, useState } from "react";
 import StreamAside from "../home/Stream/StreamAside";
 
 import styles from "./Aside.module.css";
-import { useStream } from "@/contexts/StreamProvider";
+import { useHome } from "@/contexts/HomeProvider";
 
 export default function Aside({
-    topAiringAnime,
-    isLoading,
-    onHandleChangeScreen,
-
     // in stream
     episodes = [],
-    currentQuality,
-    onHandleChangeEpisode,
-    onHandleSetNowWatching,
-    currentStreamSrc,
 }) {
     return (
         <>
             {/* will hidden in smartphone */}
-            <DesktopAside
-                topAiringAnime={topAiringAnime}
-                isLoading={isLoading}
-                onHandleChangeScreen={onHandleChangeScreen}
-                //
-                episodes={episodes}
-                currentStreamSrc={currentStreamSrc}
-                currentQuality={currentQuality}
-                onHandleChangeEpisode={onHandleChangeEpisode}
-                onHandleSetNowWatching={onHandleSetNowWatching}
-            />
+            <DesktopAside episodes={episodes} />
 
             {/* Different aside will hidden in desktop */}
             <SmartPhoneAside />
@@ -38,18 +20,8 @@ export default function Aside({
     );
 }
 
-function DesktopAside({
-    isLoading,
-    onHandleChangeScreen,
-
-    // stream aside
-    episodes,
-    currentStreamSrc,
-    currentQuality,
-    onHandleChangeEpisode,
-    onHandleSetNowWatching,
-}) {
-    const { currentLocalPage, topAiringAnime } = useStream();
+function DesktopAside({ episodes }) {
+    const { currentLocalPage } = useHome();
 
     return (
         <aside
@@ -58,25 +30,11 @@ function DesktopAside({
             aria-label="Sidebar"
         >
             {currentLocalPage === "stream" && (
-                <StreamAside
-                    episodes={episodes}
-                    isLoading={isLoading}
-                    currentStreamSrc={currentStreamSrc}
-                    currentQuality={currentQuality}
-                    onHandleChangeScreen={onHandleChangeScreen}
-                    onHandleChangeEpisode={onHandleChangeEpisode}
-                    onHandleSetNowWatching={onHandleSetNowWatching}
-                />
+                <StreamAside episodes={episodes} />
             )}
 
             {currentLocalPage === undefined ||
-                (currentLocalPage === "home" && (
-                    <AnimeList
-                        isLoading={isLoading}
-                        topAiringAnime={topAiringAnime}
-                        onHandleChangeScreen={onHandleChangeScreen}
-                    />
-                ))}
+                (currentLocalPage === "home" && <AnimeList />)}
         </aside>
     );
 }
@@ -94,7 +52,9 @@ function SmartPhoneAside() {
     );
 }
 
-function AnimeList({ topAiringAnime }) {
+function AnimeList() {
+    const { topAiringAnime } = useHome();
+
     // * For performance: use window width
     // * for decrease unnecessary map looping
     const windowWidth = window.innerWidth;
@@ -142,7 +102,7 @@ function AnimeItem({ anime }) {
 
     return (
         <li>
-            <a
+            <div
                 href="#"
                 className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
             >
@@ -155,7 +115,7 @@ function AnimeItem({ anime }) {
                         {genres.map((g) => g + ", ")}
                     </p>
                 </div>
-            </a>
+            </div>
         </li>
     );
 }

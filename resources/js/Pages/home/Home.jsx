@@ -1,55 +1,37 @@
-import { useEffect, useState } from "react";
+import { useHome } from "@/contexts/HomeProvider";
 
-import Navbar from "../partials/Navbar";
-import Section from "../partials/Section";
-
-import Application from "../ui/Application";
 import ApplicationLayout from "../ui/ApplicationLayout";
+import Application from "../ui/Application";
 import Aside from "../ui/Aside";
+import Navbar from "../partials/Navbar";
 import HomeHeader from "../ui/HomeHeader";
+import Section from "../partials/Section";
 import StreamHoc from "./StreamHoc";
-import { StreamProvider, useStream } from "@/contexts/StreamProvider";
+import { StreamProvider } from "@/contexts/StreamProvider";
 
 export default function Home() {
-    const {
-        animeList,
-        isLoadingRecentEp,
-        topAiringAnime,
-        isLoadingTopAir,
-        currentLocalPage: currentScreen,
-
-        // function
-        handleChangeScreen,
-        handleSetAnimeList: setAnimeList,
-    } = useStream();
+    const { currentLocalPage } = useHome();
 
     return (
         <>
             <Navbar />
             <Section>
-                {currentScreen === "home" && (
+                {currentLocalPage === "home" && (
                     <>
-                        <Aside
-                            topAiringAnime={topAiringAnime}
-                            isLoading={isLoadingTopAir}
-                        />
+                        <Aside />
                         <ApplicationLayout>
                             <HomeHeader />
-                            <Application
-                                animeList={animeList}
-                                setAnimeList={setAnimeList}
-                                isLoading={isLoadingRecentEp}
-                                onHandleChangeScreen={handleChangeScreen}
-                            />
+                            <Application />
                         </ApplicationLayout>
                     </>
                 )}
 
-                {currentScreen === "stream" && (
-                    <>
-                        {/* In order to fetch the anime episode */}
-                        <StreamHoc onHandleChangeScreen={handleChangeScreen} />
-                    </>
+                {/* In order to fetch the anime episode */}
+                {/* set local Provider to get the window.hash */}
+                {currentLocalPage === "stream" && (
+                    <StreamProvider>
+                        <StreamHoc />
+                    </StreamProvider>
                 )}
             </Section>
         </>

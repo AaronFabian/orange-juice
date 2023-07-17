@@ -1,30 +1,25 @@
-import { Link } from "@inertiajs/react";
-import styles from "../../ui/Aside.module.css";
 import { useEffect, useState } from "react";
+import { useStream } from "@/contexts/StreamProvider";
 
-export default function StreamAside({
-    episodes,
-    isLoading,
-    currentStreamSrc,
-    currentQuality,
-    onHandleChangeEpisode,
-    onHandleSetNowWatching,
-    onHandleChangeScreen,
-}) {
-    const [currentEps, setCurrentEps] = useState(1);
+import styles from "../../ui/Aside.module.css";
+
+export default function StreamAside() {
+    const [currentEps, setCurrentEpsPage] = useState(1);
+    const [currentSelectedEps, setCurrentSelectedEps] = useState(1);
+    const {
+        animeEpisodeData: { episodes },
+        currentStreamSrc,
+        currentQuality,
+        handleChangeEpisode,
+        handleSetNowWatching,
+    } = useStream();
 
     const episodesLength = episodes.length;
     const episodePage = Math.ceil(episodesLength / 25);
 
-    // use localStorage to resume last episode
     useEffect(function () {
-        // set to episode 1 (for a moment)
-        // const defaultEpisode = episodes?.[0].id;
-        // if (!defaultEpisode)
-        //     return console.warn("Data not found StreamAside:21");
-
-        setCurrentEps(1);
-        // onHandleChangeEpisode(defaultEpisode);
+        // use localStorage to resume last episode
+        // setCurrentEpsPage(1);
     }, []);
 
     return (
@@ -40,7 +35,9 @@ export default function StreamAside({
                         id="countries"
                         className="block h-8 text-xs placeholder-gray-400 bg-transparent border border-gray-300 rounded-none w-28 text-stone-50 bg-gray-50 focus:ring-[#F4BEA7] focus:border-[#F4BEA7]"
                         defaultValue="1"
-                        onChange={(e) => setCurrentEps(Number(e.target.value))}
+                        onChange={(e) =>
+                            setCurrentEpsPage(Number(e.target.value))
+                        }
                     >
                         {Array.from({ length: episodePage }, (_, index) => (
                             <option
@@ -61,21 +58,29 @@ export default function StreamAside({
                 >
                     {episodes
                         .slice((currentEps - 1) * 25, currentEps * 25)
-                        .map((episode) => (
-                            <li
-                                className={`h-6 duration-300 transition-all border border-stone-50 group hover:bg-[#F4BEA7] cursor-pointer `}
-                                key={episode.id}
-                            >
-                                <button
-                                    className="w-full leading-6 group-hover:text-stone-950"
-                                    onClick={() =>
-                                        onHandleChangeEpisode(episode.id)
-                                    }
+                        .map((episode) => {
+                            return (
+                                <li
+                                    className={`h-6 duration-300 transition-all border border-stone-50 group hover:bg-[#F4BEA7] cursor-pointer  ${
+                                        currentSelectedEps === episode.number &&
+                                        "bg-[#FABEA7]"
+                                    }`}
+                                    key={episode.id}
                                 >
-                                    {episode.number}
-                                </button>
-                            </li>
-                        ))}
+                                    <button
+                                        className="w-full leading-6 group-hover:text-stone-950"
+                                        onClick={() => {
+                                            setCurrentSelectedEps(
+                                                episode.number
+                                            );
+                                            handleChangeEpisode(episode.id);
+                                        }}
+                                    >
+                                        {episode.number}
+                                    </button>
+                                </li>
+                            );
+                        })}
                 </ul>
 
                 {currentStreamSrc != undefined && currentStreamSrc.length ? (
@@ -86,9 +91,7 @@ export default function StreamAside({
                                 <StreamQualityItem
                                     source={source}
                                     active={currentQuality === source.quality}
-                                    onHandleSetNowWatching={
-                                        onHandleSetNowWatching
-                                    }
+                                    handleSetNowWatching={handleSetNowWatching}
                                     key={source.url}
                                 />
                             ))}
@@ -104,16 +107,21 @@ export default function StreamAside({
     );
 }
 
-function StreamQualityItem({ source, onHandleSetNowWatching, active }) {
+function StreamQualityItem({ source, handleSetNowWatching, active }) {
     if (source.quality === "backup") return null;
     if (source.quality === "default") return null;
+
+    const { handleSetQuality } = useStream();
 
     return (
         <button
             className={`h-6  duration-300 transition-all border text-stone-50 text-xs border-stone-50 group hover:bg-[#F4BEA7] cursor-pointer ${
                 active && "bg-[#F4BEA7]"
             }`}
-            onClick={() => onHandleSetNowWatching(source.url)}
+            onClick={() => {
+                handleSetNowWatching(source.url);
+                handleSetQuality(source.quality);
+            }}
         >
             {source.quality}
         </button>
