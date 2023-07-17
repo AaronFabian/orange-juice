@@ -1,29 +1,35 @@
 import { useEffect, useState } from "react";
 
-import StreamAside from "../home/StreamAside";
+import StreamAside from "../home/Stream/StreamAside";
 
 import styles from "./Aside.module.css";
+import { useStream } from "@/contexts/StreamProvider";
 
 export default function Aside({
-    localScreen,
     topAiringAnime,
     isLoading,
     onHandleChangeScreen,
 
     // in stream
     episodes = [],
+    currentQuality,
     onHandleChangeEpisode,
+    onHandleSetNowWatching,
+    currentStreamSrc,
 }) {
     return (
         <>
             {/* will hidden in smartphone */}
             <DesktopAside
-                localScreen={localScreen}
                 topAiringAnime={topAiringAnime}
                 isLoading={isLoading}
                 onHandleChangeScreen={onHandleChangeScreen}
+                //
                 episodes={episodes}
+                currentStreamSrc={currentStreamSrc}
+                currentQuality={currentQuality}
                 onHandleChangeEpisode={onHandleChangeEpisode}
+                onHandleSetNowWatching={onHandleSetNowWatching}
             />
 
             {/* Different aside will hidden in desktop */}
@@ -33,36 +39,44 @@ export default function Aside({
 }
 
 function DesktopAside({
-    localScreen,
-    topAiringAnime,
     isLoading,
     onHandleChangeScreen,
 
     // stream aside
     episodes,
+    currentStreamSrc,
+    currentQuality,
     onHandleChangeEpisode,
+    onHandleSetNowWatching,
 }) {
+    const { currentLocalPage, topAiringAnime } = useStream();
+
     return (
         <aside
             id="default-sidebar"
             className="w-60 h-[40rem] transition-transform hidden -translate-x-full sm:translate-x-0 sm:block bg-black"
             aria-label="Sidebar"
         >
-            {localScreen === "stream" && (
+            {currentLocalPage === "stream" && (
                 <StreamAside
                     episodes={episodes}
+                    isLoading={isLoading}
+                    currentStreamSrc={currentStreamSrc}
+                    currentQuality={currentQuality}
                     onHandleChangeScreen={onHandleChangeScreen}
                     onHandleChangeEpisode={onHandleChangeEpisode}
+                    onHandleSetNowWatching={onHandleSetNowWatching}
                 />
             )}
 
-            {localScreen === undefined && (
-                <AnimeList
-                    isLoading={isLoading}
-                    topAiringAnime={topAiringAnime}
-                    onHandleChangeScreen={onHandleChangeScreen}
-                />
-            )}
+            {currentLocalPage === undefined ||
+                (currentLocalPage === "home" && (
+                    <AnimeList
+                        isLoading={isLoading}
+                        topAiringAnime={topAiringAnime}
+                        onHandleChangeScreen={onHandleChangeScreen}
+                    />
+                ))}
         </aside>
     );
 }

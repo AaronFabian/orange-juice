@@ -19,6 +19,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "@tailwindcss/line-clamp": "^0.4.4"
+        "@tailwindcss/line-clamp": "^0.4.4",
+        "video.js": "^8.3.0"
     }
 }

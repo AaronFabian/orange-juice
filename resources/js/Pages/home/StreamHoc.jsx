@@ -1,15 +1,18 @@
 import { useEffect, useState } from "react";
+
 import Aside from "../ui/Aside";
 import ApplicationLayout from "../ui/ApplicationLayout";
-import { Link } from "@inertiajs/react";
+import VideoJS from "@/Components/VideoJs";
 
 export default function StreamHoc({ onHandleChangeScreen }) {
     const [animeEpisodeData, setAnimeEpisodeData] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
     const [currentStreamSrc, setCurrentStreamSrc] = useState([]);
-    const [nowWatching, setNowWatching] = useState("test");
+    const [nowWatching, setNowWatching] = useState("");
     const [isCurrentStreamLoading, setIsCurrentStreamLoading] = useState(false);
+
+    const [currentQuality, setCurrentQuality] = useState(null);
 
     useEffect(function () {
         setIsLoading(true);
@@ -23,6 +26,11 @@ export default function StreamHoc({ onHandleChangeScreen }) {
 
                 console.log(data);
                 setAnimeEpisodeData(data);
+                const defaultEpisode = data?.episodes?.[0].id;
+                if (!defaultEpisode)
+                    return console.warn("Data not found StreamAside:21");
+
+                handleChangeEpisode(defaultEpisode);
             } catch (error) {
                 console.error(error.message);
             } finally {
@@ -44,7 +52,22 @@ export default function StreamHoc({ onHandleChangeScreen }) {
             );
             const data = await res.json();
 
-            setCurrentStreamSrc(data.sources);
+            const sources = data.sources;
+            if (!sources) throw new Error("Anime not found. :(");
+
+            setCurrentStreamSrc(sources);
+
+            // initial auto play episode
+            if (sources?.[2]) {
+                setNowWatching(sources[2].url);
+                setCurrentQuality(sources[2].quality);
+            } else if (sources?.[1]) {
+                setNowWatching(sources[1].url);
+                setCurrentQuality(sources[1].quality);
+            } else if (sources?.[0]) {
+                setNowWatching(sources[0].url);
+                setCurrentQuality(sources[0].quality);
+            } else throw new Error("Unexpected behaviour.");
         } catch (error) {
             console.error(error.message);
         } finally {
@@ -52,11 +75,38 @@ export default function StreamHoc({ onHandleChangeScreen }) {
         }
     }
 
+    function handleSetNowWatching(src) {
+        setNowWatching(src);
+    }
+
+    function handlePlayerReady(player) {
+        // setNowWatching(player);
+
+        player.on("waiting", () => {
+            console.log("player is ready to play");
+        });
+
+        player.on("dispose", () => {
+            console.log("player will dispose");
+        });
+    }
+
+    const videoJsOptions = {
+        autoplay: true,
+        controls: true,
+        responsive: true,
+        fluid: true,
+        sources: [
+            {
+                src: nowWatching,
+                type: "application/x-mpegURL",
+            },
+        ],
+    };
+
     if (isLoading) {
         return <h1>Loading data...</h1>;
     }
-
-    console.log(currentStreamSrc);
 
     const {
         id,
@@ -70,15 +120,19 @@ export default function StreamHoc({ onHandleChangeScreen }) {
         episodes,
         description,
     } = animeEpisodeData;
-    const [season, year] = type.split(" ", 2);
+    const [season = "-", year = "-"] = type.split(" ", 2);
 
     return (
         <>
             <Aside
                 localScreen="stream"
                 episodes={episodes}
+                isLoading={isLoading}
+                currentQuality={currentQuality}
+                currentStreamSrc={currentStreamSrc}
                 onHandleChangeScreen={onHandleChangeScreen}
                 onHandleChangeEpisode={handleChangeEpisode}
+                onHandleSetNowWatching={handleSetNowWatching}
             />
             <ApplicationLayout isAllowScroll={true}>
                 <button
@@ -88,32 +142,18 @@ export default function StreamHoc({ onHandleChangeScreen }) {
                     &larr; Back to home
                 </button>
 
-                {/* <iframe
-                    title="Video stream"
-                    src="https://anihdplay.com/streaming.php?id=MjAyNjQ3&title=%22Oshi+no+Ko%22+Episode+1&typesub=SUB"
-                    width={1280}
-                    height={720}
-                ></iframe> */}
                 {isCurrentStreamLoading && (
                     <div className="w-full h-[480px] flex justify-center items-center text-stone-50">
                         Please wait...
                     </div>
                 )}
-                {nowWatching && !isCurrentStreamLoading ? (
-                    <video
-                        width="352"
-                        height="198"
-                        controls
-                        preload="auto"
-                        className="w-full h-[480px]"
-                    >
-                        <source
-                            src="https://www002.vipanicdn.net/streamhls/0789fd4f049c3ca2a49b860ea5d1f456/ep.1.1677591537.360.m3u8"
-                            type="application/x-mpegURL"
-                        />
-                    </video>
-                ) : null}
-                {/* <div className="w-full h-[480px]"></div> */}
+
+                {nowWatching && !isCurrentStreamLoading && (
+                    <VideoJS
+                        onReady={handlePlayerReady}
+                        options={videoJsOptions}
+                    />
+                )}
 
                 <div className="flex gap-4 mt-2">
                     <img className="w-48" src={image} alt="Spy x Family" />
@@ -157,3 +197,10 @@ export default function StreamHoc({ onHandleChangeScreen }) {
         </>
     );
 }
+
+/* <iframe
+    title="Video stream"
+    src="https://anihdplay.com/streaming.php?id=MjAyNjQ3&title=%22Oshi+no+Ko%22+Episode+1&typesub=SUB"
+    width={1280}
+    height={720}
+></iframe> */

@@ -7,6 +7,7 @@ import NotFound from "./NotFound";
 import Edit from "./profile/Edit";
 import Explore from "./explore/Explore";
 import { useState } from "react";
+import { StreamProvider } from "@/contexts/StreamProvider";
 
 export default function Main(props) {
     console.clear();
@@ -16,7 +17,11 @@ export default function Main(props) {
     let currentPage = null;
     switch (props.title) {
         case "Home":
-            currentPage = <Home />;
+            currentPage = (
+                <StreamProvider>
+                    <Home />
+                </StreamProvider>
+            );
             break;
 
         case "Login":
