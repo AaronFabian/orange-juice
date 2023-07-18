@@ -20,22 +20,56 @@ function StreamProvider({ children }) {
     const [isCurrentStreamLoading, setIsCurrentStreamLoading] = useState(false);
 
     const [currentQuality, setCurrentQuality] = useState(null);
+    const [animeId, setAnimeId] = useState();
 
     useEffect(function () {
         setIsLoadingEpisodeData(true);
 
-        async function loadAnimeDetails(animeId) {
+        async function loadAnimeDetails(id) {
             try {
-                const res = await fetch(
-                    `https://api.consumet.org/anime/gogoanime/info/${animeId}`
+                // check if user have current anime history
+                // use localStorage to resume last episode
+                const history = JSON.parse(
+                    localStorage.getItem("orange-juice")
                 );
+
+                const res = await fetch(
+                    `https://api.consumet.org/anime/gogoanime/info/${id}`
+                );
+
+                if (!history) {
+                    // if user don't have any history than generate history now
+                    localStorage.setItem(
+                        "orange-juice",
+                        JSON.stringify({
+                            anime: { [id]: { lastEps: 1, src: "" } },
+                        })
+                    );
+                } else if (!history.anime?.[id]) {
+                    // if user never watch current anime before
+                    localStorage.setItem(
+                        "orange-juice",
+                        JSON.stringify({
+                            ...history,
+                            anime: {
+                                ...history.anime,
+                                [id]: { lastEps: 1, src: "" },
+                            },
+                        })
+                    );
+                } else {
+                    // if user already have history then don't do anything here
+                }
+
                 const data = await res.json();
 
                 setAnimeEpisodeData(data);
+
                 const defaultEpisode = data?.episodes?.[0].id;
                 if (!defaultEpisode) return setAnimeEpisodeData(null);
 
                 handleChangeEpisode(defaultEpisode);
+                setAnimeId(id);
             } catch (error) {
                 console.error(error.message);
             } finally {
@@ -43,9 +77,9 @@ function StreamProvider({ children }) {
             }
         }
 
-        const animeId = window.location.hash.replace("#", "");
+        const hashId = window.location.hash.replace("#", "");
 
-        if (animeId) loadAnimeDetails(animeId);
+        if (hashId) loadAnimeDetails(hashId);
         else {
             setIsLoadingEpisodeData(false);
             setAnimeEpisodeData(null);
@@ -54,6 +88,7 @@ function StreamProvider({ children }) {
 
     async function handleChangeEpisode(id) {
         setIsCurrentStreamLoading(true);
+
         try {
             const res = await fetch(
                 `https://api.consumet.org/anime/gogoanime/watch/${id}`
@@ -61,7 +96,7 @@ function StreamProvider({ children }) {
             const data = await res.json();
 
             const sources = data.sources;
-            if (!sources) throw new Error("Anime not found. :(");
+            if (!sources) throw new Error("Fatal: sources not found :(");
 
             setCurrentStreamSrc(sources);
 
@@ -102,7 +137,11 @@ function StreamProvider({ children }) {
         });
 
         player.on("dispose", () => {
-            // console.log("player will dispose");
+            console.log("player stop at: " + player.currentTime());
+        });
+
+        player.on("ended", () => {
+            console.log("Player finished");
         });
     }
 
@@ -115,6 +154,7 @@ function StreamProvider({ children }) {
                 nowWatching,
                 isCurrentStreamLoading,
                 currentQuality,
+                animeId,
 
                 // function
                 handleSetNowWatching,

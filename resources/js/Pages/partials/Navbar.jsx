@@ -1,6 +1,16 @@
-import NavLink from "@/Components/NavLink";
 import { Link } from "@inertiajs/react";
 import { useState } from "react";
+import { IconContext } from "react-icons";
+import {
+    PiHeartStraightLight,
+    PiTelevisionLight,
+    PiPersonArmsSpreadThin,
+    PiDoorOpenLight,
+    PiLinuxLogoLight,
+} from "react-icons/pi";
+
+import NavLink from "@/Components/NavLink";
+import styles from "../ui/HomeHeader.module.css";
 
 export default function Navbar() {
     const [isOpenDrawer, setIsOpenDrawer] = useState(false);
@@ -15,16 +25,32 @@ export default function Navbar() {
             <nav className="h-12 pt-2 mx-auto bg-black sm:rounded-tr-md sm:rounded-tl-md">
                 {/* In desktop always shown the NavButton, but hidden in smartphone */}
                 <ul className="items-center h-8 m-auto w-app_inner_width sm:flex">
-                    <UserProfile
-                        isOpenDrawer={isOpenDrawer}
-                        onOpenDrawer={handleOpenDrawer}
-                    />
-                    <NavButton href="/">Watchlist</NavButton>
-                    <NavButton href="/">Favorite</NavButton>
-                    <NavButton href="/">Community</NavButton>
-                    <NavButton href="/login" isSelfToRight={true}>
-                        Login
-                    </NavButton>
+                    <IconContext.Provider
+                        value={{
+                            className: `stroke-purple_mood_hard ${styles["svg path"]} fill-purple_mood scale-125 `,
+                        }}
+                    >
+                        <UserProfile
+                            isOpenDrawer={isOpenDrawer}
+                            onOpenDrawer={handleOpenDrawer}
+                        />
+                        <NavButton href="/" icon={<PiTelevisionLight />}>
+                            Watchlist
+                        </NavButton>
+                        <NavButton href="/" icon={<PiHeartStraightLight />}>
+                            Favorite
+                        </NavButton>
+                        <NavButton href="/" icon={<PiPersonArmsSpreadThin />}>
+                            Community
+                        </NavButton>
+                        <NavButton
+                            href="/login"
+                            icon={<PiDoorOpenLight />}
+                            isSelfToRight={true}
+                        >
+                            Login
+                        </NavButton>
+                    </IconContext.Provider>
                 </ul>
             </nav>
 
@@ -42,30 +68,18 @@ export default function Navbar() {
 function DesktopDrawer() {
     return (
         <div className="hidden sm:block bg-gradient-to-r from-[#C991E9] to-[#F4BEA7] h-12  mx-auto ">
-            <ul className="flex justify-between px-5 pt-2">
+            <ul className="flex justify-center gap-32 px-5 pt-2">
                 <li>
-                    <NavLink active={true}>Ongoing</NavLink>
+                    <NavLink active={true}>Anime</NavLink>
                 </li>
                 <li>
-                    <NavLink active={false}>Popular</NavLink>
+                    <NavLink active={false}>Manga</NavLink>
                 </li>
                 <li>
-                    <NavLink active={false}>Genres</NavLink>
+                    <NavLink active={false}>Drama</NavLink>
                 </li>
                 <li>
-                    <NavLink active={false}>Anime List</NavLink>
-                </li>
-                <li>
-                    <NavLink active={false}>Reccomended</NavLink>
-                </li>
-                <li>
-                    <NavLink active={false}>Movies</NavLink>
-                </li>
-                <li>
-                    <NavLink active={false}>Most Watched</NavLink>
-                </li>
-                <li>
-                    <NavLink active={false}>Upcomming</NavLink>
+                    <NavLink active={false}>News</NavLink>
                 </li>
             </ul>
         </div>
@@ -114,7 +128,9 @@ function UserProfile({ isOpenDrawer, onOpenDrawer }) {
     return (
         <li>
             <a href="/" className="flex">
-                <div className="bg-white rounded-full w-7 h-7"></div>
+                <div className="w-4 h-4 m-auto">
+                    <PiLinuxLogoLight />
+                </div>
                 <div className="mx-2">
                     <p className="text-[#F4BEA7] text-xs">Premium Member</p>
                     <p className="text-xs text-white">Anon 123456</p>
@@ -176,7 +192,7 @@ function UserProfile({ isOpenDrawer, onOpenDrawer }) {
     );
 }
 
-function NavButton({ children, href, isSelfToRight = false }) {
+function NavButton({ children, href, isSelfToRight = false, icon }) {
     return (
         <li
             className={`hidden sm:block self-start px-4 ${
@@ -184,7 +200,7 @@ function NavButton({ children, href, isSelfToRight = false }) {
             }`}
         >
             <Link href={href}>
-                <div className="w-4 h-4 m-auto bg-white rounded-full"></div>
+                <div className="w-4 h-4 m-auto">{icon}</div>
                 <p className="text-xs font-medium text-white">{children}</p>
             </Link>
         </li>

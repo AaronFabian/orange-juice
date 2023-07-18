@@ -21,10 +21,17 @@ use Inertia\Inertia;
 |
 */
 
-Route::middleware('guest')->group(function () {
-   Route::get('/', [WebpageController::class, 'index'])->name('home');
+Route::get('/', [WebpageController::class, 'index'])->name('home');
 
-   Route::get('explore', [WebpageController::class, 'explore'])->name('explore');
+// Route::get('explore', [WebpageController::class, 'explore'])->name('explore');
+
+Route::get('manga', [WebpageController::class, 'index'])->name('home');
+
+Route::get('drama', [WebpageController::class, 'index'])->name('home');
+
+Route::get('news', [WebpageController::class, 'index'])->name('home');
+
+Route::middleware('guest')->group(function () {
 
    Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
 
@@ -46,6 +53,11 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+   Route::get('cobain', function () {
+
+      dd('cobain berhasil');
+   });
+
    Route::get('verify-email', EmailVerificationPromptController::class)->name('verification.notice');
 
    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');

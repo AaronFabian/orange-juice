@@ -2,16 +2,17 @@ import { useEffect, useState } from "react";
 import { useHome } from "@/contexts/HomeProvider";
 
 import LinkPagination from "../partials/LinkPagination";
+import Loading from "./Loading";
 
 export default function Application() {
     const { animeList, isLoadingRecentEp } = useHome();
 
-    const [pageLength, setPageLength] = useState(0);
+    // const [pageLength, setPageLength] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
+    const pageLength = Math.ceil(animeList.length / 6);
 
     useEffect(
         function () {
-            setPageLength(Math.ceil(animeList.length / 6));
             setCurrentPage(1);
         },
         [animeList.length]
@@ -28,7 +29,7 @@ export default function Application() {
     }
 
     if (isLoadingRecentEp) {
-        return <h1 className="text-stone-50">Please wait...</h1>;
+        return <Loading />;
     }
 
     return (
@@ -39,7 +40,7 @@ export default function Application() {
                     .map((anime) => (
                         <AnimeCard
                             title={anime.title}
-                            release={anime?.episodeNumber ?? 0}
+                            episodes={anime?.episodeNumber ?? 0}
                             imgSrc={anime.image}
                             animeId={anime.id}
                             key={anime.id}
@@ -78,7 +79,7 @@ export default function Application() {
     );
 }
 
-function AnimeCard({ title, release, imgSrc, animeId }) {
+function AnimeCard({ title, episodes, imgSrc, animeId }) {
     const { handleChangeScreen } = useHome();
 
     return (
@@ -96,7 +97,7 @@ function AnimeCard({ title, release, imgSrc, animeId }) {
                     {title}
                 </h3>
                 <p className="text-xs text-stone-50">
-                    {release ? "Episodes : " : ""} {release ? release : ""}
+                    {episodes ? "Episodes : " : ""} {episodes ? episodes : ""}
                 </p>
             </div>
         </div>

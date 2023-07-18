@@ -1,6 +1,6 @@
 import { Head } from "@inertiajs/react";
 import { HomeProvider } from "@/contexts/HomeProvider";
-import { StreamProvider } from "@/contexts/StreamProvider";
+import { Toaster } from "react-hot-toast";
 
 import WindowLayout from "./partials/WindowLayout";
 import Login from "./login/Login";
@@ -8,7 +8,8 @@ import Home from "./home/Home";
 import NotFound from "./NotFound";
 import Edit from "./profile/Edit";
 import Explore from "./explore/Explore";
-import { IconContext } from "react-icons";
+
+import "./main.css";
 
 export default function Main(props) {
     console.clear();
@@ -46,6 +47,26 @@ export default function Main(props) {
         <>
             <Head title={`${title} - Orange Juice`} />
             <WindowLayout>{currentPage}</WindowLayout>
+            <Toaster
+                position="top-center"
+                gutter={12}
+                containerStyle={{ margin: "8px" }}
+                toastOptions={{
+                    success: {
+                        duration: 3000,
+                    },
+                    error: {
+                        duration: 5000,
+                    },
+                    style: {
+                        fontSize: "16px",
+                        maxWidth: "500px",
+                        padding: "16px 24px",
+                        backgroundColor: "var(--color-grey-0)",
+                        color: "var(--color-grey-700)",
+                    },
+                }}
+            />
         </>
     );
 }

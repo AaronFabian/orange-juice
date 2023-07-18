@@ -1,9 +1,8 @@
 import { useState } from "react";
 import { IconContext } from "react-icons";
 import { GrSearch, GrFormClock } from "react-icons/gr";
-import { BsHourglass } from "react-icons/bs";
-import styles from "./HomeHeader.module.css";
 import { useHome } from "@/contexts/HomeProvider";
+import styles from "./HomeHeader.module.css";
 
 export default function HomeHeader() {
     const [input, setInput] = useState("");
@@ -33,7 +32,7 @@ export default function HomeHeader() {
                         }
                     />
                     <button
-                        className="absolute px-[6px] text-red-500 bg-white rounded-full top-2 right-2 cursor-pointer"
+                        className="absolute px-[6px] py-1 border border-stone-500 text-red-500 bg-white rounded-full top-2 right-2 cursor-pointer"
                         type="submit"
                         value={input}
                     >

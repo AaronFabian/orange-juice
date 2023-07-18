@@ -5,6 +5,8 @@ import { useStream } from "@/contexts/StreamProvider";
 import Aside from "../ui/Aside";
 import ApplicationLayout from "../ui/ApplicationLayout";
 import VideoJS from "@/Components/VideoJs";
+import Loading from "../ui/Loading";
+import Background from "../partials/Background";
 
 export default function StreamHoc() {
     const { handleChangeScreen } = useHome();
@@ -20,13 +22,13 @@ export default function StreamHoc() {
     } = useStream();
 
     if (isLoading) {
-        return <h1>Loading data...</h1>;
+        return <Loading />;
     }
 
     if (!animeEpisodeData) {
         return (
             <div>
-                <h1>Anime not found 😓</h1>
+                <h1> Anime not found😓</h1>
                 <button
                     className="text-sm hover:text-stone-50 active:text-gray-400"
                     onClick={() => handleChangeScreen("home")}
@@ -59,7 +61,7 @@ export default function StreamHoc() {
             <Aside localScreen="stream" />
             <ApplicationLayout isAllowScroll={true}>
                 <button
-                    className="text-sm hover:text-stone-50 active:text-gray-400"
+                    className="text-sm text-stone-400 hover:text-stone-50 active:text-gray-400"
                     onClick={() => handleChangeScreen("home")}
                 >
                     &larr; Back to home
@@ -104,9 +106,7 @@ export default function StreamHoc() {
                                 </tr>
                                 <tr className="text-xs text-stone-50">
                                     <td>Genres:</td>
-                                    <td>
-                                        {genres.map((genre) => genre + ", ")}
-                                    </td>
+                                    <td>{genres.join(", ")}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -116,6 +116,8 @@ export default function StreamHoc() {
                         </p>
                     </div>
                 </div>
+
+                <Background alt={title} src={image} />
             </ApplicationLayout>
         </>
     );

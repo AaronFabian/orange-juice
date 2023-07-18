@@ -20,6 +20,7 @@
     },
     "dependencies": {
         "@tailwindcss/line-clamp": "^0.4.4",
+        "react-hot-toast": "^2.4.1",
         "react-icons": "^4.10.1",
         "video.js": "^8.3.0"
     }

@@ -8,6 +8,7 @@ import HomeHeader from "../ui/HomeHeader";
 import Section from "../partials/Section";
 import StreamHoc from "./StreamHoc";
 import { StreamProvider } from "@/contexts/StreamProvider";
+import NotFound from "../NotFound";
 
 export default function Home() {
     const { currentLocalPage, handleChangeScreen } = useHome();
@@ -35,15 +36,7 @@ export default function Home() {
                 )}
 
                 {currentLocalPage === "not-found" && (
-                    <>
-                        <h1>Anime not found 😵</h1>
-                        <button
-                            className="text-sm hover:text-stone-50 active:text-gray-400"
-                            onClick={() => handleChangeScreen("home")}
-                        >
-                            &larr; Back to home
-                        </button>
-                    </>
+                    <NotFound text="Anime not found 😵" def={true} />
                 )}
             </Section>
         </>

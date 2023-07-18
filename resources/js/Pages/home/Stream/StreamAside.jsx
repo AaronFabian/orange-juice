@@ -12,14 +12,16 @@ export default function StreamAside() {
         currentQuality,
         handleChangeEpisode,
         handleSetNowWatching,
+        animeId,
     } = useStream();
 
     const episodesLength = episodes.length;
     const episodePage = Math.ceil(episodesLength / 25);
 
     useEffect(function () {
-        // use localStorage to resume last episode
-        // setCurrentEpsPage(1);
+        const history = JSON.parse(localStorage.getItem("orange-juice"));
+
+        console.log(history);
     }, []);
 
     return (

@@ -109,9 +109,7 @@ function AnimeItem({ anime }) {
                     <p className="text-sm line-clamp-2 text-purple_mood">
                         {title}
                     </p>
-                    <p className="text-xs line-clamp-3">
-                        {genres.map((g) => g + ", ")}
-                    </p>
+                    <p className="text-xs line-clamp-3">{genres.join(", ")}</p>
                 </div>
             </div>
         </li>

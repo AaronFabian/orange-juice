@@ -19,9 +19,11 @@ module.exports = {
                 purple_mood_slow: "#dbbbee",
                 purple_mood_hard: "#d193f4",
                 gold_mood: "#F4BEA7",
+                application_layout_color: "rgba(0,0,0,0.55)",
             },
             height: {
                 app_height: "736px",
+                app_window_height: "40rem",
             },
             width: {
                 app_inner_width: "96%",
