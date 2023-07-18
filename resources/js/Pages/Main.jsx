@@ -8,6 +8,7 @@ import Home from "./home/Home";
 import NotFound from "./NotFound";
 import Edit from "./profile/Edit";
 import Explore from "./explore/Explore";
+import { IconContext } from "react-icons";
 
 export default function Main(props) {
     console.clear();

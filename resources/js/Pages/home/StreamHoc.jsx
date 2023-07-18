@@ -12,14 +12,10 @@ export default function StreamHoc() {
     const {
         animeEpisodeData,
         isLoadingEpisodeData: isLoading,
-        currentStreamSrc,
         nowWatching,
         isCurrentStreamLoading,
-        currentQuality,
 
         // function
-        handleSetNowWatching,
-        handleChangeEpisode,
         handlePlayerReady,
     } = useStream();
 

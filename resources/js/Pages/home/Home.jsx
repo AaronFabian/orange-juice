@@ -10,7 +10,7 @@ import StreamHoc from "./StreamHoc";
 import { StreamProvider } from "@/contexts/StreamProvider";
 
 export default function Home() {
-    const { currentLocalPage } = useHome();
+    const { currentLocalPage, handleChangeScreen } = useHome();
 
     return (
         <>
@@ -32,6 +32,18 @@ export default function Home() {
                     <StreamProvider>
                         <StreamHoc />
                     </StreamProvider>
+                )}
+
+                {currentLocalPage === "not-found" && (
+                    <>
+                        <h1>Anime not found 😵</h1>
+                        <button
+                            className="text-sm hover:text-stone-50 active:text-gray-400"
+                            onClick={() => handleChangeScreen("home")}
+                        >
+                            &larr; Back to home
+                        </button>
+                    </>
                 )}
             </Section>
         </>

@@ -4,7 +4,7 @@ import { useHome } from "@/contexts/HomeProvider";
 import LinkPagination from "../partials/LinkPagination";
 
 export default function Application() {
-    const { animeList } = useHome();
+    const { animeList, isLoadingRecentEp } = useHome();
 
     const [pageLength, setPageLength] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
@@ -12,6 +12,7 @@ export default function Application() {
     useEffect(
         function () {
             setPageLength(Math.ceil(animeList.length / 6));
+            setCurrentPage(1);
         },
         [animeList.length]
     );
@@ -26,6 +27,10 @@ export default function Application() {
         } else if (currentPage - 1 >= 1) setCurrentPage(currentPage - 1);
     }
 
+    if (isLoadingRecentEp) {
+        return <h1 className="text-stone-50">Please wait...</h1>;
+    }
+
     return (
         <>
             <div className="grid w-full h-[32rem] grid-cols-2 gap-2 py-2 mx-auto border-l border-r border-b px-4 rounded-b-md md:grid-cols-3">
@@ -34,7 +39,7 @@ export default function Application() {
                     .map((anime) => (
                         <AnimeCard
                             title={anime.title}
-                            release={anime.episodeNumber}
+                            release={anime?.episodeNumber ?? 0}
                             imgSrc={anime.image}
                             animeId={anime.id}
                             key={anime.id}
@@ -44,7 +49,7 @@ export default function Application() {
 
             <div className="flex items-center justify-between h-14">
                 <button
-                    className="w-24 h-8 rounded-full bg-purple_mood"
+                    className="w-24 h-8 rounded-full bg-purple_mood hover:bg-purple_mood_hard hover:text-stone-200 active:text-stone-500"
                     onClick={() => handleNextOrPrevPage("previous")}
                 >
                     Previous
@@ -63,7 +68,7 @@ export default function Application() {
                 </div>
 
                 <button
-                    className="w-24 h-8 rounded-full bg-purple_mood"
+                    className="w-24 h-8 rounded-full bg-purple_mood hover:bg-purple_mood_hard hover:text-stone-200 active:text-stone-500"
                     onClick={() => handleNextOrPrevPage("next")}
                 >
                     Next
@@ -90,7 +95,9 @@ function AnimeCard({ title, release, imgSrc, animeId }) {
                 <h3 className="text-lg text-center text-purple_mood">
                     {title}
                 </h3>
-                <p className="text-xs text-stone-50">Episode: {release}</p>
+                <p className="text-xs text-stone-50">
+                    {release ? "Episodes : " : ""} {release ? release : ""}
+                </p>
             </div>
         </div>
     );

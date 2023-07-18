@@ -5,14 +5,11 @@ import StreamAside from "../home/Stream/StreamAside";
 import styles from "./Aside.module.css";
 import { useHome } from "@/contexts/HomeProvider";
 
-export default function Aside({
-    // in stream
-    episodes = [],
-}) {
+export default function Aside() {
     return (
         <>
             {/* will hidden in smartphone */}
-            <DesktopAside episodes={episodes} />
+            <DesktopAside />
 
             {/* Different aside will hidden in desktop */}
             <SmartPhoneAside />
@@ -20,7 +17,7 @@ export default function Aside({
     );
 }
 
-function DesktopAside({ episodes }) {
+function DesktopAside() {
     const { currentLocalPage } = useHome();
 
     return (
@@ -29,9 +26,7 @@ function DesktopAside({ episodes }) {
             className="w-60 h-[40rem] transition-transform hidden -translate-x-full sm:translate-x-0 sm:block bg-black"
             aria-label="Sidebar"
         >
-            {currentLocalPage === "stream" && (
-                <StreamAside episodes={episodes} />
-            )}
+            {currentLocalPage === "stream" && <StreamAside />}
 
             {currentLocalPage === undefined ||
                 (currentLocalPage === "home" && <AnimeList />)}
@@ -70,6 +65,7 @@ function AnimeList() {
             </ul>
         </div>
     ) : (
+        //  * work in progress :)
         topAiringAnime.map((anime) => (
             <div className="p-2 overflow-hidden rounded shadow-xl">
                 <img
@@ -98,17 +94,19 @@ function AnimeList() {
 }
 
 function AnimeItem({ anime }) {
+    const { handleChangeScreen } = useHome();
+
     const { id, title, genres, image, url } = anime;
 
     return (
-        <li>
+        <li onClick={() => handleChangeScreen("stream", id)} title={title}>
             <div
                 href="#"
-                className="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="flex items-center p-2 text-gray-900 rounded-lg cursor-pointer dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
             >
                 <img className="h-16 w-14" src={image} alt={title} />
                 <div className="self-start ml-3 leading-tight ">
-                    <p className="text-sm line-clamp-2 text-[#C991E9]">
+                    <p className="text-sm line-clamp-2 text-purple_mood">
                         {title}
                     </p>
                     <p className="text-xs line-clamp-3">

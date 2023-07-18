@@ -19,26 +19,13 @@ function HomeProvider({ children }) {
     const [topAiringAnime, setTopAiringAnime] = useState([]);
     const [isLoadingTopAir, setIsLoadingTopAir] = useState(false);
 
+    const [isSearchLoading, setIsSearchLoading] = useState(false);
+
     const [currentLocalPage, setCurrentLocalPage] = useState("home"); // local page 'home', 'stream'
 
     // application
     useEffect(function () {
         setIsLoadingRecentEp(true);
-        async function loadRecentAnime() {
-            try {
-                const res = await fetch(
-                    "https://api.consumet.org/anime/gogoanime/recent-episodes"
-                );
-                const data = await res.json();
-
-                // console.log(data);
-                setAnimeList(data.results);
-            } catch (error) {
-                console.error(error.message);
-            } finally {
-                setIsLoadingRecentEp(false);
-            }
-        }
 
         loadRecentAnime();
     }, []);
@@ -83,8 +70,46 @@ function HomeProvider({ children }) {
         }
     }
 
+    async function handleSearchAnime(inputedAnime) {
+        try {
+            setIsSearchLoading(true);
+
+            const res = await fetch(
+                `https://api.consumet.org/anime/gogoanime/${inputedAnime}`
+            );
+            const data = await res.json();
+            if (!data.results.length) {
+                return setCurrentLocalPage("not-found");
+            }
+
+            setAnimeList(data.results);
+            setIsLoadingRecentEp(true);
+        } catch (error) {
+            console.error(error);
+        } finally {
+            setIsSearchLoading(false);
+            setIsLoadingRecentEp(false);
+        }
+    }
+
     function handleSetAnimeList(list) {
         setAnimeList(list);
+    }
+
+    async function loadRecentAnime() {
+        try {
+            const res = await fetch(
+                "https://api.consumet.org/anime/gogoanime/recent-episodes"
+            );
+            const data = await res.json();
+
+            // console.log(data);
+            setAnimeList(data.results);
+        } catch (error) {
+            console.error(error.message);
+        } finally {
+            setIsLoadingRecentEp(false);
+        }
     }
 
     return (
@@ -95,10 +120,12 @@ function HomeProvider({ children }) {
                 topAiringAnime,
                 isLoadingTopAir,
                 currentLocalPage,
+                isSearchLoading,
 
                 // function
                 handleChangeScreen,
                 handleSetAnimeList,
+                handleSearchAnime,
             }}
         >
             {children}

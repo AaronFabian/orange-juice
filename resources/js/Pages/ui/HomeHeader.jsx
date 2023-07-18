@@ -1,28 +1,51 @@
 import { useState } from "react";
+import { IconContext } from "react-icons";
+import { GrSearch, GrFormClock } from "react-icons/gr";
+import { BsHourglass } from "react-icons/bs";
+import styles from "./HomeHeader.module.css";
+import { useHome } from "@/contexts/HomeProvider";
 
 export default function HomeHeader() {
-    //  const [hideHeader, setHideHeader] = useState(false);
+    const [input, setInput] = useState("");
+    const { handleSearchAnime, isSearchLoading } = useHome();
 
-    //  function handleHideHeader() {
-    //      setHideHeader((val) => !val);
-    //  }
+    function onSubmit(e) {
+        e.preventDefault();
+        if (!input) return;
+
+        handleSearchAnime(input);
+    }
 
     return (
         <>
             <header
                 className={`relative w-full pt-2 duration-150  bg-black h-14 border-t border-l border-r border-white overflow-hidden sm:rounded-t-md`}
             >
-                <input
-                    type="text"
-                    className="block w-11/12 h-10 px-5 py-3 mx-auto text-sm bg-white border-gray-200 rounded-full focus:border-blue-500 focus:ring-blue-500"
-                    placeholder="Search your favorite anime..."
-                />
-                <small
-                    className="absolute px-[6px] text-red-500 bg-white rounded-full top-2 right-2 cursor-pointer"
-                    onClick={() => {}}
-                >
-                    x
-                </small>
+                <form action="" onSubmit={onSubmit}>
+                    <input
+                        type="text"
+                        className="block w-11/12 h-10 px-5 py-3 mx-auto text-sm border-gray-200 rounded-full bg-stone-50 focus:border-blue-500 focus:ring-blue-500 disabled:bg-stone-300"
+                        placeholder={"Search your favorite anime..."}
+                        onChange={(e) => setInput(e.target.value)}
+                        disabled={isSearchLoading}
+                        value={
+                            isSearchLoading ? "Searching for " + input : input
+                        }
+                    />
+                    <button
+                        className="absolute px-[6px] text-red-500 bg-white rounded-full top-2 right-2 cursor-pointer"
+                        type="submit"
+                        value={input}
+                    >
+                        <IconContext.Provider
+                            value={{
+                                className: `stroke-purple_mood_hard ${styles["svg path"]} fill-purple_mood`,
+                            }}
+                        >
+                            {isSearchLoading ? <GrFormClock /> : <GrSearch />}
+                        </IconContext.Provider>
+                    </button>
+                </form>
             </header>
         </>
     );

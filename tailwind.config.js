@@ -18,6 +18,7 @@ module.exports = {
                 purple_mood: "#CF9DEB",
                 purple_mood_slow: "#dbbbee",
                 purple_mood_hard: "#d193f4",
+                gold_mood: "#F4BEA7",
             },
             height: {
                 app_height: "736px",
