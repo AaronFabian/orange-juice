@@ -7,6 +7,7 @@ import ApplicationLayout from "../ui/ApplicationLayout";
 import VideoJS from "@/Components/VideoJs";
 import Loading from "../ui/Loading";
 import Background from "../partials/Background";
+import NotFound from "../NotFound";
 
 export default function StreamHoc() {
     const { handleChangeScreen } = useHome();
@@ -26,17 +27,7 @@ export default function StreamHoc() {
     }
 
     if (!animeEpisodeData) {
-        return (
-            <div>
-                <h1> Anime not found😓</h1>
-                <button
-                    className="text-sm hover:text-stone-50 active:text-gray-400"
-                    onClick={() => handleChangeScreen("home")}
-                >
-                    &larr; Back to home
-                </button>
-            </div>
-        );
+        return <NotFound def={true} text="Anime not found 😵" />;
     }
 
     const videoJsOptions = {

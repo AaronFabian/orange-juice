@@ -1,4 +1,4 @@
-import { Link } from "@inertiajs/react";
+import { Link, router, usePage } from "@inertiajs/react";
 import { useState } from "react";
 import { IconContext } from "react-icons";
 import {
@@ -7,6 +7,7 @@ import {
     PiPersonArmsSpreadThin,
     PiDoorOpenLight,
     PiLinuxLogoLight,
+    PiSignOutLight,
 } from "react-icons/pi";
 
 import NavLink from "@/Components/NavLink";
@@ -14,16 +15,27 @@ import styles from "../ui/HomeHeader.module.css";
 
 export default function Navbar() {
     const [isOpenDrawer, setIsOpenDrawer] = useState(false);
+    const {
+        props: { auth },
+    } = usePage();
 
     function handleOpenDrawer(e) {
         e.preventDefault();
         setIsOpenDrawer((isOpen) => !isOpen);
     }
 
+    function submit(e) {
+        e.preventDefault();
+
+        router.post("/logout");
+    }
+
+    console.log(auth);
+
     return (
         <>
             <nav className="h-12 pt-2 mx-auto bg-black sm:rounded-tr-md sm:rounded-tl-md">
-                {/* In desktop always shown the NavButton, but hidden in smartphone */}
+                {/* In desktop always shown the NavLinkIcon, but hidden in smartphone */}
                 <ul className="items-center h-8 m-auto w-app_inner_width sm:flex">
                     <IconContext.Provider
                         value={{
@@ -33,23 +45,42 @@ export default function Navbar() {
                         <UserProfile
                             isOpenDrawer={isOpenDrawer}
                             onOpenDrawer={handleOpenDrawer}
+                            auth={auth}
                         />
-                        <NavButton href="/" icon={<PiTelevisionLight />}>
+                        <NavLinkIcon href="/" icon={<PiTelevisionLight />}>
                             Watchlist
-                        </NavButton>
-                        <NavButton href="/" icon={<PiHeartStraightLight />}>
+                        </NavLinkIcon>
+                        <NavLinkIcon href="/" icon={<PiHeartStraightLight />}>
                             Favorite
-                        </NavButton>
-                        <NavButton href="/" icon={<PiPersonArmsSpreadThin />}>
+                        </NavLinkIcon>
+                        <NavLinkIcon href="/" icon={<PiPersonArmsSpreadThin />}>
                             Community
-                        </NavButton>
-                        <NavButton
-                            href="/login"
-                            icon={<PiDoorOpenLight />}
-                            isSelfToRight={true}
-                        >
-                            Login
-                        </NavButton>
+                        </NavLinkIcon>
+                        {auth.user ? (
+                            <li
+                                className={`hidden sm:block self-start px-4 ms-auto
+                                }`}
+                            >
+                                <form action="" onSubmit={submit}>
+                                    <button type="submit">
+                                        <div className="w-4 h-4 m-auto">
+                                            <PiSignOutLight />
+                                        </div>
+                                        <p className="text-xs font-medium text-white">
+                                            Logout
+                                        </p>
+                                    </button>
+                                </form>
+                            </li>
+                        ) : (
+                            <NavLinkIcon
+                                href="/login"
+                                isSelfToRight={true}
+                                icon={<PiDoorOpenLight />}
+                            >
+                                Login
+                            </NavLinkIcon>
+                        )}
                     </IconContext.Provider>
                 </ul>
             </nav>
@@ -124,7 +155,7 @@ function SmartPhoneDrawer() {
     );
 }
 
-function UserProfile({ isOpenDrawer, onOpenDrawer }) {
+function UserProfile({ isOpenDrawer, onOpenDrawer, auth }) {
     return (
         <li>
             <a href="/" className="flex">
@@ -132,8 +163,12 @@ function UserProfile({ isOpenDrawer, onOpenDrawer }) {
                     <PiLinuxLogoLight />
                 </div>
                 <div className="mx-2">
-                    <p className="text-[#F4BEA7] text-xs">Premium Member</p>
-                    <p className="text-xs text-white">Anon 123456</p>
+                    <p className="text-[#F4BEA7] text-xs">
+                        {auth.user ? "Premium Member" : "User"}
+                    </p>
+                    <p className="text-xs text-white">
+                        {auth.user ? auth.user.name : "Welcome :)"}
+                    </p>
                 </div>
                 {/* render hamburger button when sm: */}
                 <button
@@ -192,7 +227,7 @@ function UserProfile({ isOpenDrawer, onOpenDrawer }) {
     );
 }
 
-function NavButton({ children, href, isSelfToRight = false, icon }) {
+function NavLinkIcon({ children, href, isSelfToRight = false, icon }) {
     return (
         <li
             className={`hidden sm:block self-start px-4 ${

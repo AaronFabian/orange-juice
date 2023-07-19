@@ -1,4 +1,4 @@
-import { Head } from "@inertiajs/react";
+import { Head, usePage } from "@inertiajs/react";
 import { HomeProvider } from "@/contexts/HomeProvider";
 import { Toaster } from "react-hot-toast";
 
@@ -13,7 +13,6 @@ import "./main.css";
 
 export default function Main(props) {
     console.clear();
-
     const title = props.title;
 
     let currentPage = null;

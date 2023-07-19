@@ -1,11 +1,12 @@
 import { useEffect } from "react";
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, Link, router, useForm } from "@inertiajs/react";
+import { toast } from "react-hot-toast";
+
 import WindowLayout from "../partials/WindowLayout";
 import Section from "../partials/Section";
 import Input from "../ui/Input";
 import Checkbox from "../ui/Checkbox";
 import ButtonOnSubmit from "../ui/ButtonOnSubmit";
-import { toast } from "react-hot-toast";
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -23,12 +24,16 @@ export default function Register() {
 
     const submit = (e) => {
         e.preventDefault();
-        toast.success("New cabin successfully created");
 
-        reset();
         console.log(data);
         // post(route("register"));
+        router.post("/register", {
+            ...data,
+            _token: router.page.props.csrf_token,
+        });
     };
+
+    console.log(router);
 
     return (
         <WindowLayout>
@@ -54,7 +59,7 @@ export default function Register() {
                             <div className="w-11/12 mx-auto sm:w-4/5 ">
                                 <Input
                                     type="text"
-                                    name="username"
+                                    name="name"
                                     label="Username"
                                     autoFocus={true}
                                     setValue={(val) => setData("name", val)}

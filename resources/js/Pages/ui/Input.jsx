@@ -22,6 +22,7 @@ export default function Input({
                 onChange={(e) => setValue?.(e.target.value)}
                 placeholder=" "
                 autoFocus={autoFocus}
+                autoComplete="off"
                 required
             />
             <label

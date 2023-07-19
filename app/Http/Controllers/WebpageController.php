@@ -11,7 +11,7 @@ class WebpageController extends Controller
    public function index(): Response
    {
       return Inertia::render('Main', [
-         'title' => 'Home'
+         'title' => 'Home',
       ]);
    }
 

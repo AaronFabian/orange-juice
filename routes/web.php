@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WebpageController;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -25,21 +26,25 @@ Route::get('/', [WebpageController::class, 'index'])->name('home');
 
 // Route::get('explore', [WebpageController::class, 'explore'])->name('explore');
 
-Route::get('manga', [WebpageController::class, 'index'])->name('home');
+Route::get('manga', [WebpageController::class, 'index']);
 
-Route::get('drama', [WebpageController::class, 'index'])->name('home');
+Route::get('drama', [WebpageController::class, 'index']);
 
-Route::get('news', [WebpageController::class, 'index'])->name('home');
+Route::get('news', [WebpageController::class, 'index']);
+
+Route::get('cobain', function () {
+   dd(Auth::user());
+});
 
 Route::middleware('guest')->group(function () {
 
    Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
 
+   Route::post('login', [AuthenticatedSessionController::class, 'store']);
+
    Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
 
    Route::post('register', [RegisteredUserController::class, 'store']);
-
-   Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
    Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])->name('password.request');
 
@@ -48,15 +53,9 @@ Route::middleware('guest')->group(function () {
    Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
 
    Route::post('reset-password', [NewPasswordController::class, 'store'])->name('password.store');
-
-   Route::get('not-found', [WebpageController::class, 'error'])->name('not-found');
 });
 
 Route::middleware('auth')->group(function () {
-   Route::get('cobain', function () {
-
-      dd('cobain berhasil');
-   });
 
    Route::get('verify-email', EmailVerificationPromptController::class)->name('verification.notice');
 
@@ -77,6 +76,9 @@ Route::middleware('auth')->group(function () {
    Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
       ->name('logout');
 });
+
+Route::get('not-found', [WebpageController::class, 'error'])->name('not-found');
+
 
 // require __DIR__ . '/auth.php';
 

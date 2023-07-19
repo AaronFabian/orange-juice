@@ -1,11 +1,25 @@
-import { Link } from "@inertiajs/react";
+import { Link, router, useForm } from "@inertiajs/react";
 import ButtonOnSubmit from "../ui/ButtonOnSubmit";
 import Checkbox from "../ui/Checkbox";
 import Input from "../ui/Input";
 
 export default function LoginPage() {
+    const { data, setData, post, processing, errors, reset } = useForm({
+        email: "",
+        password: "",
+    });
+
+    function submit(e) {
+        e.preventDefault();
+
+        router.post("/login", {
+            ...data,
+            _token: router.page.props.csrf_token,
+        });
+    }
+
     return (
-        <form action="">
+        <form action="" onSubmit={submit}>
             <main className="grid grid-rows-2 rounded-md sm:grid-rows-none grid-rows sm:grid-cols-2 bg-stone-950 sm:h-app_height">
                 <div className="overflow-hidden">
                     <img
@@ -30,6 +44,7 @@ export default function LoginPage() {
                                 name="email"
                                 label="Email"
                                 autoFocus={true}
+                                setValue={(val) => setData("email", val)}
                             />
                         </div>
 
@@ -38,6 +53,7 @@ export default function LoginPage() {
                                 type="password"
                                 name="password"
                                 label="Password"
+                                setValue={(val) => setData("password", val)}
                             />
 
                             <Checkbox text="Remember me" />

@@ -20,7 +20,7 @@ function StreamProvider({ children }) {
     const [isCurrentStreamLoading, setIsCurrentStreamLoading] = useState(false);
 
     const [currentQuality, setCurrentQuality] = useState(null);
-    const [animeId, setAnimeId] = useState();
+    const [animeId, setAnimeId] = useState(null);
 
     useEffect(function () {
         setIsLoadingEpisodeData(true);
@@ -29,49 +29,49 @@ function StreamProvider({ children }) {
             try {
                 // check if user have current anime history
                 // use localStorage to resume last episode
-                const history = JSON.parse(
-                    localStorage.getItem("orange-juice")
-                );
+                // const history = JSON.parse(
+                //     localStorage.getItem("orange-juice")
+                // );
+
+                // if (!history) {
+                //     // if user don't have any history than generate history now
+                //     localStorage.setItem(
+                //         "orange-juice",
+                //         JSON.stringify({
+                //             anime: { [id]: { lastEps: 1, src: "", id: id } },
+                //         })
+                //     );
+                // } else if (!history.anime?.[id]) {
+                //     // if user never watch current anime before
+                //     localStorage.setItem(
+                //         "orange-juice",
+                //         JSON.stringify({
+                //             ...history,
+                //             anime: {
+                //                 ...history.anime,
+                //                 [id]: { lastEps: 1, src: "", id: id },
+                //             },
+                //         })
+                //     );
+                // } else {
+                //     // if user already have history then don't do anything here
+                // }
 
                 const res = await fetch(
                     `https://api.consumet.org/anime/gogoanime/info/${id}`
                 );
 
-                if (!history) {
-                    // if user don't have any history than generate history now
-                    localStorage.setItem(
-                        "orange-juice",
-                        JSON.stringify({
-                            anime: { [id]: { lastEps: 1, src: "" } },
-                        })
-                    );
-                } else if (!history.anime?.[id]) {
-                    // if user never watch current anime before
-                    localStorage.setItem(
-                        "orange-juice",
-                        JSON.stringify({
-                            ...history,
-                            anime: {
-                                ...history.anime,
-                                [id]: { lastEps: 1, src: "" },
-                            },
-                        })
-                    );
-                } else {
-                    // if user already have history then don't do anything here
-                }
-
                 const data = await res.json();
 
                 setAnimeEpisodeData(data);
 
-                const defaultEpisode = data?.episodes?.[0].id;
+                const defaultEpisode = data?.episodes?.[0]?.id;
                 if (!defaultEpisode) return setAnimeEpisodeData(null);
 
                 handleChangeEpisode(defaultEpisode);
                 setAnimeId(id);
             } catch (error) {
-                console.error(error.message);
+                console.error(error);
             } finally {
                 setIsLoadingEpisodeData(false);
             }

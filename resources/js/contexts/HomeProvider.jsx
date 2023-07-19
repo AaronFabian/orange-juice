@@ -44,7 +44,7 @@ function HomeProvider({ children }) {
                 // console.log(data);
                 setTopAiringAnime(data.results);
             } catch (error) {
-                console.error(error.message);
+                console.error(error);
             } finally {
                 setIsLoadingTopAir(false);
             }
@@ -63,11 +63,8 @@ function HomeProvider({ children }) {
 
     function handleChangeScreen(localScreen, localParams) {
         setCurrentLocalPage(localScreen);
-        if (localParams) {
-            window.location.hash = localParams;
-        } else {
-            window.location.hash = "";
-        }
+        if (localParams) window.location.hash = localParams;
+        else window.location.hash = "";
     }
 
     async function handleSearchAnime(inputedAnime) {
