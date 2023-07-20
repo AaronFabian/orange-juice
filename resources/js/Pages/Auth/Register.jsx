@@ -1,6 +1,4 @@
-import { useEffect } from "react";
 import { Head, Link, router, useForm } from "@inertiajs/react";
-import { toast } from "react-hot-toast";
 
 import WindowLayout from "../partials/WindowLayout";
 import Section from "../partials/Section";
@@ -16,24 +14,15 @@ export default function Register() {
         password_confirmation: "",
     });
 
-    useEffect(() => {
-        return () => {
-            //  reset("password", "password_confirmation");
-        };
-    }, []);
-
     const submit = (e) => {
         e.preventDefault();
 
-        console.log(data);
         // post(route("register"));
         router.post("/register", {
             ...data,
             _token: router.page.props.csrf_token,
         });
     };
-
-    console.log(router);
 
     return (
         <WindowLayout>

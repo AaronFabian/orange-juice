@@ -46,9 +46,9 @@ class AuthenticatedSessionController extends Controller
          'password' => ['required'],
       ]);
 
-      if (Auth::guard('web')->attempt($credentials)) {
+      if (Auth::attempt($credentials)) {
          $request->session()->regenerate();
-         return redirect()->intended(RouteServiceProvider::HOME);
+         return redirect()->intended(RouteServiceProvider::HOME)->with('message',  'Welcome back !');
       }
 
       return back()->withErrors([

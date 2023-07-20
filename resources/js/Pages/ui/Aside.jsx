@@ -56,8 +56,9 @@ function AnimeList() {
 
     return windowWidth > 640 ? (
         <div
-            className={`h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-black ${styles.scrollGotoLeft} -scroll`}
+            className={`h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-black ${styles.scrollGotoLeft} -scroll relative`}
         >
+            <h2 className="text-left text-stone-50">Popular anime</h2>
             <ul className={`space-y-2 font-medium ${styles.scrollDefault}`}>
                 {topAiringAnime.map((anime) => (
                     <AnimeItem anime={anime} key={anime.id} />

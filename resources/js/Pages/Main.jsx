@@ -1,6 +1,6 @@
 import { Head, usePage } from "@inertiajs/react";
 import { HomeProvider } from "@/contexts/HomeProvider";
-import { Toaster } from "react-hot-toast";
+import { Toaster, toast } from "react-hot-toast";
 
 import WindowLayout from "./partials/WindowLayout";
 import Login from "./login/Login";
@@ -10,6 +10,10 @@ import Edit from "./profile/Edit";
 import Explore from "./explore/Explore";
 
 import "./main.css";
+import { useEffect } from "react";
+import History from "./history/History";
+import Community from "./community/Community";
+import Favorite from "./favorite/Favorite";
 
 export default function Main(props) {
     console.clear();
@@ -20,7 +24,7 @@ export default function Main(props) {
         case "Home":
             currentPage = (
                 <HomeProvider>
-                    <Home />
+                    <Home props={props} />
                 </HomeProvider>
             );
             break;
@@ -37,22 +41,43 @@ export default function Main(props) {
             currentPage = <Edit />;
             break;
 
+        case "History":
+            currentPage = <History />;
+            break;
+
+        case "Community":
+            currentPage = <Community />;
+
+        case "Favorite":
+            currentPage = <Favorite />;
+            break;
+
         default:
             currentPage = <NotFound />;
             break;
     }
+
+    // only for showing message by laravel
+    useEffect(
+        function () {
+            if (props.flash.message) {
+                toast.success(props.flash.message);
+            }
+        },
+        [props.flash.message]
+    );
 
     return (
         <>
             <Head title={`${title} - Orange Juice`} />
             <WindowLayout>{currentPage}</WindowLayout>
             <Toaster
-                position="top-center"
+                position="top-right"
                 gutter={12}
                 containerStyle={{ margin: "8px" }}
                 toastOptions={{
                     success: {
-                        duration: 3000,
+                        duration: 5000,
                     },
                     error: {
                         duration: 5000,
@@ -61,8 +86,6 @@ export default function Main(props) {
                         fontSize: "16px",
                         maxWidth: "500px",
                         padding: "16px 24px",
-                        backgroundColor: "var(--color-grey-0)",
-                        color: "var(--color-grey-700)",
                     },
                 }}
             />

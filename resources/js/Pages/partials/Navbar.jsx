@@ -1,5 +1,5 @@
-import { Link, router, usePage } from "@inertiajs/react";
-import { useState } from "react";
+import { Link, usePage } from "@inertiajs/react";
+import { memo, useState } from "react";
 import { IconContext } from "react-icons";
 import {
     PiHeartStraightLight,
@@ -8,12 +8,13 @@ import {
     PiDoorOpenLight,
     PiLinuxLogoLight,
     PiSignOutLight,
+    PiNotePencilLight,
 } from "react-icons/pi";
 
 import NavLink from "@/Components/NavLink";
 import styles from "../ui/HomeHeader.module.css";
 
-export default function Navbar() {
+function Navbar() {
     const [isOpenDrawer, setIsOpenDrawer] = useState(false);
     const {
         props: { auth },
@@ -23,14 +24,6 @@ export default function Navbar() {
         e.preventDefault();
         setIsOpenDrawer((isOpen) => !isOpen);
     }
-
-    function submit(e) {
-        e.preventDefault();
-
-        router.post("/logout");
-    }
-
-    console.log(auth);
 
     return (
         <>
@@ -47,39 +40,58 @@ export default function Navbar() {
                             onOpenDrawer={handleOpenDrawer}
                             auth={auth}
                         />
-                        <NavLinkIcon href="/" icon={<PiTelevisionLight />}>
-                            Watchlist
-                        </NavLinkIcon>
-                        <NavLinkIcon href="/" icon={<PiHeartStraightLight />}>
-                            Favorite
-                        </NavLinkIcon>
-                        <NavLinkIcon href="/" icon={<PiPersonArmsSpreadThin />}>
-                            Community
-                        </NavLinkIcon>
+                        {auth.user && (
+                            <>
+                                <NavLinkIcon
+                                    href="/"
+                                    icon={<PiTelevisionLight />}
+                                >
+                                    History
+                                </NavLinkIcon>
+                                <NavLinkIcon
+                                    href="/"
+                                    icon={<PiHeartStraightLight />}
+                                >
+                                    Favorite
+                                </NavLinkIcon>
+                                <NavLinkIcon
+                                    href="/"
+                                    icon={<PiPersonArmsSpreadThin />}
+                                >
+                                    Community
+                                </NavLinkIcon>
+                            </>
+                        )}
+
                         {auth.user ? (
-                            <li
-                                className={`hidden sm:block self-start px-4 ms-auto
-                                }`}
-                            >
-                                <form action="" onSubmit={submit}>
-                                    <button type="submit">
-                                        <div className="w-4 h-4 m-auto">
-                                            <PiSignOutLight />
-                                        </div>
-                                        <p className="text-xs font-medium text-white">
-                                            Logout
-                                        </p>
-                                    </button>
-                                </form>
-                            </li>
-                        ) : (
                             <NavLinkIcon
-                                href="/login"
+                                href="/logout"
                                 isSelfToRight={true}
-                                icon={<PiDoorOpenLight />}
+                                icon={<PiSignOutLight />}
                             >
-                                Login
+                                Logout
                             </NavLinkIcon>
+                        ) : (
+                            <div className="flex ms-auto">
+                                <NavLinkIcon
+                                    href="/"
+                                    icon={<PiPersonArmsSpreadThin />}
+                                >
+                                    Community
+                                </NavLinkIcon>
+                                <NavLinkIcon
+                                    href="/register"
+                                    icon={<PiNotePencilLight />}
+                                >
+                                    Register
+                                </NavLinkIcon>
+                                <NavLinkIcon
+                                    href="/login"
+                                    icon={<PiDoorOpenLight />}
+                                >
+                                    Login
+                                </NavLinkIcon>
+                            </div>
                         )}
                     </IconContext.Provider>
                 </ul>
@@ -164,10 +176,12 @@ function UserProfile({ isOpenDrawer, onOpenDrawer, auth }) {
                 </div>
                 <div className="mx-2">
                     <p className="text-[#F4BEA7] text-xs">
-                        {auth.user ? "Premium Member" : "User"}
+                        {auth.user ? "Premium Member" : "Global User "}
                     </p>
                     <p className="text-xs text-white">
-                        {auth.user ? auth.user.name : "Welcome :)"}
+                        {auth.user
+                            ? auth.user.name
+                            : "Hi ! Welcome to Apple Juice."}
                     </p>
                 </div>
                 {/* render hamburger button when sm: */}
@@ -241,3 +255,5 @@ function NavLinkIcon({ children, href, isSelfToRight = false, icon }) {
         </li>
     );
 }
+
+export default memo(Navbar);

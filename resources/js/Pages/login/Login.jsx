@@ -38,7 +38,7 @@ export default function LoginPage() {
                             WELCOME BACK
                         </p>
 
-                        <div class="relative z-0 w-full mb-6 group mt-8">
+                        <div className="relative z-0 w-full mt-8 mb-6 group">
                             <Input
                                 type="email"
                                 name="email"
@@ -48,7 +48,7 @@ export default function LoginPage() {
                             />
                         </div>
 
-                        <div class="relative z-0 w-full mb-6 group">
+                        <div className="relative z-0 w-full mb-6 group">
                             <Input
                                 type="password"
                                 name="password"

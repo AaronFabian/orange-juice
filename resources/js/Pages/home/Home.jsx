@@ -11,7 +11,7 @@ import { StreamProvider } from "@/contexts/StreamProvider";
 import NotFound from "../NotFound";
 
 export default function Home() {
-    const { currentLocalPage, handleChangeScreen } = useHome();
+    const { currentLocalPage } = useHome();
 
     return (
         <>

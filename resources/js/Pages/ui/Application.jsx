@@ -7,16 +7,8 @@ import Loading from "./Loading";
 export default function Application() {
     const { animeList, isLoadingRecentEp } = useHome();
 
-    // const [pageLength, setPageLength] = useState(0);
     const [currentPage, setCurrentPage] = useState(1);
     const pageLength = Math.ceil(animeList.length / 6);
-
-    useEffect(
-        function () {
-            setCurrentPage(1);
-        },
-        [animeList.length]
-    );
 
     function handleChangePage(page) {
         setCurrentPage(page);
@@ -28,9 +20,14 @@ export default function Application() {
         } else if (currentPage - 1 >= 1) setCurrentPage(currentPage - 1);
     }
 
-    if (isLoadingRecentEp) {
-        return <Loading />;
-    }
+    useEffect(
+        function () {
+            setCurrentPage(1);
+        },
+        [animeList.length]
+    );
+
+    if (isLoadingRecentEp) return <Loading />;
 
     return (
         <>

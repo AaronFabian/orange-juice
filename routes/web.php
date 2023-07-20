@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\FavoriteAnimeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WebpageController;
 use Illuminate\Foundation\Application;
@@ -33,7 +34,7 @@ Route::get('drama', [WebpageController::class, 'index']);
 Route::get('news', [WebpageController::class, 'index']);
 
 Route::get('cobain', function () {
-   dd(Auth::user());
+   dd(Auth::user()); // ! only for dev debugging
 });
 
 Route::middleware('guest')->group(function () {
@@ -57,6 +58,12 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
 
+   Route::get('community', [WebpageController::class, 'community']);
+
+   Route::get('favorite', [WebpageController::class, 'favorite']);
+
+   Route::get('history', [WebpageController::class, 'history']);
+
    Route::get('verify-email', EmailVerificationPromptController::class)->name('verification.notice');
 
    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');
@@ -73,8 +80,11 @@ Route::middleware('auth')->group(function () {
 
    Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
-   Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
+   Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])
       ->name('logout');
+
+   // API
+   Route::post('/addToFavorite', [FavoriteAnimeController::class, 'store']);
 });
 
 Route::get('not-found', [WebpageController::class, 'error'])->name('not-found');

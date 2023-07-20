@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useHome } from "@/contexts/HomeProvider";
 import { useStream } from "@/contexts/StreamProvider";
 
@@ -8,6 +7,8 @@ import VideoJS from "@/Components/VideoJs";
 import Loading from "../ui/Loading";
 import Background from "../partials/Background";
 import NotFound from "../NotFound";
+import ToggleFavoriteButton from "../ui/ToggleFavoriteButton";
+import ButtonText from "../ui/ButtonBack";
 
 export default function StreamHoc() {
     const { handleChangeScreen } = useHome();
@@ -17,6 +18,7 @@ export default function StreamHoc() {
         isLoadingEpisodeData: isLoading,
         nowWatching,
         isCurrentStreamLoading,
+        animeId,
 
         // function
         handlePlayerReady,
@@ -51,12 +53,20 @@ export default function StreamHoc() {
         <>
             <Aside localScreen="stream" />
             <ApplicationLayout isAllowScroll={true}>
-                <button
-                    className="text-sm text-stone-400 hover:text-stone-50 active:text-gray-400"
-                    onClick={() => handleChangeScreen("home")}
-                >
-                    &larr; Back to home
-                </button>
+                <div className="flex">
+                    <ButtonText onClick={() => handleChangeScreen("home")}>
+                        &larr; Back to home
+                    </ButtonText>
+
+                    <div className="space-x-2 ms-auto">
+                        <ToggleFavoriteButton
+                            animeId={animeId}
+                            image={image}
+                            season={season}
+                            title={title}
+                        />
+                    </div>
+                </div>
 
                 {isCurrentStreamLoading && (
                     <div className="w-full h-[480px] flex justify-center items-center text-stone-50">
@@ -76,7 +86,6 @@ export default function StreamHoc() {
 
                     <div>
                         <h1 className="mb-2 text-xl text-stone-50">{title}</h1>
-
                         <table className="table-auto">
                             <tbody>
                                 <tr className="h-6 text-xs text-stone-50">

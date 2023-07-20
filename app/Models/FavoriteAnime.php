@@ -23,6 +23,14 @@ class FavoriteAnime extends Model
       'last_episode'
    ];
 
+   protected $hidden = [
+      'user_email',
+      'updated_at',
+      'created_at',
+   ];
+
+   public $incrementing = false;
+
    public function user(): BelongsTo
    {
       return $this->belongsTo(User::class);
