@@ -1,17 +1,21 @@
 import { useHome } from "@/contexts/HomeProvider";
 import { useStream } from "@/contexts/StreamProvider";
+import { usePage } from "@inertiajs/react";
 
-import Aside from "../ui/Aside";
 import ApplicationLayout from "../ui/ApplicationLayout";
-import VideoJS from "@/Components/VideoJs";
-import Loading from "../ui/Loading";
-import Background from "../partials/Background";
-import NotFound from "../NotFound";
-import ToggleFavoriteButton from "../ui/ToggleFavoriteButton";
 import ButtonText from "../ui/ButtonBack";
+import Loading from "../ui/Loading";
+import Aside from "../partials/Aside";
+import Background from "../partials/Background";
+import ToggleFavoriteButton from "../ui/ToggleFavoriteButton";
+import NotFound from "../NotFound";
+import VideoJS from "@/Components/VideoJs";
 
 export default function StreamHoc() {
     const { handleChangeScreen } = useHome();
+    const {
+        props: { auth },
+    } = usePage();
 
     const {
         animeEpisodeData,
@@ -58,14 +62,16 @@ export default function StreamHoc() {
                         &larr; Back to home
                     </ButtonText>
 
-                    <div className="space-x-2 ms-auto">
-                        <ToggleFavoriteButton
-                            animeId={animeId}
-                            image={image}
-                            season={season}
-                            title={title}
-                        />
-                    </div>
+                    {auth.user && (
+                        <div className="space-x-2 ms-auto">
+                            <ToggleFavoriteButton
+                                animeId={animeId}
+                                image={image}
+                                season={season}
+                                title={title}
+                            />
+                        </div>
+                    )}
                 </div>
 
                 {isCurrentStreamLoading && (

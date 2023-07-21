@@ -8,7 +8,6 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -35,25 +34,25 @@ class AuthenticatedSessionController extends Controller
     */
    public function store(LoginRequest $request): RedirectResponse
    {
-      // $request->authenticate();
+      $request->authenticate();
 
-      // $request->session()->regenerate();
+      $request->session()->regenerate();
 
-      // return redirect()->intended(RouteServiceProvider::HOME);
+      return redirect()->intended(RouteServiceProvider::HOME)->with('message',  'Welcome back !');
 
-      $credentials = $request->validate([
-         'email' => ['required', 'email'],
-         'password' => ['required'],
-      ]);
+      // $credentials = $request->validate([
+      //    'email' => ['required', 'email'],
+      //    'password' => ['required'],
+      // ]);
 
-      if (Auth::attempt($credentials)) {
-         $request->session()->regenerate();
-         return redirect()->intended(RouteServiceProvider::HOME)->with('message',  'Welcome back !');
-      }
+      // if (Auth::attempt($credentials)) {
+      //    $request->session()->regenerate();
+      //    return redirect()->intended(RouteServiceProvider::HOME)->with('message',  'Welcome back !');
+      // }
 
-      return back()->withErrors([
-         'email' => 'The provided credentials do not match our records.',
-      ])->onlyInput('email');
+      // return back()->withErrors([
+      //    'email' => 'The provided credentials do not match our records.',
+      // ])->onlyInput('email');
    }
 
    /**
@@ -67,6 +66,6 @@ class AuthenticatedSessionController extends Controller
 
       $request->session()->regenerateToken();
 
-      return redirect('/');
+      return redirect('/')->with('message', 'You are logged out.');
    }
 }

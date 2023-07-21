@@ -4,7 +4,7 @@ export default function ApplicationLayout({ children, isAllowScroll }) {
     return (
         // this component must reuse for all page
         <main
-            className={`flex-1 h-[40rem] bg-application_layout_color sm:p-3 flex justify-center`}
+            className={`flex-1 h-[40rem] bg-application_layout_color hidden sm:p-3 sm:flex justify-center`}
         >
             <div
                 className={`relative flex-1 ${

@@ -1,3 +1,11 @@
+import Navbar from "../partials/Navbar";
+import ApplicationLayout from "../ui/ApplicationLayout";
+
 export default function History() {
-    return <h1>History page</h1>;
+    return (
+        <>
+            <Navbar />
+            <ApplicationLayout></ApplicationLayout>
+        </>
+    );
 }

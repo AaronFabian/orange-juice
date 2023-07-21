@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\FavoriteAnime;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 class FavoriteAnimeController extends Controller
 {
@@ -13,7 +13,12 @@ class FavoriteAnimeController extends Controller
     */
    public function index()
    {
-      //
+      $favoriteAnimes = FavoriteAnime::where('user_email', '=', auth()->user()->email)->get();
+
+      return Inertia::render('Main', [
+         'title' => 'Favorite',
+         'favoriteAnimes' => $favoriteAnimes,
+      ]);
    }
 
    /**

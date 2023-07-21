@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\FavoriteAnime;
 use Inertia\Response;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
@@ -32,13 +31,6 @@ class WebpageController extends Controller
    {
       return Inertia::render('Main', [
          'title' => 'Community',
-      ]);
-   }
-
-   public function favorite(): Response
-   {
-      return Inertia::render('Main', [
-         'title' => 'Favorite',
       ]);
    }
 

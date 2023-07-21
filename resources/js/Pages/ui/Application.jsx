@@ -31,7 +31,7 @@ export default function Application() {
 
     return (
         <>
-            <div className="grid w-full h-[32rem] grid-cols-2 gap-2 py-2 mx-auto border-l border-r border-b px-4 rounded-b-md md:grid-cols-3">
+            <div className="hidden sm:grid w-full sm:h-[32rem] grid-cols-2 gap-2 py-2 mx-auto border-l border-r border-b px-4 rounded-b-md md:grid-cols-3">
                 {animeList
                     .slice((currentPage - 1) * 6, currentPage * 6)
                     .map((anime) => (
@@ -81,16 +81,19 @@ function AnimeCard({ title, episodes, imgSrc, animeId }) {
 
     return (
         <div
-            className="relative overflow-hidden rounded-md group hover:cursor-pointer"
+            className="relative overflow-hidden transition-all rounded-md group hover:cursor-pointer"
             onClick={() => handleChangeScreen("stream", animeId)}
         >
             <img
                 src={`${imgSrc}`}
                 alt={title}
-                className="object-cover object-center w-full h-full align-middle"
+                className="object-cover object-center w-full h-full align-middle duration-300 group-hover:scale-110"
             />
-            <div className="absolute bottom-0 left-0 right-0 z-10 flex flex-col items-center justify-center h-16 duration-150 translate-y-full group-hover:translate-y-0 bg-stone-950/60">
-                <h3 className="text-lg text-center text-purple_mood">
+            <div className="absolute bottom-0 left-0 right-0 z-10 flex flex-col items-center justify-center h-16 duration-300 bg-stone-950/60">
+                <h3
+                    className="text-lg text-center line-clamp-1 text-purple_mood"
+                    title={title}
+                >
                     {title}
                 </h3>
                 <p className="text-xs text-stone-50">

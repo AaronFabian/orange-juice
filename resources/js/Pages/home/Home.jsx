@@ -1,13 +1,13 @@
 import { useHome } from "@/contexts/HomeProvider";
+import { StreamProvider } from "@/contexts/StreamProvider";
 
+import StreamHoc from "./StreamHoc";
 import ApplicationLayout from "../ui/ApplicationLayout";
 import Application from "../ui/Application";
-import Aside from "../ui/Aside";
-import Navbar from "../partials/Navbar";
 import HomeHeader from "../ui/HomeHeader";
+import Navbar from "../partials/Navbar";
+import Aside from "../partials/Aside";
 import Section from "../partials/Section";
-import StreamHoc from "./StreamHoc";
-import { StreamProvider } from "@/contexts/StreamProvider";
 import NotFound from "../NotFound";
 
 export default function Home() {

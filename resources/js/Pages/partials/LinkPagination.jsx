@@ -17,7 +17,7 @@ export default function LinkPagination({ children, to, active, onClick }) {
     // children expected Number
     return (
         <button
-            className={`px-3 py-1.5 rounded-full  ${
+            className={`px-3.5 py-1.5 rounded-full  ${
                 active ? "bg-purple_mood text-stone-50" : "text-stone-950"
             }`}
             onClick={() => onClick(Number(children))}

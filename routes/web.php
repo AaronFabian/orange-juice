@@ -60,7 +60,7 @@ Route::middleware('auth')->group(function () {
 
    Route::get('community', [WebpageController::class, 'community']);
 
-   Route::get('favorite', [WebpageController::class, 'favorite']);
+   Route::get('favorite', [FavoriteAnimeController::class, 'index']);
 
    Route::get('history', [WebpageController::class, 'history']);
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useStream } from "@/contexts/StreamProvider";
 
-import styles from "../../ui/Aside.module.css";
+import styles from "../../partials/Aside.module.css";
 
 export default function StreamAside() {
     const [currentEps, setCurrentEpsPage] = useState(1);
@@ -21,7 +21,7 @@ export default function StreamAside() {
     useEffect(function () {
         const history = JSON.parse(localStorage.getItem("orange-juice"));
 
-        console.log(history);
+        //   console.log(history);
     }, []);
 
     return (

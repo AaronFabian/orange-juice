@@ -1,5 +1,5 @@
-import { Link, usePage } from "@inertiajs/react";
 import { memo, useState } from "react";
+import { Link, usePage } from "@inertiajs/react";
 import { IconContext } from "react-icons";
 import {
     PiHeartStraightLight,
@@ -27,14 +27,14 @@ function Navbar() {
 
     return (
         <>
-            <nav className="h-12 pt-2 mx-auto bg-black sm:rounded-tr-md sm:rounded-tl-md">
-                {/* In desktop always shown the NavLinkIcon, but hidden in smartphone */}
-                <ul className="items-center h-8 m-auto w-app_inner_width sm:flex">
-                    <IconContext.Provider
-                        value={{
-                            className: `stroke-purple_mood_hard ${styles["svg path"]} fill-purple_mood scale-125 `,
-                        }}
-                    >
+            <IconContext.Provider
+                value={{
+                    className: `stroke-purple_mood_hard ${styles["svg path"]} fill-purple_mood scale-125 `,
+                }}
+            >
+                <nav className="fixed top-0 left-0 right-0 pt-2 pb-2 mx-auto bg-black sm:py-2 sm:static sm:rounded-tr-md sm:rounded-tl-md">
+                    {/* In desktop always shown the NavLinkIcon, but hidden in smartphone */}
+                    <ul className="items-center m-auto sm:h-8 w-app_inner_width sm:flex">
                         <UserProfile
                             isOpenDrawer={isOpenDrawer}
                             onOpenDrawer={handleOpenDrawer}
@@ -43,19 +43,19 @@ function Navbar() {
                         {auth.user && (
                             <>
                                 <NavLinkIcon
-                                    href="/"
+                                    href="/history"
                                     icon={<PiTelevisionLight />}
                                 >
                                     History
                                 </NavLinkIcon>
                                 <NavLinkIcon
-                                    href="/"
+                                    href="/favorite"
                                     icon={<PiHeartStraightLight />}
                                 >
                                     Favorite
                                 </NavLinkIcon>
                                 <NavLinkIcon
-                                    href="/"
+                                    href="/community"
                                     icon={<PiPersonArmsSpreadThin />}
                                 >
                                     Community
@@ -93,16 +93,15 @@ function Navbar() {
                                 </NavLinkIcon>
                             </div>
                         )}
-                    </IconContext.Provider>
-                </ul>
-            </nav>
+                    </ul>
 
-            {/* DesktopDrawer always shown but hidden in smartphone */}
-            <DesktopDrawer />
-
-            {/* SmartphoneDrawer shown conditionally with boolean, keep state and hidden in desktop */}
-            {/* SmartPhoneDrawer includes the navbar button */}
-            {isOpenDrawer && <SmartPhoneDrawer />}
+                    {/* SmartphoneDrawer shown conditionally with boolean, keep state and hidden in desktop */}
+                    {/* SmartPhoneDrawer includes the navbar button */}
+                    {isOpenDrawer && <SmartPhoneDrawer auth={auth} />}
+                </nav>
+                {/* DesktopDrawer always shown but hidden in smartphone */}
+                <DesktopDrawer />
+            </IconContext.Provider>
         </>
     );
 }
@@ -129,39 +128,94 @@ function DesktopDrawer() {
     );
 }
 
-function SmartPhoneDrawer() {
+function SmartPhoneDrawer({ auth }) {
     return (
         <>
-            <ul className="pb-2 bg-gradient-to-r from-[#C991E9] to-[#F4BEA7] grid grid-cols-3 sm:hidden">
+            <ul className="pb-2 bg-gradient-to-r from-[#C991E9] to-[#F4BEA7] grid grid-cols-4 sm:hidden">
                 <li className="flex items-center justify-center">
-                    <NavLink active={true}>Ongoing</NavLink>
+                    <NavLink active={true}>Anime</NavLink>
                 </li>
                 <li className="flex items-center justify-center">
-                    <NavLink active={false}>Popular</NavLink>
+                    <NavLink active={false}>Manga</NavLink>
                 </li>
                 <li className="flex items-center justify-center">
-                    <NavLink active={false}>Genres</NavLink>
+                    <NavLink active={false}>Drama</NavLink>
                 </li>
                 <li className="flex items-center justify-center">
-                    <NavLink active={false}>Anime List</NavLink>
-                </li>
-                <li className="flex items-center justify-center">
-                    <NavLink active={false}>Reccomended</NavLink>
-                </li>
-                <li className="flex items-center justify-center">
-                    <NavLink active={false}>Movies</NavLink>
-                </li>
-                <li className="flex items-center justify-center">
-                    <NavLink active={false}>Most Watched</NavLink>
-                </li>
-                <li className="flex items-center justify-center">
-                    <NavLink active={false}>Upcomming</NavLink>
+                    <NavLink active={false}>News</NavLink>
                 </li>
             </ul>
-            <div className="flex py-1 bg-black justify-evenly sm:hidden">
-                <Link className="text-sm text-white">Watchlist</Link>
-                <Link className="text-sm text-white">Favorite</Link>
-                <Link className="text-sm text-white">Logout</Link>
+            <div className="flex items-center pt-2 bg-black justify-evenly sm:hidden">
+                {auth.user ? (
+                    <>
+                        <Link
+                            className="flex flex-col items-center"
+                            href="/history"
+                        >
+                            <PiTelevisionLight />
+                            <span className="mx-auto text-xs text-stone-50">
+                                History
+                            </span>
+                        </Link>
+                        <Link
+                            className="flex flex-col items-center"
+                            href="/favorite"
+                        >
+                            <PiHeartStraightLight />
+                            <span className="mx-auto text-xs text-stone-50">
+                                Favorite
+                            </span>
+                        </Link>
+                        <Link
+                            className="flex flex-col items-center"
+                            href="/community"
+                        >
+                            <PiPersonArmsSpreadThin />
+                            <span className="mx-auto text-xs text-stone-50">
+                                Community
+                            </span>
+                        </Link>
+                        <Link
+                            className="flex flex-col items-center"
+                            href="/logout"
+                        >
+                            <PiDoorOpenLight />
+                            <span className="mx-auto text-xs text-stone-50">
+                                Logout
+                            </span>
+                        </Link>
+                    </>
+                ) : (
+                    <>
+                        <Link
+                            className="flex flex-col items-center"
+                            href="/community"
+                        >
+                            <PiPersonArmsSpreadThin />
+                            <span className="mx-auto text-xs text-stone-50">
+                                Community
+                            </span>
+                        </Link>
+                        <Link
+                            className="flex flex-col items-center"
+                            href="/favorite"
+                        >
+                            <PiNotePencilLight />
+                            <span className="mx-auto text-xs text-stone-50">
+                                Register
+                            </span>
+                        </Link>
+                        <Link
+                            className="flex flex-col items-center"
+                            href="/login"
+                        >
+                            <PiDoorOpenLight />
+                            <span className="mx-auto text-xs text-stone-50">
+                                Login
+                            </span>
+                        </Link>
+                    </>
+                )}
             </div>
         </>
     );
@@ -170,15 +224,15 @@ function SmartPhoneDrawer() {
 function UserProfile({ isOpenDrawer, onOpenDrawer, auth }) {
     return (
         <li>
-            <a href="/" className="flex">
-                <div className="w-4 h-4 m-auto">
+            <Link href="/" className="flex justify-evenly">
+                <div className="flex items-center justify-center w-9 h-9 sm:w-4 sm:h-4 sm:m-auto sm:block">
                     <PiLinuxLogoLight />
                 </div>
-                <div className="mx-2">
-                    <p className="text-[#F4BEA7] text-xs">
-                        {auth.user ? "Premium Member" : "Global User "}
+                <div className="mx-auto text-center sm:text-left sm:mx-2">
+                    <p className="text-[#F4BEA7] text-xs  tracking-wide">
+                        {auth.user ? "Premium Member" : "Global User"}
                     </p>
-                    <p className="text-xs text-white">
+                    <p className="text-xs max-w-[250px] truncate text-center text-white sm:text-left">
                         {auth.user
                             ? auth.user.name
                             : "Hi ! Welcome to Apple Juice."}
@@ -186,11 +240,11 @@ function UserProfile({ isOpenDrawer, onOpenDrawer, auth }) {
                 </div>
                 {/* render hamburger button when sm: */}
                 <button
-                    className="relative self-start group ms-auto sm:hidden"
+                    className="relative self-start group sm:ms-auto sm:hidden"
                     onClick={(e) => onOpenDrawer(e)}
                 >
                     <div
-                        className={`relative flex overflow-hidden items-center justify-center rounded-full w-[36px] h-[34px] transform transition-all bg-slate-700 ring-0 ring-gray-300 hover:ring-8 ${
+                        className={`relative flex overflow-hidden items-center justify-center rounded-full w-9 h-9 transform transition-all bg-slate-700 ring-0 ring-gray-300 hover:ring-8 ${
                             isOpenDrawer ? "ring-4" : "ring-opacity-30"
                         }  duration-200 shadow-md`}
                     >
@@ -236,7 +290,7 @@ function UserProfile({ isOpenDrawer, onOpenDrawer, auth }) {
                         </div>
                     </div>
                 </button>
-            </a>
+            </Link>
         </li>
     );
 }
