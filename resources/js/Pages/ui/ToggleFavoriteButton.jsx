@@ -20,7 +20,7 @@ export default function ToggleFavoriteButton({
         };
 
         axios
-            .post("/addToFavorite", {
+            .post("/favorite/addToFavorite", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

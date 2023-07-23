@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
@@ -79,8 +80,9 @@ Route::middleware('auth')->group(function () {
       ->name('logout');
 
    // API
-   Route::post('/addToFavorite', [FavoriteAnimeController::class, 'store']);
-   Route::post('/favorite/deleteFavorite', [FavoriteAnimeController::class, 'destroy'])->name('deleteFavorite');
+   Route::post('/favorite/addToFavorite', [FavoriteAnimeController::class, 'store']);
+   Route::post('/favorite/deleteFavorite', [FavoriteAnimeController::class, 'destroy'])
+      ->name('deleteFavorite');
 });
 
 Route::get('not-found', [WebpageController::class, 'error'])->name('not-found');

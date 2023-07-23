@@ -80,10 +80,10 @@ class FavoriteAnimeController extends Controller
       try {
          $favoriteAnime::where('user_email', '=', $user->email)->where('anime_id', '=', $body->id)->delete();
 
-         return response()->json([
+         return response()->json(status: 204, data: [
             'response' => 'ok',
             'status' => true,
-         ], status: 204);
+         ],);
       } catch (\Throwable $th) {
          return response()->json(status: 400, data: ['status' => false, 'message' => 'something gone wrong :(', 'error' => $th]);
       }

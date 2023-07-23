@@ -5,6 +5,7 @@ import { useHome } from "@/contexts/HomeProvider";
 import StreamAside from "./StreamAside";
 import SpAnimeItem from "./SpAnimeItem";
 import AnimeItem from "./AnimeItem";
+import { useStream } from "@/contexts/StreamProvider";
 
 export default function HomeAside() {
     const { currentLocalPage } = useHome();

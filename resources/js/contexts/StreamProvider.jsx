@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
+const orangeJuice = "orange-juice";
+
 const initialState = {
     animeEpisodeData: {},
     isLoadingEpisodeData: false,
@@ -27,35 +29,35 @@ function StreamProvider({ children }) {
 
         async function loadAnimeDetails(id) {
             try {
-                // check if user have current anime history
-                // use localStorage to resume last episode
-                // const history = JSON.parse(
-                //     localStorage.getItem("orange-juice")
-                // );
+                //  check if user have current anime history
+                //  use localStorage to resume last episode
+                const history = JSON.parse(localStorage.getItem(orangeJuice));
 
-                // if (!history) {
-                //     // if user don't have any history than generate history now
-                //     localStorage.setItem(
-                //         "orange-juice",
-                //         JSON.stringify({
-                //             anime: { [id]: { lastEps: 1, src: "", id: id } },
-                //         })
-                //     );
-                // } else if (!history.anime?.[id]) {
-                //     // if user never watch current anime before
-                //     localStorage.setItem(
-                //         "orange-juice",
-                //         JSON.stringify({
-                //             ...history,
-                //             anime: {
-                //                 ...history.anime,
-                //                 [id]: { lastEps: 1, src: "", id: id },
-                //             },
-                //         })
-                //     );
-                // } else {
-                //     // if user already have history then don't do anything here
-                // }
+                // if user don't have any history than generate history now
+                if (!history)
+                    localStorage.setItem(
+                        orangeJuice,
+                        JSON.stringify({
+                            animes: {
+                                [id]: { lastEps: null, url: "", id: id },
+                            },
+                        })
+                    );
+                // if user never watch current anime before add it
+                else if (!history.animes?.[id])
+                    localStorage.setItem(
+                        orangeJuice,
+                        JSON.stringify({
+                            ...history,
+                            animes: {
+                                ...history.animes,
+                                [id]: { lastEps: null, url: "", id: id },
+                            },
+                        })
+                    );
+                else {
+                    // if user already have history then don't do anything here
+                }
 
                 const res = await fetch(
                     `https://api.consumet.org/anime/gogoanime/info/${id}`
@@ -65,10 +67,10 @@ function StreamProvider({ children }) {
 
                 setAnimeEpisodeData(data);
 
-                const defaultEpisode = data?.episodes?.[0]?.id;
-                if (!defaultEpisode) return setAnimeEpisodeData(null);
+                // const defaultEpisode = data?.episodes?.[0]?.id;
+                // if (!defaultEpisode) return setAnimeEpisodeData(null);
 
-                handleChangeEpisode(defaultEpisode);
+                // handleChangeEpisode(defaultEpisode);
                 setAnimeId(id);
             } catch (error) {
                 console.error(error);
@@ -90,6 +92,10 @@ function StreamProvider({ children }) {
         setIsCurrentStreamLoading(true);
 
         try {
+            // const history = JSON.parse(localStorage.getItem(orange));
+
+            // ====
+            //
             const res = await fetch(
                 `https://api.consumet.org/anime/gogoanime/watch/${id}`
             );
@@ -99,21 +105,6 @@ function StreamProvider({ children }) {
             if (!sources) throw new Error("Fatal: sources not found :(");
 
             setCurrentStreamSrc(sources);
-
-            // initial auto play episode
-            if (sources?.[2]) {
-                // 720p
-                setNowWatching(sources[2].url);
-                setCurrentQuality(sources[2].quality);
-            } else if (sources?.[1]) {
-                // 480p
-                setNowWatching(sources[1].url);
-                setCurrentQuality(sources[1].quality);
-            } else if (sources?.[0]) {
-                // 360p
-                setNowWatching(sources[0].url);
-                setCurrentQuality(sources[0].quality);
-            } else throw new Error("Unexpected behaviour.");
         } catch (error) {
             console.error(error.message);
         } finally {
