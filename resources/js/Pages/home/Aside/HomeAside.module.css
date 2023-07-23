@@ -5,3 +5,7 @@
 .scrollDefault {
     direction: ltr;
 }
+
+svg path {
+    stroke: inherit;
+}

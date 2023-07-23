@@ -16,9 +16,13 @@ class DatabaseSeeder extends Seeder
    {
       // \App\Models\User::factory(10)->create();
 
-      // \App\Models\User::factory()->create([
-      //    'email' => 'aaron@example.com',
-      // ]);
+      \App\Models\User::factory()->create([
+         'email' => 'master@gmail.com',
+      ]);
+
+      \App\Models\User::factory()->create([
+         'email' => 'jesslyn@gmail.com',
+      ]);
 
       // FavoriteAnime::factory()->create([
       //    'anime_id' => 'masamune-kun-no-revenge-r',

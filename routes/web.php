@@ -10,7 +10,6 @@ use App\Http\Controllers\WebpageController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,10 +31,6 @@ Route::get('manga', [WebpageController::class, 'index']);
 Route::get('drama', [WebpageController::class, 'index']);
 
 Route::get('news', [WebpageController::class, 'index']);
-
-Route::get('cobain', function () {
-   dd(Auth::user()); // ! only for dev debugging
-});
 
 Route::middleware('guest')->group(function () {
 
@@ -85,6 +80,7 @@ Route::middleware('auth')->group(function () {
 
    // API
    Route::post('/addToFavorite', [FavoriteAnimeController::class, 'store']);
+   Route::post('/favorite/deleteFavorite', [FavoriteAnimeController::class, 'destroy'])->name('deleteFavorite');
 });
 
 Route::get('not-found', [WebpageController::class, 'error'])->name('not-found');

@@ -72,8 +72,20 @@ class FavoriteAnimeController extends Controller
    /**
     * Remove the specified resource from storage.
     */
-   public function destroy(FavoriteAnime $favoriteAnime)
+   public function destroy(Request $request, FavoriteAnime $favoriteAnime)
    {
-      //
+      $body = json_decode($request->all()['body']);
+      $user = auth()->user();
+
+      try {
+         $favoriteAnime::where('user_email', '=', $user->email)->where('anime_id', '=', $body->id)->delete();
+
+         return response()->json([
+            'response' => 'ok',
+            'status' => true,
+         ], status: 204);
+      } catch (\Throwable $th) {
+         return response()->json(status: 400, data: ['status' => false, 'message' => 'something gone wrong :(', 'error' => $th]);
+      }
    }
 }

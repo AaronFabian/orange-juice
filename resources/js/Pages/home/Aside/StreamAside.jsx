@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useStream } from "@/contexts/StreamProvider";
 
-import styles from "../../partials/Aside.module.css";
+import styles from "./HomeAside.module.css";
 
 export default function StreamAside() {
     const [currentEps, setCurrentEpsPage] = useState(1);
@@ -21,6 +21,7 @@ export default function StreamAside() {
     useEffect(function () {
         const history = JSON.parse(localStorage.getItem("orange-juice"));
 
+        // TODO:
         //   console.log(history);
     }, []);
 
@@ -110,8 +111,8 @@ export default function StreamAside() {
 }
 
 function StreamQualityItem({ source, handleSetNowWatching, active }) {
-    if (source.quality === "backup") return null;
-    if (source.quality === "default") return null;
+    // if (source.quality === "backup") return null;
+    // if (source.quality === "default") return null;
 
     const { handleSetQuality } = useStream();
 

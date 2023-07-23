@@ -1,7 +1,6 @@
-import { useHome } from "@/contexts/HomeProvider";
-import styles from "../../partials/Aside.module.css";
+import styles from "./HomeAside.module.css";
 
-export default function AnimeItem({ topAiringAnime, handleChangeScreen }) {
+export default function AnimeItem({ topAiringAnime, onHandleChangeScreen }) {
     return (
         <div
             className={`h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-black ${styles.scrollGotoLeft} -scroll relative`}
@@ -12,7 +11,7 @@ export default function AnimeItem({ topAiringAnime, handleChangeScreen }) {
                     <Anime
                         key={anime.id}
                         anime={anime}
-                        onHandleChangeScreen={handleChangeScreen}
+                        onHandleChangeScreen={onHandleChangeScreen}
                     />
                 ))}
             </ul>

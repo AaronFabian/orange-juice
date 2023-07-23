@@ -12,7 +12,7 @@ return new class extends Migration
    public function up(): void
    {
       Schema::create('favorite_animes', function (Blueprint $table) {
-         $table->string('anime_id')->primary();
+         $table->string('anime_id');
          $table->string('user_email');
          $table->string('title');
          $table->string('poster');

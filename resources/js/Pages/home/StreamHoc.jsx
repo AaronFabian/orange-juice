@@ -3,11 +3,11 @@ import { useStream } from "@/contexts/StreamProvider";
 import { usePage } from "@inertiajs/react";
 
 import ApplicationLayout from "../ui/ApplicationLayout";
+import Background from "../partials/Background";
 import ButtonText from "../ui/ButtonBack";
 import Loading from "../ui/Loading";
-import Aside from "../partials/Aside";
-import Background from "../partials/Background";
 import ToggleFavoriteButton from "../ui/ToggleFavoriteButton";
+import HomeAside from "./Aside/HomeAside";
 import NotFound from "../NotFound";
 import VideoJS from "@/Components/VideoJs";
 
@@ -28,13 +28,10 @@ export default function StreamHoc() {
         handlePlayerReady,
     } = useStream();
 
-    if (isLoading) {
-        return <Loading />;
-    }
+    if (isLoading) return <Loading />;
 
-    if (!animeEpisodeData) {
+    if (!animeEpisodeData)
         return <NotFound def={true} text="Anime not found 😵" />;
-    }
 
     const videoJsOptions = {
         autoplay: true,
@@ -55,7 +52,7 @@ export default function StreamHoc() {
 
     return (
         <>
-            <Aside localScreen="stream" />
+            <HomeAside localScreen="stream" />
             <ApplicationLayout isAllowScroll={true}>
                 <div className="flex">
                     <ButtonText onClick={() => handleChangeScreen("home")}>
@@ -128,10 +125,3 @@ export default function StreamHoc() {
         </>
     );
 }
-
-/* <iframe
-    title="Video stream"
-    src="https://anihdplay.com/streaming.php?id=MjAyNjQ3&title=%22Oshi+no+Ko%22+Episode+1&typesub=SUB"
-    width={1280}
-    height={720}
-></iframe> */

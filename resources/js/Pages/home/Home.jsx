@@ -6,9 +6,9 @@ import ApplicationLayout from "../ui/ApplicationLayout";
 import Application from "../ui/Application";
 import HomeHeader from "../ui/HomeHeader";
 import Navbar from "../partials/Navbar";
-import Aside from "../partials/Aside";
 import Section from "../partials/Section";
 import NotFound from "../NotFound";
+import HomeAside from "./Aside/HomeAside";
 
 export default function Home() {
     const { currentLocalPage } = useHome();
@@ -19,7 +19,7 @@ export default function Home() {
             <Section>
                 {currentLocalPage === "home" && (
                     <>
-                        <Aside />
+                        <HomeAside />
                         <ApplicationLayout>
                             <HomeHeader />
                             <Application />
@@ -27,7 +27,7 @@ export default function Home() {
                     </>
                 )}
 
-                {/* In order to fetch the anime episode */}
+                {/* In order to fetch the anime per episode */}
                 {/* set local Provider to get the window.hash */}
                 {currentLocalPage === "stream" && (
                     <StreamProvider>
@@ -35,6 +35,7 @@ export default function Home() {
                     </StreamProvider>
                 )}
 
+                {/* Render when user is searching unexpected/not found anime to server */}
                 {currentLocalPage === "not-found" && (
                     <NotFound text="Anime not found 😵" def={true} />
                 )}

@@ -26,7 +26,7 @@ class FavoriteAnime extends Model
    protected $hidden = [
       'user_email',
       'updated_at',
-      'created_at',
+      // 'created_at',
    ];
 
    public $incrementing = false;
