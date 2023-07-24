@@ -1,16 +1,13 @@
 import { useFavorite } from "@/contexts/FavoriteProvider";
-import { useState } from "react";
 
 export default function SelectEpisodePage({ currentPage, setCurrentPage }) {
     const { episodeList } = useFavorite();
-
-    function changePage() {}
 
     const episodesLength = episodeList.length;
     const episodePage = Math.ceil(episodeList.length / 25);
 
     return (
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-1 mt-4">
             <h3 className="inline text-left text-stone-50">Select episodes</h3>
             <select
                 id="countries"
