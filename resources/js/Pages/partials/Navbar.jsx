@@ -223,74 +223,73 @@ function SmartPhoneDrawer({ auth }) {
 
 function UserProfile({ isOpenDrawer, onOpenDrawer, auth }) {
     return (
-        <li>
-            <Link href="/" className="flex justify-evenly">
-                <div className="flex items-center justify-center w-9 h-9 sm:w-4 sm:h-4 sm:m-auto sm:block">
-                    <PiLinuxLogoLight />
-                </div>
-                <div className="mx-auto text-center sm:text-left sm:mx-2">
-                    <p className="text-[#F4BEA7] text-xs  tracking-wide">
-                        {auth.user ? "Premium Member" : "Global User"}
-                    </p>
-                    <p className="text-xs max-w-[250px] truncate text-center text-white sm:text-left">
-                        {auth.user
-                            ? auth.user.name
-                            : "Hi ! Welcome to Apple Juice."}
-                    </p>
-                </div>
-                {/* render hamburger button when sm: */}
-                <button
-                    className="relative self-start group sm:ms-auto sm:hidden"
-                    onClick={(e) => onOpenDrawer(e)}
+        <li className="flex justify-evenly">
+            <Link
+                href={auth.user ? "/profile" : "/register"}
+                className="flex items-center justify-center w-9 h-9 sm:w-4 sm:h-4 sm:m-auto sm:block"
+            >
+                <PiLinuxLogoLight />
+            </Link>
+            <Link href="/" className="mx-auto text-center sm:text-left sm:mx-2">
+                <p className="text-[#F4BEA7] text-xs  tracking-wide">
+                    {auth.user ? "Premium Member" : "Global User"}
+                </p>
+                <p className="text-xs max-w-[250px] truncate text-center text-white sm:text-left">
+                    {auth.user
+                        ? auth.user.name
+                        : "Hi ! Welcome to Apple Juice."}
+                </p>
+            </Link>
+            {/* render hamburger button when sm: */}
+            <button
+                className="relative self-start group sm:ms-auto sm:hidden"
+                onClick={(e) => onOpenDrawer(e)}
+            >
+                <div
+                    className={`relative flex overflow-hidden items-center justify-center rounded-full w-9 h-9 transform transition-all bg-slate-700 ring-0 ring-gray-300 hover:ring-8 ${
+                        isOpenDrawer ? "ring-4" : "ring-opacity-30"
+                    }  duration-200 shadow-md`}
                 >
                     <div
-                        className={`relative flex overflow-hidden items-center justify-center rounded-full w-9 h-9 transform transition-all bg-slate-700 ring-0 ring-gray-300 hover:ring-8 ${
-                            isOpenDrawer ? "ring-4" : "ring-opacity-30"
-                        }  duration-200 shadow-md`}
+                        className={`flex flex-col justify-between w-[20px] h-[20px] transform transition-all duration-300 origin-center overflow-hidden`}
                     >
                         <div
-                            className={`flex flex-col justify-between w-[20px] h-[20px] transform transition-all duration-300 origin-center overflow-hidden`}
+                            className={`bg-white h-[2px] w-4 mx-auto  transform transition-all duration-300 origin-left ${
+                                isOpenDrawer ? "translate-x-10" : ""
+                            }`}
+                        ></div>
+                        <div
+                            className={`bg-white h-[2px] w-4 mx-auto  rounded transform transition-all duration-300 ${
+                                isOpenDrawer ? "translate-x-10" : ""
+                            } delay-75`}
+                        ></div>
+                        <div
+                            className={`bg-white h-[2px] w-4  mx-auto transform transition-all duration-300 origin-left ${
+                                isOpenDrawer ? "translate-x-10" : ""
+                            } delay-150`}
+                        ></div>
+
+                        <div
+                            className={`absolute items-center justify-between transform transition-all duration-500 top-2.5  ${
+                                isOpenDrawer
+                                    ? "translate-x-0"
+                                    : "-translate-x-10"
+                            } flex  ${isOpenDrawer ? "w-12" : "w-0"}`}
                         >
                             <div
-                                className={`bg-white h-[2px] w-4 mx-auto  transform transition-all duration-300 origin-left ${
-                                    isOpenDrawer ? "translate-x-10" : ""
+                                className={`absolute bg-white h-[2px] w-5 transform transition-all duration-500  delay-300 ${
+                                    isOpenDrawer ? "rotate-45" : "rotate-0"
                                 }`}
                             ></div>
                             <div
-                                className={`bg-white h-[2px] w-4 mx-auto  rounded transform transition-all duration-300 ${
-                                    isOpenDrawer ? "translate-x-10" : ""
-                                } delay-75`}
+                                className={`absolute bg-white h-[2px] w-5 transform transition-all duration-500  delay-300 ${
+                                    isOpenDrawer ? "-rotate-45" : "-rotate-0"
+                                }`}
                             ></div>
-                            <div
-                                className={`bg-white h-[2px] w-4  mx-auto transform transition-all duration-300 origin-left ${
-                                    isOpenDrawer ? "translate-x-10" : ""
-                                } delay-150`}
-                            ></div>
-
-                            <div
-                                className={`absolute items-center justify-between transform transition-all duration-500 top-2.5  ${
-                                    isOpenDrawer
-                                        ? "translate-x-0"
-                                        : "-translate-x-10"
-                                } flex  ${isOpenDrawer ? "w-12" : "w-0"}`}
-                            >
-                                <div
-                                    className={`absolute bg-white h-[2px] w-5 transform transition-all duration-500  delay-300 ${
-                                        isOpenDrawer ? "rotate-45" : "rotate-0"
-                                    }`}
-                                ></div>
-                                <div
-                                    className={`absolute bg-white h-[2px] w-5 transform transition-all duration-500  delay-300 ${
-                                        isOpenDrawer
-                                            ? "-rotate-45"
-                                            : "-rotate-0"
-                                    }`}
-                                ></div>
-                            </div>
                         </div>
                     </div>
-                </button>
-            </Link>
+                </div>
+            </button>
         </li>
     );
 }

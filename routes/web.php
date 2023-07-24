@@ -33,6 +33,8 @@ Route::get('drama', [WebpageController::class, 'index']);
 
 Route::get('news', [WebpageController::class, 'index']);
 
+Route::get('community', [WebpageController::class, 'index']);
+
 Route::middleware('guest')->group(function () {
 
    Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
@@ -54,11 +56,11 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
 
-   Route::get('community', [WebpageController::class, 'community']);
-
    Route::get('favorite', [FavoriteAnimeController::class, 'index']);
 
    Route::get('history', [WebpageController::class, 'history']);
+
+   Route::get('profile', [ProfileController::class, 'edit']);
 
    Route::get('verify-email', EmailVerificationPromptController::class)->name('verification.notice');
 

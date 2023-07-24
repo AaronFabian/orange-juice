@@ -3,12 +3,12 @@ import { createContext, useContext, useEffect, useState } from "react";
 const orangeJuice = "orange-juice";
 
 const initialState = {
-    animeEpisodeData: {},
-    isLoadingEpisodeData: false,
-    currentStreamSrc: [],
     nowWatching: "",
-    isCurrentStreamLoading: false,
+    animeEpisodeData: {},
+    currentStreamSrc: [],
     currentQuality: null,
+    isLoadingEpisodeData: false,
+    isCurrentStreamLoading: false,
 };
 
 const StreamContext = createContext(initialState);
@@ -29,6 +29,12 @@ function StreamProvider({ children }) {
 
         async function loadAnimeDetails(id) {
             try {
+                const res = await fetch(
+                    `https://api.consumet.org/anime/gogoanime/info/${id}`
+                );
+
+                const data = await res.json();
+
                 //  check if user have current anime history
                 //  use localStorage to resume last episode
                 const history = JSON.parse(localStorage.getItem(orangeJuice));
@@ -39,7 +45,15 @@ function StreamProvider({ children }) {
                         orangeJuice,
                         JSON.stringify({
                             animes: {
-                                [id]: { lastEps: null, url: "", id: id },
+                                [id]: {
+                                    id: id,
+                                    lastEps: null,
+                                    url: "",
+                                    title: data.title,
+                                    image: data.image,
+                                    createdAt: new Date().toISOString(),
+                                    updatedAt: "",
+                                },
                             },
                         })
                     );
@@ -51,7 +65,15 @@ function StreamProvider({ children }) {
                             ...history,
                             animes: {
                                 ...history.animes,
-                                [id]: { lastEps: null, url: "", id: id },
+                                [id]: {
+                                    id: id,
+                                    lastEps: null,
+                                    url: "",
+                                    title: data.title,
+                                    image: data.image,
+                                    created_at: new Date().toISOString(),
+                                    updated_at: "",
+                                },
                             },
                         })
                     );
@@ -59,18 +81,7 @@ function StreamProvider({ children }) {
                     // if user already have history then don't do anything here
                 }
 
-                const res = await fetch(
-                    `https://api.consumet.org/anime/gogoanime/info/${id}`
-                );
-
-                const data = await res.json();
-
                 setAnimeEpisodeData(data);
-
-                // const defaultEpisode = data?.episodes?.[0]?.id;
-                // if (!defaultEpisode) return setAnimeEpisodeData(null);
-
-                // handleChangeEpisode(defaultEpisode);
                 setAnimeId(id);
             } catch (error) {
                 console.error(error);
@@ -92,10 +103,6 @@ function StreamProvider({ children }) {
         setIsCurrentStreamLoading(true);
 
         try {
-            // const history = JSON.parse(localStorage.getItem(orange));
-
-            // ====
-            //
             const res = await fetch(
                 `https://api.consumet.org/anime/gogoanime/watch/${id}`
             );
@@ -121,8 +128,6 @@ function StreamProvider({ children }) {
     }
 
     function handlePlayerReady(player) {
-        // setNowWatching(player);
-
         player.on("waiting", () => {
             console.log("video is ready to play");
         });

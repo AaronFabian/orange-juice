@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { router } from "@inertiajs/react";
 import axios from "axios";
+import { toast } from "react-hot-toast";
 
 export default function ToggleFavoriteButton({
     animeId,
@@ -32,22 +33,27 @@ export default function ToggleFavoriteButton({
             })
             .then((_) => {
                 setToggleFavorite((toogle) => {
+                    // TODO:
                     if (toogle) {
                         router.page.props.favoriteAnimes = [
                             ...router.page.props.favoriteAnimes.filter(
                                 (fav) => fav.anime_id !== animeId
                             ),
                         ];
+
+                        toast("Removed from favorite.");
                     } else {
                         router.page.props.favoriteAnimes = [
                             ...router.page.props.favoriteAnimes,
                             { anime_id: animeId },
                         ];
+
+                        toast("Added to favorite.");
                     }
                     return !toogle;
                 });
             })
-            .catch((err) => console.error(err));
+            .catch((err) => toast.error("Something gone wrong :("));
     }
 
     useEffect(
@@ -76,20 +82,4 @@ export default function ToggleFavoriteButton({
             &#x2661; Add to Favorite !
         </button>
     );
-}
-
-{
-    /* &#9733; Remove from favorite */
-}
-{
-    /* &#9734; Add to Favorite */
-}
-{
-    /* &#9733; Add to favorite */
-}
-{
-    /* PiStarFill */
-}
-{
-    /* PiStarThin */
 }

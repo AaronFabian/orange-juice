@@ -12,7 +12,6 @@ export default function StreamAside() {
         animeId,
         currentStreamSrc,
         currentQuality,
-        nowWatching,
         handleSetNowWatching,
         handleChangeEpisode,
         handleSetQuality,
@@ -28,9 +27,11 @@ export default function StreamAside() {
                 animes: {
                     ...history.animes,
                     [animeId]: {
+                        ...history.animes[animeId],
                         id: animeId,
                         lastEps,
                         url: perEpisodeId,
+                        updatedAt: new Date().toISOString(),
                     },
                 },
             })
@@ -119,7 +120,7 @@ function StreamQualityItem({ source, handleSetNowWatching, active }) {
     // if (source.quality === "backup") return null;
     // if (source.quality === "default") return null;
 
-    const { handleSetQuality, animeId } = useStream();
+    const { handleSetQuality } = useStream();
 
     return (
         <button

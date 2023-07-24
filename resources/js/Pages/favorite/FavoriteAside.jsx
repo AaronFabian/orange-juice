@@ -1,14 +1,11 @@
-import { usePage } from "@inertiajs/react";
+import { toast } from "react-hot-toast";
+import { useFavorite } from "@/contexts/FavoriteProvider";
 
 import FavAnimeItem from "./FavAnimeItem";
-
 import styles from "./../home/Aside/HomeAside.module.css";
-import { useState } from "react";
-import { Toaster, toast } from "react-hot-toast";
 
 export default function FavoriteAside() {
-    const { props } = usePage();
-    const [favoriteAnimes, setFavoriteAnimes] = useState(props.favoriteAnimes);
+    const { favoriteList, dispatch } = useFavorite();
 
     function removeFavorite(animeId) {
         axios
@@ -23,9 +20,7 @@ export default function FavoriteAside() {
                 body: JSON.stringify({ id: animeId }),
             })
             .then((_) => {
-                setFavoriteAnimes((animes) =>
-                    animes.filter((anime) => anime.anime_id !== animeId)
-                );
+                dispatch({ type: "setFavoriteList", payload: animeId });
                 toast.success("Removed successfully");
             })
             .catch((_) => toast.error("Something gone wrong :("));
@@ -42,7 +37,7 @@ export default function FavoriteAside() {
             >
                 <h2 className="text-left text-stone-50">Favorite list</h2>
                 <ul className={`space-y-2 font-medium ${styles.scrollDefault}`}>
-                    {favoriteAnimes.map((anime) => (
+                    {favoriteList.map((anime) => (
                         <FavAnimeItem
                             key={anime.anime_id}
                             anime={anime}
