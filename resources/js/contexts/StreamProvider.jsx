@@ -4,12 +4,13 @@ import {
     addNewAnimeHistory,
     generateHistory,
     getHistory,
-    orangeJuice,
 } from "@/utils";
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 
 const initialState = {
+    animeId: "",
+    episodeId: "",
     nowWatching: "",
     animeEpisodeData: {},
     currentStreamSrc: [],
@@ -30,6 +31,7 @@ function StreamProvider({ children }) {
 
     const [currentQuality, setCurrentQuality] = useState(null);
     const [animeId, setAnimeId] = useState(null);
+    const [episodeId, setEpisodeId] = useState("");
 
     useEffect(function () {
         setIsLoadingEpisodeData(true);
@@ -83,6 +85,7 @@ function StreamProvider({ children }) {
             if (!sources) throw new Error("Fatal: sources not found :(");
 
             setCurrentStreamSrc(sources);
+            setEpisodeId(id);
         } catch (error) {
             console.error(error.message);
         } finally {
@@ -104,11 +107,19 @@ function StreamProvider({ children }) {
         });
 
         player.on("dispose", () => {
-            console.log("player stop at: " + player.currentTime());
+            console.log(
+                `player stop at: ${Math.floor(player.currentTime() / 60)} : ${
+                    player.currentTime() % 60
+                }`
+            );
         });
 
         player.on("ended", () => {
             console.log("Player finished");
+        });
+
+        player.on("error", () => {
+            console.log(player.error); //Gives MEDIA_ERR_SRC_NOT_SUPPORTED error
         });
     }
 
@@ -122,6 +133,7 @@ function StreamProvider({ children }) {
                 isCurrentStreamLoading,
                 currentQuality,
                 animeId,
+                episodeId,
 
                 // function
                 handleSetNowWatching,

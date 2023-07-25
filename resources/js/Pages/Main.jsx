@@ -1,19 +1,18 @@
-import { Head, usePage } from "@inertiajs/react";
+import { useEffect } from "react";
+import { Head } from "@inertiajs/react";
 import { HomeProvider } from "@/contexts/HomeProvider";
 import { Toaster, toast } from "react-hot-toast";
 
 import WindowLayout from "./partials/WindowLayout";
 import Login from "./login/Login";
 import Home from "./home/Home";
-import NotFound from "./NotFound";
+import Community from "./community/Community";
+import History from "./history/History";
 import Edit from "./profile/Edit";
-import Explore from "./explore/Explore";
+import Favorite from "./favorite/Favorite";
+import NotFound from "./NotFound";
 
 import "./main.css";
-import { useEffect } from "react";
-import History from "./history/History";
-import Community from "./community/Community";
-import Favorite from "./favorite/Favorite";
 
 export default function Main(props) {
     console.clear();
@@ -31,10 +30,6 @@ export default function Main(props) {
 
         case "Login":
             currentPage = <Login />;
-            break;
-
-        case "Explore":
-            currentPage = <Explore />;
             break;
 
         case "Profile":

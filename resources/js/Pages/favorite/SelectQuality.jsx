@@ -1,4 +1,4 @@
-import { useFavorite } from "@/contexts/FavoriteProvider";
+import { FAVORITE, useFavorite } from "@/contexts/FavoriteProvider";
 import { useEffect, useState } from "react";
 
 export default function SelectQuality() {
@@ -26,7 +26,7 @@ export default function SelectQuality() {
                         }`}
                         onClick={() => {
                             dispatch({
-                                type: "setQuality",
+                                type: FAVORITE.SET_QUALITY,
                                 payload: {
                                     quality: source.quality,
                                     nowWatching: source.url,

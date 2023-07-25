@@ -6,7 +6,6 @@ import {
     URL_ANIME_STREAMING_LINK,
     generateHistory,
     getHistory,
-    orangeJuice,
     overWriteHistory,
 } from "@/utils";
 
@@ -180,11 +179,19 @@ function FavoriteProvider({ children }) {
         });
 
         player.on("dispose", () => {
-            console.log("player stop at: " + player.currentTime());
+            console.log(
+                `player stop at: ${Math.floor(
+                    player.currentTime() / 60
+                )}:${Math.floor(player.currentTime() % 60)}`
+            );
         });
 
         player.on("ended", () => {
             console.log("Player finished");
+        });
+
+        player.on("error", () => {
+            console.log(player.error); //Gives MEDIA_ERR_SRC_NOT_SUPPORTED error
         });
     }
 

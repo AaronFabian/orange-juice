@@ -10,7 +10,7 @@ import ToggleFavoriteButton from "../ui/ToggleFavoriteButton";
 import HomeAside from "./Aside/HomeAside";
 import NotFound from "../NotFound";
 import VideoJS from "@/Components/VideoJs";
-import { toast } from "react-hot-toast";
+import CommentSection from "./CommentSection";
 
 export default function StreamHoc() {
     const { handleChangeScreen } = useHome();
@@ -31,12 +31,11 @@ export default function StreamHoc() {
 
     if (isLoading) return <Loading />;
 
-    if (!animeEpisodeData) {
+    if (!animeEpisodeData)
         return <NotFound def={true} text="Anime not found 😵" />;
-    }
 
     const videoJsOptions = {
-        autoplay: true,
+        autoplay: false,
         controls: true,
         responsive: true,
         fluid: true,
@@ -121,6 +120,8 @@ export default function StreamHoc() {
                         </p>
                     </div>
                 </div>
+
+                <CommentSection />
 
                 <Background alt={title} src={image} />
             </ApplicationLayout>

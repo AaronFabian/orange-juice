@@ -1,14 +1,15 @@
 import Navbar from "../partials/Navbar";
 import Section from "../partials/Section";
 import ApplicationLayout from "../ui/ApplicationLayout";
+import ProfileApplication from "./ProfileApplication";
 
-export default function Edit({}) {
+export default function Edit() {
     return (
         <>
             <Navbar />
             <Section>
-                <ApplicationLayout>
-                    <h1>Profile page</h1>
+                <ApplicationLayout isAllowScroll={true}>
+                    <ProfileApplication />
                 </ApplicationLayout>
             </Section>
         </>

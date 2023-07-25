@@ -51,8 +51,8 @@ export function addNewAnimeHistory(history, animeId, title, image) {
                     url: "",
                     title: title,
                     image: image,
-                    created_at: new Date().toISOString(),
-                    updated_at: "",
+                    createdAt: new Date().toISOString(),
+                    updatedAt: "",
                 },
             },
         })

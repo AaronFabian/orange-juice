@@ -5,6 +5,7 @@ import Loading from "../ui/Loading";
 import VideoJS from "@/Components/VideoJs";
 import EpisodeController from "./EpisodeController";
 import FavoritePageAlert from "./FavoritePageAlert";
+import Background from "../partials/Background";
 
 export default function FavoriteApplication() {
     const {
@@ -15,6 +16,7 @@ export default function FavoriteApplication() {
         handlePlayerReady,
         isChangingEpisode,
         isError,
+        animeDetails,
     } = useFavorite();
 
     // set algorythm
@@ -77,6 +79,8 @@ export default function FavoriteApplication() {
 
             {/* Hoc, to make currentPage already loaded*/}
             <EpisodeController />
+
+            <Background alt={animeDetails.title} src={animeDetails.image} />
         </>
     );
 }

@@ -1,3 +1,4 @@
+import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const initialState = {
@@ -36,10 +37,12 @@ function HomeProvider({ children }) {
             setIsLoadingTopAir(true);
 
             try {
-                const res = await fetch(
+                const { data, status } = await axios.get(
                     "https://api.consumet.org/anime/gogoanime/top-airing"
                 );
-                const data = await res.json();
+
+                if (status !== 200)
+                    throw new Error("Error top-airing not available");
 
                 // console.log(data);
                 setTopAiringAnime(data.results);
@@ -71,10 +74,12 @@ function HomeProvider({ children }) {
         try {
             setIsSearchLoading(true);
 
-            const res = await fetch(
+            const { data, status } = await axios.get(
                 `https://api.consumet.org/anime/gogoanime/${inputedAnime}`
             );
-            const data = await res.json();
+
+            if (status !== 200) throw new Error("Something gone wrong");
+
             if (!data.results.length) {
                 return setCurrentLocalPage("not-found");
             }
@@ -95,10 +100,12 @@ function HomeProvider({ children }) {
 
     async function loadRecentAnime() {
         try {
-            const res = await fetch(
+            const { data, status } = await axios.get(
                 "https://api.consumet.org/anime/gogoanime/recent-episodes"
             );
-            const data = await res.json();
+
+            if (status !== 200)
+                throw new Error("Something gone wrong with recent episode");
 
             // console.log(data);
             setAnimeList(data.results);

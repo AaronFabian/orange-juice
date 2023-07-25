@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useStream } from "@/contexts/StreamProvider";
+import { router } from "@inertiajs/react";
 
 import styles from "./HomeAside.module.css";
 import SelectEpisodePage from "./SelectEpisodePage";
 import SelectAnimeEpisodes from "./SelectAnimeEpisodes";
-import { overWriteHistory } from "@/utils";
 import QualityButton from "./QualityButton";
+import { getHistory, overWriteHistory } from "@/utils";
 
 export default function StreamAside() {
     const [currentEpsPage, setCurrentEpsPage] = useState(1);
@@ -13,7 +14,6 @@ export default function StreamAside() {
     const {
         animeId,
         currentStreamSrc,
-        currentQuality,
         handleSetNowWatching,
         handleChangeEpisode,
         handleSetQuality,
@@ -26,19 +26,22 @@ export default function StreamAside() {
 
     useEffect(
         function () {
-            const { animes } = JSON.parse(localStorage.getItem("orange-juice"));
             if (!currentStreamSrc.length) {
-                const history = animes[animeId];
-                if (!history.lastEps) {
+                const history = getHistory();
+                if (!history) router.visit("/"); // restart app in case user delete history
+
+                const animes = history?.animes;
+                const historyAnime = animes[animeId];
+                if (!historyAnime.lastEps) {
                     const defaultEpisode = episodes?.[0]?.id;
                     if (!defaultEpisode) throw new Error("Sources not found !");
                     // no need setCurrentSelectedEps
                     handleChangeEpisode(defaultEpisode);
                     setCurrentSelectedEps(1);
                 } else {
-                    handleChangeEpisode(history.url);
-                    setCurrentSelectedEps(history.lastEps);
-                    setCurrentEpsPage(Math.ceil(history.lastEps / 25));
+                    handleChangeEpisode(historyAnime.url);
+                    setCurrentSelectedEps(historyAnime.lastEps);
+                    setCurrentEpsPage(Math.ceil(historyAnime.lastEps / 25));
                 }
             } else {
                 // the next rendering will auto continuing last episode
