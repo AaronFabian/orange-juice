@@ -4,6 +4,8 @@ import { useStream } from "@/contexts/StreamProvider";
 import styles from "./HomeAside.module.css";
 import SelectEpisodePage from "./SelectEpisodePage";
 import SelectAnimeEpisodes from "./SelectAnimeEpisodes";
+import { overWriteHistory } from "@/utils";
+import QualityButton from "./QualityButton";
 
 export default function StreamAside() {
     const [currentEpsPage, setCurrentEpsPage] = useState(1);
@@ -19,23 +21,7 @@ export default function StreamAside() {
     } = useStream();
 
     function handleOverwriteHistory(lastEps, perEpisodeId) {
-        const history = JSON.parse(localStorage.getItem("orange-juice"));
-        localStorage.setItem(
-            "orange-juice",
-            JSON.stringify({
-                ...history,
-                animes: {
-                    ...history.animes,
-                    [animeId]: {
-                        ...history.animes[animeId],
-                        id: animeId,
-                        lastEps,
-                        url: perEpisodeId,
-                        updatedAt: new Date().toISOString(),
-                    },
-                },
-            })
-        );
+        overWriteHistory(animeId, lastEps, perEpisodeId);
     }
 
     useEffect(
@@ -92,47 +78,8 @@ export default function StreamAside() {
                     onHandleOverwriteHistory={handleOverwriteHistory}
                 />
 
-                {currentStreamSrc != undefined && currentStreamSrc.length ? (
-                    <div className="mt-5">
-                        <h3 className="text-stone-50 ">Video Quality</h3>
-                        <div className="grid grid-cols-5 mt-1 gap-0.5">
-                            {currentStreamSrc.map((source) => (
-                                <StreamQualityItem
-                                    source={source}
-                                    active={currentQuality === source.quality}
-                                    handleSetNowWatching={handleSetNowWatching}
-                                    key={source.url}
-                                />
-                            ))}
-                        </div>
-                    </div>
-                ) : (
-                    <h1 className="mt-5 text-sm text-stone-50">
-                        Almost there... 😉
-                    </h1>
-                )}
+                <QualityButton />
             </div>
         </div>
-    );
-}
-
-function StreamQualityItem({ source, handleSetNowWatching, active }) {
-    // if (source.quality === "backup") return null;
-    // if (source.quality === "default") return null;
-
-    const { handleSetQuality } = useStream();
-
-    return (
-        <button
-            className={`h-6  duration-300 transition-all border text-stone-50 text-xs border-stone-50 group hover:bg-[#F4BEA7] cursor-pointer ${
-                active && "bg-[#F4BEA7]"
-            }`}
-            onClick={() => {
-                handleSetNowWatching(source.url);
-                handleSetQuality(source.quality);
-            }}
-        >
-            {source.quality}
-        </button>
     );
 }

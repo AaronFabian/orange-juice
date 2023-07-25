@@ -1,10 +1,10 @@
 import axios from "axios";
 
-import { convertISODate } from "@/utils";
-import { useFavorite } from "@/contexts/FavoriteProvider";
+import { URL_ANIME_DETAIL, convertISODate } from "@/utils";
+import { FAVORITE, useFavorite } from "@/contexts/FavoriteProvider";
 
 export default function FavAnimeItem({ anime, onRemoveFavorite }) {
-    const { dispatch } = useFavorite();
+    const { dispatch, animeId: currentAnimeId } = useFavorite();
     const {
         title,
         poster: image,
@@ -15,24 +15,29 @@ export default function FavAnimeItem({ anime, onRemoveFavorite }) {
 
     async function hanldeOnClickAnime(e) {
         e.preventDefault();
-        dispatch({ type: "startWatching", payload: animeId });
+        dispatch({ type: FAVORITE.START_WATCHING, payload: animeId });
 
         try {
             const { status, data } = await axios.get(
                 // get all anime detail but just catch the episodes list
-                `https://api.consumet.org/anime/gogoanime/info/${animeId}`
+                `${URL_ANIME_DETAIL}/${animeId}`
             );
             if (status !== 200) throw new Error("Something gone wrong :(");
 
-            dispatch({ type: "setEpisodeList", payload: data });
+            dispatch({ type: FAVORITE.SET_EPISODE_LIST, payload: data });
         } catch (error) {
-            dispatch({ type: "setError" });
+            // console.error(error);
+            dispatch({ type: FAVORITE.SET_ERROR });
         }
     }
 
     return (
         <li className="relative" onClick={hanldeOnClickAnime} title={title}>
-            <div className="flex items-center p-2 text-gray-900 rounded-lg cursor-pointer dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700">
+            <div
+                className={`flex items-center p-2  rounded-lg cursor-pointer text-stone-50  hover:bg-gray-700 ${
+                    animeId === currentAnimeId ? "bg-gray-700" : ""
+                }`}
+            >
                 <img className="object-cover w-14" src={image} alt={title} />
                 <div className="self-start ml-3 leading-tight ">
                     <p className="text-sm line-clamp-2 text-purple_mood">

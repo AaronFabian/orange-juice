@@ -1,6 +1,25 @@
 import { usePage } from "@inertiajs/react";
-import axios from "axios";
 import { createContext, useContext, useEffect, useReducer } from "react";
+import axios from "axios";
+
+import {
+    URL_ANIME_STREAMING_LINK,
+    generateHistory,
+    getHistory,
+    orangeJuice,
+    overWriteHistory,
+} from "@/utils";
+
+const FAVORITE = {
+    SET_ERROR: "set-error",
+    SET_FAVORITE_LIST: "set-favorite-list",
+    SET_EPISODE_LIST: "set-episode-list",
+    SET_STREAM_URL: "set-stream-url",
+    SET_QUALITY: "set-quality",
+    SET_IS_CHANGING_EPISODE: "set-is-changing-episode",
+    START_WATCHING: "start-watching",
+    LOAD_FAVORITE_LIST: "load-favorite-list",
+};
 
 const initialState = {
     animeId: null,
@@ -18,20 +37,20 @@ const initialState = {
 
 const reducer = function (state, action) {
     switch (action.type) {
-        case "setIsChangingEpisode":
+        case "set-is-changing-episode":
             return {
                 ...state,
                 isChangingEpisode: true,
             };
 
-        case "setQuality":
+        case "set-quality":
             return {
                 ...state,
                 currentQuality: action.payload.quality,
                 nowWatching: action.payload.nowWatching,
             };
 
-        case "setStreamUrl":
+        case "set-stream-url":
             return {
                 ...state,
                 qualitySrc: action.payload.sources,
@@ -42,17 +61,17 @@ const reducer = function (state, action) {
                 isChangingEpisode: false,
             };
 
-        case "startWatching":
+        case "start-watching":
             return { ...state, isLoading: true, animeId: action.payload };
 
-        case "setEpisodeList":
+        case "set-episode-list":
             return {
                 ...state,
                 episodeList: action.payload.episodes,
                 animeDetails: action.payload, // save for later
             };
 
-        case "setFavoriteList":
+        case "set-favorite-list":
             return {
                 ...state,
                 favoriteList: state.favoriteList.filter(
@@ -60,13 +79,14 @@ const reducer = function (state, action) {
                 ),
             };
 
-        case "loadFavoriteList":
+        case "load-favorite-list":
             return { ...state, favoriteList: action.payload };
 
-        case "setError":
+        case "set-error":
             return { ...state, isError: true };
 
         default:
+            console.warn(action.type);
             throw new Error("Unexpected type !");
     }
 };
@@ -93,27 +113,38 @@ function FavoriteProvider({ children }) {
     ] = useReducer(reducer, initialState);
 
     useEffect(function () {
-        dispatch({ type: "loadFavoriteList", payload: props.favoriteAnimes });
+        dispatch({
+            type: FAVORITE.LOAD_FAVORITE_LIST,
+            payload: props.favoriteAnimes,
+        });
     }, []);
 
     async function handleSetStreaming() {
-        const history = JSON.parse(localStorage.getItem("orange-juice"));
-
-        const currentAnime = history.animes[animeId];
+        const history = getHistory();
 
         try {
+            const currentAnime = history?.animes[animeId];
+
+            // in case user delete all history
+            if (!history)
+                generateHistory(
+                    animeDetails.id,
+                    animeDetails.title,
+                    animeDetails.image
+                );
+
             let response = "";
-            if (currentAnime === null || !currentAnime.url) {
+            if (currentAnime === null || !currentAnime?.url) {
                 // get eps 1
                 const epsId = episodeList[0].id;
                 response = await axios.get(
-                    `https://api.consumet.org/anime/gogoanime/watch/${epsId}`
+                    `${URL_ANIME_STREAMING_LINK}/${epsId}`
                 );
             } else {
                 // get continue eps
                 const epsId = currentAnime.url;
                 response = await axios.get(
-                    `https://api.consumet.org/anime/gogoanime/watch/${epsId}`
+                    `${URL_ANIME_STREAMING_LINK}/${epsId}`
                 );
             }
 
@@ -121,39 +152,25 @@ function FavoriteProvider({ children }) {
             const sources = response.data.sources;
             autoPlaySource(sources, currentAnime?.lastEps ?? 1, dispatch);
         } catch (error) {
-            dispatch({ type: "setError" });
+            // console.error(error);
+            dispatch({ type: FAVORITE.SET_ERROR });
         }
     }
 
     async function handleChangingEpisode(epsId, lastEps) {
-        dispatch({ type: "setIsChangingEpisode" });
+        dispatch({ type: FAVORITE.SET_IS_CHANGING_EPISODE });
 
         try {
             const { data } = await axios.get(
-                `https://api.consumet.org/anime/gogoanime/watch/${epsId}`
+                `${URL_ANIME_STREAMING_LINK}/${epsId}`
             );
 
             autoPlaySource(data.sources, lastEps, dispatch);
 
-            const history = JSON.parse(localStorage.getItem("orange-juice"));
-            localStorage.setItem(
-                "orange-juice",
-                JSON.stringify({
-                    ...history,
-                    animes: {
-                        ...history.animes,
-                        [animeId]: {
-                            ...history.animes[animeId],
-                            lastEps,
-                            updatedAt: new Date().toISOString(),
-                            url: epsId,
-                        },
-                    },
-                })
-            );
+            overWriteHistory(animeId, lastEps, epsId);
         } catch (error) {
             console.error(error);
-            dispatch({ type: "setError" });
+            dispatch({ type: FAVORITE.SET_ERROR });
         }
     }
 
@@ -210,7 +227,7 @@ function autoPlaySource(sources, numberOfEpisode, dispatch) {
     if (sources?.[2])
         // 720p
         dispatch({
-            type: "setStreamUrl",
+            type: FAVORITE.SET_STREAM_URL,
             payload: {
                 sources,
                 nowWatching: sources[2].url,
@@ -221,7 +238,7 @@ function autoPlaySource(sources, numberOfEpisode, dispatch) {
     else if (sources?.[1])
         // 480p
         dispatch({
-            type: "setStreamUrl",
+            type: FAVORITE.SET_STREAM_URL,
             payload: {
                 sources,
                 nowWatching: sources[1].url,
@@ -232,7 +249,7 @@ function autoPlaySource(sources, numberOfEpisode, dispatch) {
     else if (sources?.[0])
         // 360p
         dispatch({
-            type: "setStreamUrl",
+            type: FAVORITE.SET_STREAM_URL,
             payload: {
                 sources,
                 nowWatching: sources[0].url,
@@ -243,4 +260,4 @@ function autoPlaySource(sources, numberOfEpisode, dispatch) {
     else throw new Error("Unexpected behaviour.");
 }
 
-export { useFavorite, FavoriteProvider };
+export { useFavorite, FavoriteProvider, FAVORITE };

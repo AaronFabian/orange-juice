@@ -1,5 +1,5 @@
 import { toast } from "react-hot-toast";
-import { useFavorite } from "@/contexts/FavoriteProvider";
+import { FAVORITE, useFavorite } from "@/contexts/FavoriteProvider";
 
 import FavAnimeItem from "./FavAnimeItem";
 import styles from "./../home/Aside/HomeAside.module.css";
@@ -20,7 +20,10 @@ export default function FavoriteAside() {
                 body: JSON.stringify({ id: animeId }),
             })
             .then((_) => {
-                dispatch({ type: "setFavoriteList", payload: animeId });
+                dispatch({
+                    type: FAVORITE.SET_FAVORITE_LIST,
+                    payload: animeId,
+                });
                 toast.success("Removed successfully");
             })
             .catch((_) => toast.error("Something gone wrong :("));

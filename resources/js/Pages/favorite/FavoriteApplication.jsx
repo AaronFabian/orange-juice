@@ -3,9 +3,8 @@ import { useEffect, useState } from "react";
 
 import Loading from "../ui/Loading";
 import VideoJS from "@/Components/VideoJs";
-import SelectEpisodePage from "./SelectEpisodePage";
-import SelectEpisode from "./SelectEpisode";
 import EpisodeController from "./EpisodeController";
+import FavoritePageAlert from "./FavoritePageAlert";
 
 export default function FavoriteApplication() {
     const {
@@ -15,6 +14,7 @@ export default function FavoriteApplication() {
         nowWatching,
         handlePlayerReady,
         isChangingEpisode,
+        isError,
     } = useFavorite();
 
     // set algorythm
@@ -31,14 +31,19 @@ export default function FavoriteApplication() {
 
     if (!isLoading && !episodeList.length)
         return (
-            <h1 className="absolute left-0 right-0 text-xl font-medium text-center -translate-y-1/2 text-stone-950 top-1/2">
+            <FavoritePageAlert>
                 Continue watching by clicking your favorite anime 😉
-            </h1>
+            </FavoritePageAlert>
         );
 
     if (episodeList.length === null) {
-        return <p>Anime could not be found ! 😵</p>;
+        return (
+            <FavoritePageAlert>Anime could not be found ! 😵</FavoritePageAlert>
+        );
     }
+
+    if (isError)
+        return <FavoritePageAlert>Something gone wrong ! 😵</FavoritePageAlert>;
 
     // =================
     const videoJsOptions = {

@@ -1,6 +1,13 @@
+import {
+    URL_ANIME_DETAIL,
+    URL_ANIME_STREAMING_LINK,
+    addNewAnimeHistory,
+    generateHistory,
+    getHistory,
+    orangeJuice,
+} from "@/utils";
 import { createContext, useContext, useEffect, useState } from "react";
-
-const orangeJuice = "orange-juice";
+import { toast } from "react-hot-toast";
 
 const initialState = {
     nowWatching: "",
@@ -29,54 +36,19 @@ function StreamProvider({ children }) {
 
         async function loadAnimeDetails(id) {
             try {
-                const res = await fetch(
-                    `https://api.consumet.org/anime/gogoanime/info/${id}`
-                );
+                const res = await fetch(`${URL_ANIME_DETAIL}/${id}`);
 
+                if (res.status !== 200) throw new Error("Anime not found !");
                 const data = await res.json();
 
                 //  check if user have current anime history
                 //  use localStorage to resume last episode
-                const history = JSON.parse(localStorage.getItem(orangeJuice));
-
+                const history = getHistory();
                 // if user don't have any history than generate history now
-                if (!history)
-                    localStorage.setItem(
-                        orangeJuice,
-                        JSON.stringify({
-                            animes: {
-                                [id]: {
-                                    id: id,
-                                    lastEps: null,
-                                    url: "",
-                                    title: data.title,
-                                    image: data.image,
-                                    createdAt: new Date().toISOString(),
-                                    updatedAt: "",
-                                },
-                            },
-                        })
-                    );
+                if (!history) generateHistory(id, data.title, data.image);
                 // if user never watch current anime before add it
                 else if (!history.animes?.[id])
-                    localStorage.setItem(
-                        orangeJuice,
-                        JSON.stringify({
-                            ...history,
-                            animes: {
-                                ...history.animes,
-                                [id]: {
-                                    id: id,
-                                    lastEps: null,
-                                    url: "",
-                                    title: data.title,
-                                    image: data.image,
-                                    created_at: new Date().toISOString(),
-                                    updated_at: "",
-                                },
-                            },
-                        })
-                    );
+                    addNewAnimeHistory(history, id, data.title, data.image);
                 else {
                     // if user already have history then don't do anything here
                 }
@@ -84,7 +56,8 @@ function StreamProvider({ children }) {
                 setAnimeEpisodeData(data);
                 setAnimeId(id);
             } catch (error) {
-                console.error(error);
+                toast.error("Something gone wrong ! please check the URL.");
+                setAnimeEpisodeData(null);
             } finally {
                 setIsLoadingEpisodeData(false);
             }
@@ -103,9 +76,7 @@ function StreamProvider({ children }) {
         setIsCurrentStreamLoading(true);
 
         try {
-            const res = await fetch(
-                `https://api.consumet.org/anime/gogoanime/watch/${id}`
-            );
+            const res = await fetch(`${URL_ANIME_STREAMING_LINK}/${id}`);
             const data = await res.json();
 
             const sources = data.sources;
