@@ -1,5 +1,3 @@
-import axios from "axios";
-
 import { URL_ANIME_DETAIL, convertISODate } from "@/utils";
 import { FAVORITE, useFavorite } from "@/contexts/FavoriteProvider";
 

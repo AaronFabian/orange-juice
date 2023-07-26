@@ -72,11 +72,12 @@ export default function Main(props) {
                 containerStyle={{ margin: "8px" }}
                 toastOptions={{
                     success: {
-                        duration: 5000,
+                        duration: 3000,
                     },
                     error: {
-                        duration: 5000,
+                        duration: 3000,
                     },
+                    duration: 3000,
                     style: {
                         fontSize: "16px",
                         maxWidth: "500px",

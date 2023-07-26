@@ -1,6 +1,5 @@
 import { usePage } from "@inertiajs/react";
 import { createContext, useContext, useEffect, useReducer } from "react";
-import axios from "axios";
 
 import {
     URL_ANIME_STREAMING_LINK,
@@ -26,11 +25,11 @@ const initialState = {
     currentQuality: null,
     nowWatching: null, // example = -episodes-1
     isError: false,
-    isLoading: false, // run in first open
+    isLoading: false, // run when user click favorite item
     isChangingEpisode: false, // run when user change episode
     qualitySrc: [],
     episodeList: [],
-    favoriteList: [],
+    favoriteList: [], // assigned from useEffect()
     animeDetails: {},
 };
 
@@ -179,11 +178,9 @@ function FavoriteProvider({ children }) {
         });
 
         player.on("dispose", () => {
-            console.log(
-                `player stop at: ${Math.floor(
-                    player.currentTime() / 60
-                )}:${Math.floor(player.currentTime() % 60)}`
-            );
+            const minute = Math.floor(player.currentTime() / 60);
+            const seconds = Math.floor(player.currentTime() % 60);
+            console.log(`player stop at: ${minute}:${seconds}`);
         });
 
         player.on("ended", () => {
@@ -191,7 +188,8 @@ function FavoriteProvider({ children }) {
         });
 
         player.on("error", () => {
-            console.log(player.error); //Gives MEDIA_ERR_SRC_NOT_SUPPORTED error
+            console.warn(player.error);
+            //Gives MEDIA_ERR_SRC_NOT_SUPPORTED error
         });
     }
 

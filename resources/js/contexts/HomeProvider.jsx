@@ -1,4 +1,3 @@
-import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
 
 const initialState = {
@@ -7,6 +6,8 @@ const initialState = {
 
     topAiringAnime: [],
     isLoadingTopAir: false,
+
+    isSearchLoading: false,
 
     currentLocalPage: "home",
 };

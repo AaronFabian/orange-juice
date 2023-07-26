@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { router } from "@inertiajs/react";
-import axios from "axios";
 import { toast } from "react-hot-toast";
 
 export default function ToggleFavoriteButton({
@@ -22,13 +21,6 @@ export default function ToggleFavoriteButton({
 
         axios
             .post("/favorite/addToFavorite", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": document
-                        .querySelector('meta[name="csrf-token"]')
-                        .getAttribute("content"),
-                },
                 body: JSON.stringify(favorite),
             })
             .then((_) => {

@@ -1,3 +1,5 @@
+import { createContext, useContext, useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import {
     URL_ANIME_DETAIL,
     URL_ANIME_STREAMING_LINK,
@@ -5,8 +7,6 @@ import {
     generateHistory,
     getHistory,
 } from "@/utils";
-import { createContext, useContext, useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
 
 const initialState = {
     animeId: "",
@@ -30,7 +30,7 @@ function StreamProvider({ children }) {
     const [isCurrentStreamLoading, setIsCurrentStreamLoading] = useState(false);
 
     const [currentQuality, setCurrentQuality] = useState(null);
-    const [animeId, setAnimeId] = useState(null);
+    const [animeId, setAnimeId] = useState("");
     const [episodeId, setEpisodeId] = useState("");
 
     useEffect(function () {
@@ -107,19 +107,18 @@ function StreamProvider({ children }) {
         });
 
         player.on("dispose", () => {
-            console.log(
-                `player stop at: ${Math.floor(player.currentTime() / 60)} : ${
-                    player.currentTime() % 60
-                }`
-            );
+            const minute = Math.floor(player.currentTime() / 60);
+            const seconds = Math.floor(player.currentTime() % 60);
+            console.log(`player stop at: ${minute}:${seconds}`);
         });
 
         player.on("ended", () => {
             console.log("Player finished");
         });
 
-        player.on("error", () => {
-            console.log(player.error); //Gives MEDIA_ERR_SRC_NOT_SUPPORTED error
+        player.on("error", (e) => {
+            console.log(player.error(e));
+            //Gives MEDIA_ERR_SRC_NOT_SUPPORTED error
         });
     }
 
