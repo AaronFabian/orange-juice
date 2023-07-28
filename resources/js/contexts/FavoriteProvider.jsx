@@ -5,6 +5,7 @@ import {
     URL_ANIME_STREAMING_LINK,
     generateHistory,
     getHistory,
+    handlePlayerReady as videoJSPlayer,
     overWriteHistory,
 } from "@/utils";
 
@@ -28,7 +29,7 @@ const initialState = {
     isLoading: false, // run when user click favorite item
     isChangingEpisode: false, // run when user change episode
     qualitySrc: [],
-    episodeList: [],
+    episodeList: [], // assigned from animeDetails.episodes
     favoriteList: [], // assigned from useEffect()
     animeDetails: {},
 };
@@ -132,7 +133,7 @@ function FavoriteProvider({ children }) {
                 );
 
             let response = "";
-            if (currentAnime === null || !currentAnime?.url) {
+            if (currentAnime === undefined || !currentAnime?.url) {
                 // get eps 1
                 const epsId = episodeList[0].id;
                 response = await axios.get(
@@ -172,27 +173,6 @@ function FavoriteProvider({ children }) {
         }
     }
 
-    function handlePlayerReady(player) {
-        player.on("waiting", () => {
-            console.log("video is ready to play");
-        });
-
-        player.on("dispose", () => {
-            const minute = Math.floor(player.currentTime() / 60);
-            const seconds = Math.floor(player.currentTime() % 60);
-            console.log(`player stop at: ${minute}:${seconds}`);
-        });
-
-        player.on("ended", () => {
-            console.log("Player finished");
-        });
-
-        player.on("error", () => {
-            console.warn(player.error);
-            //Gives MEDIA_ERR_SRC_NOT_SUPPORTED error
-        });
-    }
-
     return (
         <FavoriteContext.Provider
             value={{
@@ -210,7 +190,7 @@ function FavoriteProvider({ children }) {
 
                 // fn
                 dispatch,
-                handlePlayerReady,
+                handlePlayerReady: videoJSPlayer, // @utils
                 handleSetStreaming,
                 handleChangingEpisode,
             }}

@@ -6,6 +6,7 @@ import {
     addNewAnimeHistory,
     generateHistory,
     getHistory,
+    handlePlayerReady as videoJSPlayer,
 } from "@/utils";
 
 const initialState = {
@@ -38,10 +39,11 @@ function StreamProvider({ children }) {
 
         async function loadAnimeDetails(id) {
             try {
-                const res = await fetch(`${URL_ANIME_DETAIL}/${id}`);
+                const { status, data } = await axios.get(
+                    `${URL_ANIME_DETAIL}/${id}`
+                );
 
-                if (res.status !== 200) throw new Error("Anime not found !");
-                const data = await res.json();
+                if (status !== 200) throw new Error("Anime not found !");
 
                 //  check if user have current anime history
                 //  use localStorage to resume last episode
@@ -101,27 +103,6 @@ function StreamProvider({ children }) {
         setCurrentQuality(quality);
     }
 
-    function handlePlayerReady(player) {
-        player.on("waiting", () => {
-            console.log("video is ready to play");
-        });
-
-        player.on("dispose", () => {
-            const minute = Math.floor(player.currentTime() / 60);
-            const seconds = Math.floor(player.currentTime() % 60);
-            console.log(`player stop at: ${minute}:${seconds}`);
-        });
-
-        player.on("ended", () => {
-            console.log("Player finished");
-        });
-
-        player.on("error", (e) => {
-            console.log(player.error(e));
-            //Gives MEDIA_ERR_SRC_NOT_SUPPORTED error
-        });
-    }
-
     return (
         <StreamContext.Provider
             value={{
@@ -137,7 +118,7 @@ function StreamProvider({ children }) {
                 // function
                 handleSetNowWatching,
                 handleChangeEpisode, // async
-                handlePlayerReady,
+                handlePlayerReady: videoJSPlayer, // from utils
                 handleSetQuality,
             }}
         >

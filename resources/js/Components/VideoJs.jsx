@@ -2,6 +2,8 @@ import React from "react";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
 
+// import "./videoJsStyle.css"; // override
+
 export const VideoJS = (props) => {
     const videoRef = React.useRef(null);
     const playerRef = React.useRef(null);
@@ -19,10 +21,7 @@ export const VideoJS = (props) => {
             const player = (playerRef.current = videojs(
                 videoElement,
                 options,
-                () => {
-                    console.log("player is ready");
-                    onReady && onReady(player);
-                }
+                () => onReady && onReady(player)
             ));
 
             // You could update an existing player in the `else` block here

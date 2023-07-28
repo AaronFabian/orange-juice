@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FavoriteAnimeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WebpageController;
@@ -36,6 +37,9 @@ Route::get('drama', [WebpageController::class, 'index']);
 Route::get('news', [WebpageController::class, 'index']);
 
 Route::get('community', [WebpageController::class, 'index']);
+
+Route::get('comment/getComment/{anime_id}/{episode_id}', [CommentController::class, 'index'])
+    ->name('getComment');
 
 Route::middleware('guest')->group(function () {
 
@@ -84,9 +88,13 @@ Route::middleware('auth')->group(function () {
         ->name('logout');
 
     // API
-    Route::post('/favorite/addToFavorite', [FavoriteAnimeController::class, 'store']);
-    Route::post('/favorite/deleteFavorite', [FavoriteAnimeController::class, 'destroy'])
+    Route::post('favorite/addToFavorite', [FavoriteAnimeController::class, 'store'])
+        ->name('addToFavorite');
+    Route::post('favorite/deleteFavorite', [FavoriteAnimeController::class, 'destroy'])
         ->name('deleteFavorite');
+
+    Route::post('comment/addComment', [CommentController::class, 'store'])
+        ->name('addComment');
 });
 
 Route::get('not-found', [WebpageController::class, 'error'])->name('not-found');

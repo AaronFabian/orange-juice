@@ -24,6 +24,7 @@ export default function StreamHoc() {
         nowWatching,
         isCurrentStreamLoading,
         animeId,
+        episodeId,
 
         // function
         handlePlayerReady,
@@ -121,7 +122,8 @@ export default function StreamHoc() {
                     </div>
                 </div>
 
-                <CommentSection />
+                {/* Sometimes the episodeId still not arrived so prevent that */}
+                {episodeId && <CommentSection key={episodeId} />}
 
                 <Background alt={title} src={image} />
             </ApplicationLayout>

@@ -4,25 +4,29 @@ export default function Input({
     name = "unknown",
     type = "text",
     label = "-",
+    value,
     autoFocus,
     setValue,
-    focusBorderColor,
+    disabled = false,
+
+    // style
+    focusBorderColor = "focus:border-purple_mood",
+    margin = "mt-8 mb-6",
+    border = "border-gray-600",
 }) {
     return (
-        <div className={`relative   mb-6 group mt-8`}>
+        <div className={`relative group ${margin}`}>
             <input
                 type={type}
                 name={name}
                 id={name}
-                className={`block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2  appearance-none text-white border-gray-600 ${
-                    focusBorderColor
-                        ? focusBorderColor
-                        : "focus:border-purple_mood"
-                } focus:outline-none focus:ring-0 peer text-purple_mood`}
+                value={value}
+                className={`block py-2.5 px-0 w-full text-sm  bg-transparent border-0 border-b-2  appearance-none text-white ${border} ${focusBorderColor} focus:outline-none focus:ring-0 peer text-purple_mood`}
                 onChange={(e) => setValue?.(e.target.value)}
                 placeholder=" "
                 autoFocus={autoFocus}
                 autoComplete="off"
+                disabled={disabled}
                 required
             />
             <label

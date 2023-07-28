@@ -9,8 +9,12 @@ export default function ToggleFavoriteButton({
     season,
 }) {
     const [toggleFavorite, setToggleFavorite] = useState(false);
+    const [preventClick, setPreventClick] = useState(false);
 
     function handleAddToFavorite() {
+        if (preventClick) return;
+        setPreventClick(true);
+
         const favorite = {
             anime_id: animeId,
             title: title,
@@ -19,33 +23,36 @@ export default function ToggleFavoriteButton({
             last_episode: "",
         };
 
+        // TODO: move this code to stream provider and refactor axios
         axios
             .post("/favorite/addToFavorite", {
                 body: JSON.stringify(favorite),
             })
             .then((_) => {
-                setToggleFavorite((toogle) => {
-                    // TODO:
-                    if (toogle) {
-                        router.page.props.favoriteAnimes = [
-                            ...router.page.props.favoriteAnimes.filter(
-                                (fav) => fav.anime_id !== animeId
-                            ),
-                        ];
+                if (toggleFavorite)
+                    router.page.props.favoriteAnimes = [
+                        ...router.page.props.favoriteAnimes.filter(
+                            (fav) => fav.anime_id !== animeId
+                        ),
+                    ];
+                else
+                    router.page.props.favoriteAnimes = [
+                        ...router.page.props.favoriteAnimes,
+                        { anime_id: animeId },
+                    ];
 
-                        toast("Removed from favorite.");
-                    } else {
-                        router.page.props.favoriteAnimes = [
-                            ...router.page.props.favoriteAnimes,
-                            { anime_id: animeId },
-                        ];
-
-                        toast("Added to favorite.");
-                    }
-                    return !toogle;
-                });
+                toast(
+                    toggleFavorite
+                        ? "Removed from favorite."
+                        : "Added to favorite."
+                );
+                setToggleFavorite(!toggleFavorite);
+                setPreventClick(false);
             })
-            .catch((err) => toast.error("Something gone wrong :("));
+            .catch((err) => {
+                console.error(err);
+                toast.error("Something gone wrong :(");
+            });
     }
 
     useEffect(

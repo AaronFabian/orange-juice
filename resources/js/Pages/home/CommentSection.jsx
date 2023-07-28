@@ -1,10 +1,13 @@
-import { useStream } from "@/contexts/StreamProvider";
 import { useState } from "react";
+
+import Comment from "./Comment";
+import CommentPaginator from "./CommentPaginator";
+import CommentForm from "./CommentForm";
+import CommentColumn from "./CommentColumn";
 
 export default function CommentSection() {
     const [toggleOpen, setToggleOpen] = useState(false);
-
-    const { animeId, episodeId, animeEpisodeData } = useStream();
+    const [commentCache, setCommentCache] = useState(null);
 
     if (!toggleOpen)
         return (
@@ -16,7 +19,6 @@ export default function CommentSection() {
             </button>
         );
 
-    const { title } = animeEpisodeData;
     return (
         <div className="mt-4">
             <button
@@ -25,9 +27,11 @@ export default function CommentSection() {
             >
                 Close Comment
             </button>
-            <h3 className="mt-6 text-center border-t border-t-stone-400 text-stone-50">
-                Total: 32
-            </h3>
+
+            <CommentColumn
+                commentCache={commentCache}
+                onSetCommentCache={setCommentCache}
+            />
         </div>
     );
 }

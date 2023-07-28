@@ -15,7 +15,6 @@ import NotFound from "./NotFound";
 import "./main.css";
 
 export default function Main(props) {
-    console.clear();
     const title = props.title;
 
     let currentPage = null;
@@ -23,7 +22,7 @@ export default function Main(props) {
         case "Home":
             currentPage = (
                 <HomeProvider>
-                    <Home props={props} />
+                    <Home />
                 </HomeProvider>
             );
             break;
@@ -77,7 +76,6 @@ export default function Main(props) {
                     error: {
                         duration: 3000,
                     },
-                    duration: 3000,
                     style: {
                         fontSize: "16px",
                         maxWidth: "500px",
@@ -88,15 +86,3 @@ export default function Main(props) {
         </>
     );
 }
-
-// {
-//     /* <Head title="Home - Orange juice" />
-//             <h1 className="text-cyan-800">Hello from react </h1>
-//             <iframe
-//                 title="Video stream"
-//                 src="https://anihdplay.com/streaming.php?id=MjAyNjQ3&title=%22Oshi+no+Ko%22+Episode+1&typesub=SUB"
-//                 width={1280}
-//                 height={720}
-//             ></iframe>
-//             <Link href="home">Go to next page</Link> */
-// }
