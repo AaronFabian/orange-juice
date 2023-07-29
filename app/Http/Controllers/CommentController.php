@@ -18,7 +18,7 @@ class CommentController extends Controller
                 throw new Exception('Please check your URL');
 
             $comments = Comment::with(['user'])
-                ->orderBy('created_at', 'DESC')
+                ->orderByDesc('created_at')
                 ->where('anime_id', '=', $anime_id)
                 ->where('episode_id', '=', $episode_id)
                 ->paginate(10);
@@ -28,7 +28,10 @@ class CommentController extends Controller
                 data: ['status' => 'success', 'data' => $comments]
             );
         } catch (\Throwable $th) {
-            return response()->json(status: 404, data: ['status' => 'failed', 'error' => $th]);
+            return response()->json(
+                status: 404,
+                data: ['status' => 'failed', 'error' => $th]
+            );
         }
     }
 
@@ -59,7 +62,7 @@ class CommentController extends Controller
             return response()->json(
                 status: 404,
                 data: [
-                    'status' => 'failed', 'message' => $th->getMessage()
+                    'status' => 'failed', 'message' => $th
                 ]
             );
         }

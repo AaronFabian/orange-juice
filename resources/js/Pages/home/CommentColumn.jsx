@@ -93,10 +93,11 @@ export default function CommentColumn({ commentCache, onSetCommentCache }) {
             </h1>
         );
 
+    const totalComments = commentCache.total;
     return (
         <>
             <h3 className="mt-4 text-center text-stone-50">
-                Total: {commentCache.total}
+                Total: {totalComments}
             </h3>
 
             <CommentForm onHandleGetComments={handleGetComments} />

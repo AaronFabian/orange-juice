@@ -7,6 +7,7 @@ import SelectEpisodePage from "./SelectEpisodePage";
 import SelectAnimeEpisodes from "./SelectAnimeEpisodes";
 import QualityButton from "./QualityButton";
 import { getHistory, overWriteHistory } from "@/utils";
+import { toast } from "react-hot-toast";
 
 export default function StreamAside() {
     const [currentEpsPage, setCurrentEpsPage] = useState(1);
@@ -24,6 +25,7 @@ export default function StreamAside() {
         overWriteHistory(animeId, lastEps, perEpisodeId);
     }
 
+    // set algorythm continuing history
     useEffect(
         function () {
             if (!currentStreamSrc.length) {
@@ -34,9 +36,16 @@ export default function StreamAside() {
                 const historyAnime = animes[animeId];
                 if (!historyAnime.lastEps) {
                     const defaultEpisode = episodes?.[0]?.id;
-                    if (!defaultEpisode) throw new Error("Sources not found !");
+                    if (!defaultEpisode) {
+                        console.error("Source not found.");
+                        toast.error("Looks like the sources gone.");
+                        return;
+
+                        // new Error("Sources not found !");
+                        // no source just return
+                    }
                     // no need setCurrentSelectedEps
-                    handleChangeEpisode(defaultEpisode);
+                    handleChangeEpisode(defaultEpisode); // async
                     setCurrentSelectedEps(1);
                 } else {
                     handleChangeEpisode(historyAnime.url);

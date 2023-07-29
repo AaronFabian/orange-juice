@@ -2,10 +2,9 @@ import ButtonText from "../ui/ButtonBack";
 
 export default function CommentPaginator({
     commentCache,
-    page,
     onHandleGetComments,
 }) {
-    const { nextPageUrl, prevPageUrl } = commentCache;
+    const { nextPageUrl, prevPageUrl, page } = commentCache;
 
     return (
         <div className="flex justify-between">
@@ -17,7 +16,9 @@ export default function CommentPaginator({
                 )}
             </div>
             <div className="">
-                <p className="text-stone-400">page {page}</p>
+                <p className="text-stone-400">
+                    {nextPageUrl ? "page " + page : "End of comment"}
+                </p>
             </div>
             <div className="w-16">
                 {nextPageUrl && (

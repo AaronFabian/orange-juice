@@ -38,6 +38,7 @@ Route::get('news', [WebpageController::class, 'index']);
 
 Route::get('community', [WebpageController::class, 'index']);
 
+// Public Api
 Route::get('comment/getComment/{anime_id}/{episode_id}', [CommentController::class, 'index'])
     ->name('getComment');
 
@@ -90,6 +91,7 @@ Route::middleware('auth')->group(function () {
     // API
     Route::post('favorite/addToFavorite', [FavoriteAnimeController::class, 'store'])
         ->name('addToFavorite');
+
     Route::post('favorite/deleteFavorite', [FavoriteAnimeController::class, 'destroy'])
         ->name('deleteFavorite');
 

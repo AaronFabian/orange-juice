@@ -46,11 +46,12 @@ class FavoriteAnimeController extends Controller
             ]);
         endif;
 
-        return response()->json([
-            'response' => 'error',
-            'error' => 'Email or Password not correct.',
-            'isDeleted' => $isDeleted
-        ]);
+        return response()->json(
+            status: $isDeleted ? 204 : 200,
+            data: [
+                'isDeleted' => $isDeleted
+            ]
+        );
     }
 
     /**
