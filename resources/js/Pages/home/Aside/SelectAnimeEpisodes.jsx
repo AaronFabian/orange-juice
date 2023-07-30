@@ -13,7 +13,7 @@ export default function SelectAnimeEpisodes({
 
     return (
         <ul
-            className={`font-medium text-xs gap-0.5 text-stone-50 grid grid-cols-5 h-36 pt-1.5`}
+            className={`font-medium text-xs gap-0.5 text-stone-50 grid grid-cols-5  pt-1.5`}
         >
             {episodes
                 .slice((currentEps - 1) * 25, currentEps * 25)

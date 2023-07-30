@@ -4,7 +4,7 @@ import { createPortal } from "react-dom";
 function Background({ src, alt }) {
     return createPortal(
         <img
-            className={`w-full h-[100dvh] blur-md object-cover select-none`}
+            className={`hidden sm:inline w-full h-[100dvh] blur-md object-cover select-none`}
             src={src}
             alt={alt}
             draggable={false}

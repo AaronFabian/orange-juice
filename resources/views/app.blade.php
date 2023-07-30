@@ -11,16 +11,19 @@
    <!-- Fonts -->
    <link rel="preconnect" href="https://fonts.bunny.net">
    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+   {{-- <link rel="stylesheet" href="build/assets/app-c16d918b.css"> --}}
 
    <!-- Scripts -->
    @routes
    @viteReactRefresh
    @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])
+   {{-- <script src="build/assets/app-20b3de94.js" type="module"></script> --}}
    @inertiaHead
 </head>
 
 <body class="font-sans antialiased">
    @inertia
+
 </body>
 
 </html>

@@ -20,7 +20,7 @@ export default function CommentSection() {
         );
 
     return (
-        <div className="mt-4">
+        <div className="px-2 mt-4">
             <button
                 onClick={() => setToggleOpen(false)}
                 className="block px-3 py-1 mx-auto text-sm tracking-wide border rounded-full text-stone-50 border-stone-400 hover:text-stone-400 active:text-stone-50"

@@ -31,7 +31,8 @@ export default function Application() {
 
     return (
         <>
-            <div className="hidden sm:grid w-full sm:h-[32rem] grid-cols-2 gap-2 py-2 mx-auto border-l border-r border-b px-4 rounded-b-md md:grid-cols-3">
+            <p className="px-3 text-stone-50 sm:hidden">Recently update</p>
+            <div className="grid w-full h-72 sm:h-[30rem] lg:h-[32rem]  gap-2 py-2 mx-auto sm:border-l sm:border-r sm:border-b px-4 rounded-b-md grid-cols-3">
                 {animeList
                     .slice((currentPage - 1) * 6, currentPage * 6)
                     .map((anime) => (
@@ -45,12 +46,18 @@ export default function Application() {
                     ))}
             </div>
 
-            <div className="flex items-center justify-between h-14">
+            <div className="flex items-center justify-between h-10 px-4 sm:h-14 sm:px-0">
                 <button
-                    className="w-24 h-8 rounded-full bg-purple_mood hover:bg-purple_mood_hard hover:text-stone-200 active:text-stone-500"
+                    className="hidden w-24 h-8 rounded-full sm:inline bg-purple_mood hover:bg-purple_mood_hard hover:text-stone-200 active:text-stone-500"
                     onClick={() => handleNextOrPrevPage("previous")}
                 >
                     Previous
+                </button>
+                <button
+                    className="px-2 rounded-full sm:hidden bg-purple_mood hover:bg-purple_mood_hard hover:text-stone-200 active:text-stone-500"
+                    onClick={() => handleNextOrPrevPage("previous")}
+                >
+                    &laquo;
                 </button>
 
                 <div className="space-x-2">
@@ -66,10 +73,16 @@ export default function Application() {
                 </div>
 
                 <button
-                    className="w-24 h-8 rounded-full bg-purple_mood hover:bg-purple_mood_hard hover:text-stone-200 active:text-stone-500"
+                    className="hidden w-24 h-8 rounded-full sm:inline bg-purple_mood hover:bg-purple_mood_hard hover:text-stone-200 active:text-stone-500"
                     onClick={() => handleNextOrPrevPage("next")}
                 >
                     Next
+                </button>
+                <button
+                    className="px-2 rounded-full sm:hidden bg-purple_mood hover:bg-purple_mood_hard hover:text-stone-200 active:text-stone-500"
+                    onClick={() => handleNextOrPrevPage("next")}
+                >
+                    &raquo;
                 </button>
             </div>
         </>
@@ -91,12 +104,12 @@ function AnimeCard({ title, episodes, imgSrc, animeId }) {
             />
             <div className="absolute bottom-0 left-0 right-0 z-10 flex flex-col items-center justify-center h-16 duration-300 bg-stone-950/60">
                 <h3
-                    className="text-lg text-center line-clamp-1 text-purple_mood"
+                    className="text-sm text-center sm:text-lg line-clamp-1 text-purple_mood"
                     title={title}
                 >
                     {title}
                 </h3>
-                <p className="text-xs text-stone-50">
+                <p className="text-xxs sm:text-xs text-stone-50">
                     {episodes ? "Episodes : " : ""} {episodes ? episodes : ""}
                 </p>
             </div>

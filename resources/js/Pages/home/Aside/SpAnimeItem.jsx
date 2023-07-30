@@ -1,8 +1,9 @@
 export default function SpAnimeItem({ anime, onHandleChangeScreen }) {
-    const { title, image, genres } = anime;
+    const { id, title, image, genres } = anime;
 
     return (
         <div
+            onClick={() => onHandleChangeScreen("stream", id)}
             className="grid h-32 grid-cols-[120px_1fr] px-4 py-3 overflow-hidden rounded shadow-xl sm:hidden gap-4"
             key={title}
         >

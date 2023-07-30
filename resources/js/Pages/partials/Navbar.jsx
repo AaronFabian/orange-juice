@@ -32,7 +32,7 @@ function Navbar() {
                     className: `stroke-purple_mood_hard ${styles["svg path"]} fill-purple_mood scale-125 `,
                 }}
             >
-                <nav className="fixed top-0 left-0 right-0 pt-2 pb-2 mx-auto bg-black sm:py-2 sm:static sm:rounded-tr-md sm:rounded-tl-md">
+                <nav className="fixed top-0 left-0 right-0 z-50 pt-2 pb-2 mx-auto bg-black sm:py-2 sm:static sm:rounded-tr-md sm:rounded-tl-md">
                     {/* In desktop always shown the NavLinkIcon, but hidden in smartphone */}
                     <ul className="items-center m-auto sm:h-8 w-app_inner_width sm:flex">
                         <UserProfile
@@ -40,6 +40,7 @@ function Navbar() {
                             onOpenDrawer={handleOpenDrawer}
                             auth={auth}
                         />
+
                         {auth.user && (
                             <>
                                 <NavLinkIcon
@@ -109,8 +110,8 @@ function Navbar() {
 // Local component for Navbar
 function DesktopDrawer() {
     return (
-        <div className="hidden sm:block bg-gradient-to-r from-[#C991E9] to-[#F4BEA7] h-12  mx-auto ">
-            <ul className="flex justify-center gap-32 px-5 pt-2">
+        <div className="hidden sm:block bg-gradient-to-r from-[#C991E9] to-[#F4BEA7] sm:h-10 lg:h-12  mx-auto ">
+            <ul className="flex justify-center gap-32 px-5 sm:pt-1 lg:pt-2">
                 <li>
                     <NavLink active={true}>Anime</NavLink>
                 </li>

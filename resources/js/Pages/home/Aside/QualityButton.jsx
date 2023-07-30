@@ -25,6 +25,8 @@ export default function QualityButton() {
             </div>
         </div>
     ) : (
-        <h1 className="mt-5 text-sm text-stone-50">Almost there... 😉</h1>
+        <h1 className="mt-5 text-sm text-stone-50 min-h-[100dvh] sm:min-h-0">
+            Almost there... 😉
+        </h1>
     );
 }

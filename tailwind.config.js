@@ -28,6 +28,9 @@ module.exports = {
             width: {
                 app_inner_width: "96%",
             },
+            fontSize: {
+                xxs: "0.675rem",
+            },
         },
     },
 

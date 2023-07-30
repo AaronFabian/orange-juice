@@ -56,7 +56,7 @@ export default function StreamHoc() {
         <>
             <HomeAside localScreen="stream" />
             <ApplicationLayout isAllowScroll={true}>
-                <div className="flex">
+                <div className="flex px-2 sm:px-0">
                     <ButtonText onClick={() => handleChangeScreen("home")}>
                         &larr; Back to home
                     </ButtonText>
@@ -74,49 +74,57 @@ export default function StreamHoc() {
                 </div>
 
                 {isCurrentStreamLoading && (
-                    <div className="w-full h-[480px] flex justify-center items-center text-stone-50">
+                    <div className="w-full min-h-60 sm:h-[480px] flex justify-center items-center text-stone-50">
                         Please wait...
                     </div>
                 )}
 
                 {nowWatching && !isCurrentStreamLoading && (
-                    <VideoJS
-                        onReady={handlePlayerReady}
-                        options={videoJsOptions}
-                    />
+                    <div className="min-h-60 sm:min-h-[480px]">
+                        <VideoJS
+                            onReady={handlePlayerReady}
+                            options={videoJsOptions}
+                        />
+                    </div>
                 )}
 
-                <div className="flex gap-4 mt-2">
-                    <img className="w-48" src={image} alt="Spy x Family" />
+                <div className="flex gap-2 px-2 mt-2 sm:gap-4">
+                    <img
+                        className="object-cover w-32 sm:w-48 sm:h-64"
+                        src={image}
+                        alt="Spy x Family"
+                    />
 
                     <div>
-                        <h1 className="mb-2 text-xl text-stone-50">{title}</h1>
+                        <h1 className="mb-2 text-sm sm:text-xl text-stone-50">
+                            {title}
+                        </h1>
                         <table className="table-auto">
                             <tbody>
-                                <tr className="h-6 text-xs text-stone-50">
+                                <tr className="h-5 text-xs sm:text-sm sm:h-6 text-stone-50">
                                     <td className="w-20">Status:</td>
                                     <td>{status}</td>
                                 </tr>
-                                <tr className="h-6 text-xs text-stone-50">
+                                <tr className="h-5 text-xs sm:text-sm sm:h-6 text-stone-50">
                                     <td className="w-20">Episodes:</td>
                                     <td>{totalEpisodes}</td>
                                 </tr>
-                                <tr className="h-6 text-xs text-stone-50">
+                                <tr className="h-5 text-xs sm:text-sm sm:h-6 text-stone-50">
                                     <td className="w-20">Release date:</td>
                                     <td>{year}</td>
                                 </tr>
-                                <tr className="h-6 text-xs text-stone-50">
+                                <tr className="h-5 text-xs sm:text-sm sm:h-6 text-stone-50">
                                     <td className="w-20">Season:</td>
                                     <td className="capitalize">{season}</td>
                                 </tr>
-                                <tr className="text-xs text-stone-50">
+                                <tr className="text-xs sm:text-sm text-stone-50">
                                     <td>Genres:</td>
                                     <td>{genres.join(", ")}</td>
                                 </tr>
                             </tbody>
                         </table>
 
-                        <p className="mt-4 text-sm text-stone-50 line-clamp-4">
+                        <p className="mt-4 text-xs sm:text-sm text-stone-50 line-clamp-4">
                             {description}
                         </p>
                     </div>

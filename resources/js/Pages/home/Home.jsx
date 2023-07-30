@@ -35,7 +35,7 @@ export default function Home() {
                     </StreamProvider>
                 )}
 
-                {/* Render when user is searching unexpected/not found anime to server */}
+                {/* Render when user is searching unexpected/not found anime in server */}
                 {currentLocalPage === "not-found" && (
                     <NotFound text="Anime not found 😵" def={true} />
                 )}

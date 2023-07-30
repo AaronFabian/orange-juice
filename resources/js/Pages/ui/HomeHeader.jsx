@@ -18,9 +18,9 @@ export default function HomeHeader() {
     return (
         <>
             <header
-                className={`relative w-full pt-2 duration-150  bg-black h-14 border-t border-l border-r border-white overflow-hidden sm:rounded-t-md`}
+                className={`relative w-full pt-2 duration-150  bg-black h-14 sm:border-t sm:border-l sm:border-r border-white overflow-hidden sm:rounded-t-md`}
             >
-                <form action="" onSubmit={onSubmit}>
+                <form action="" onSubmit={onSubmit} className="relative">
                     <input
                         type="text"
                         className="block w-11/12 h-10 px-5 py-3 mx-auto text-sm border-gray-200 rounded-full bg-stone-50 focus:border-blue-500 focus:ring-blue-500 disabled:bg-stone-300"
@@ -32,7 +32,7 @@ export default function HomeHeader() {
                         }
                     />
                     <button
-                        className="absolute px-[6px] py-1 border border-stone-500 text-red-500 bg-white rounded-full top-2 right-2 cursor-pointer"
+                        className="absolute px-[6px] py-1 border border-purple_mood text-red-500 bg-white rounded-full -translate-x-1/2 sm:-translate-x-full top-2 right-2 cursor-pointer"
                         type="submit"
                         value={input}
                     >
