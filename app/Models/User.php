@@ -17,6 +17,8 @@ class User extends Authenticatable implements CanResetPassword
 
     public $incrementing = false;
 
+    protected $primaryKey = 'email';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -40,10 +42,9 @@ class User extends Authenticatable implements CanResetPassword
         'password',
         'updated_at',
         'created_at',
+        // 'is_master'
         // 'remember_token',
     ];
-
-    protected $primaryKey = 'email';
 
     /**
      * The attributes that should be cast.

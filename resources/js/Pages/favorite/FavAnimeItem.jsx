@@ -43,7 +43,8 @@ export default function FavAnimeItem({ anime, onRemoveFavorite }) {
                     </p>
                     <p className="mt-2 text-xs line-clamp-3 text-stone-50">
                         Added at <br />
-                        {day.replace(",", "")} - {month} - {year}
+                        {/* somtimes different regions return different string that can lead error */}
+                        {day?.replace(",", "")} {month} {year}
                     </p>
                 </div>
             </div>

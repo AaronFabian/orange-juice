@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('name');
             $table->string('initial')->nullable();
+            // $table->boolean('is_master')->default(0);
             $table->timestamps();
             //   $table->id();
             //   $table->rememberToken();

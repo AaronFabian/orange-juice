@@ -38,7 +38,7 @@ Route::get('news', [WebpageController::class, 'index']);
 
 Route::get('community', [WebpageController::class, 'index']);
 
-// Public Api
+// Public Api TODO: should remove all API to API route folder !
 Route::get('comment/getComment/{anime_id}/{episode_id}', [CommentController::class, 'index'])
     ->name('getComment');
 
@@ -68,6 +68,8 @@ Route::middleware('auth')->group(function () {
     Route::get('history', [WebpageController::class, 'history']);
 
     Route::get('profile', [ProfileController::class, 'edit']);
+
+    Route::patch('profile', [ProfileController::class, 'update']);
 
     Route::get('verify-email', EmailVerificationPromptController::class)->name('verification.notice');
 

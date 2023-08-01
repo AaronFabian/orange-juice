@@ -74,13 +74,13 @@ export default function StreamHoc() {
                 </div>
 
                 {isCurrentStreamLoading && (
-                    <div className="w-full min-h-60 sm:h-[480px] flex justify-center items-center text-stone-50">
+                    <div className="w-full min-h-60 sm:h-[260px] lg:min-h-[480px]: flex justify-center items-center text-stone-50">
                         Please wait...
                     </div>
                 )}
 
                 {nowWatching && !isCurrentStreamLoading && (
-                    <div className="min-h-60 sm:min-h-[480px]">
+                    <div className="min-h-60 sm:min-h-[260px] lg:min-h-[480px]:">
                         <VideoJS
                             onReady={handlePlayerReady}
                             options={videoJsOptions}
@@ -88,7 +88,7 @@ export default function StreamHoc() {
                     </div>
                 )}
 
-                <div className="flex gap-2 px-2 mt-2 sm:gap-4">
+                <div className="flex gap-2 px-2 mt-2 sm:px-0 sm:gap-4">
                     <img
                         className="object-cover w-32 sm:w-48 sm:h-64"
                         src={image}

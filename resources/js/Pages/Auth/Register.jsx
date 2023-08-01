@@ -5,9 +5,10 @@ import Section from "../partials/Section";
 import Input from "../ui/Input";
 import Checkbox from "../ui/Checkbox";
 import ButtonOnSubmit from "../ui/ButtonOnSubmit";
+import { toast } from "react-hot-toast";
 
 export default function Register() {
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData } = useForm({
         name: "",
         email: "",
         password: "",
@@ -18,11 +19,21 @@ export default function Register() {
         e.preventDefault();
 
         // post(route("register"));
-        router.post("/register", {
-            ...data,
-            _token: router.page.props.csrf_token,
-        });
+        router.post(
+            "/register",
+            {
+                ...data,
+                _token: router.page.props.csrf_token,
+            },
+            {
+                onError: () => {
+                    toast.error("Please confirm the form field.");
+                },
+            }
+        );
     };
+
+    const errors = router.page?.props?.errors;
 
     return (
         <WindowLayout>
@@ -52,19 +63,37 @@ export default function Register() {
                                     label="Username"
                                     autoFocus={true}
                                     setValue={(val) => setData("name", val)}
+                                    margin="mt-5 mb-2.5"
                                 />
+                                {errors?.name && (
+                                    <p className="text-xs italic text-red-400/80">
+                                        {errors?.name}
+                                    </p>
+                                )}
                                 <Input
                                     type="email"
                                     name="user_email"
                                     label="Email"
+                                    margin="mt-5 mb-2.5"
                                     setValue={(val) => setData("email", val)}
                                 />
+                                {errors?.email && (
+                                    <p className="text-xs italic text-red-400/80">
+                                        {errors?.email}
+                                    </p>
+                                )}
                                 <Input
                                     type="password"
                                     name="password"
                                     label="Password"
+                                    margin="mt-5 mb-2.5"
                                     setValue={(val) => setData("password", val)}
                                 />
+                                {errors?.password && (
+                                    <p className="text-xs italic text-red-400/80">
+                                        {errors?.password}
+                                    </p>
+                                )}
                                 <Input
                                     type="password"
                                     name="password_confirmation"
@@ -83,7 +112,7 @@ export default function Register() {
 
                                 <Link
                                     href="/login"
-                                    className="block mx-auto mt-2 text-center duration-150 text-stone-500 hover:text-stone-50 sm:text-sm"
+                                    className="block mx-auto mt-5 text-center duration-150 text-stone-500 hover:text-stone-50 sm:text-sm"
                                 >
                                     Already have an account ? Login here.
                                 </Link>

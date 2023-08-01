@@ -1,61 +1,117 @@
+import { router, useForm, usePage } from "@inertiajs/react";
+import { toast } from "react-hot-toast";
+
 export default function ProfileApplication() {
+    const {
+        props: { auth },
+    } = usePage();
+    const { data, setData, errors, setError, clearErrors } = useForm({
+        name: auth.user.name,
+        password: "",
+    });
+
+    function onSubmit(e) {
+        e.preventDefault();
+
+        clearErrors();
+        axios
+            .patch("/profile", { ...data })
+            .then(({ data }) => {
+                toast.success(data.message);
+                setData("password", "");
+                router.reload();
+            })
+            .catch(({ response }) => {
+                switch (response.status) {
+                    case 400:
+                        toast.error(response.data.message);
+                        break;
+
+                    case 422:
+                        const fieldError = response.data.errors;
+                        if (fieldError?.password) {
+                            // get arr here
+                            setError("password", fieldError.password[0]);
+                        }
+
+                        if (fieldError?.name) {
+                            setError("name", fieldError.name[0]);
+                        }
+
+                        toast.error("Please check form requirements.");
+                        break;
+
+                    default:
+                        throw new Error("Unexpected behaviour.");
+                }
+            });
+    }
+
     return (
-        <div class="w-full max-w-xs">
-            <form class="bg-stone-950 shadow-md rounded px-8 pt-6 pb-8 mb-4 flex flex-col items-center">
-                <div class="relative inline-flex items-center justify-center w-20 h-20 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600 mb-4">
-                    <span class="font-medium text-3xl text-gray-600 dark:text-gray-300">
+        <>
+            <form
+                onSubmit={onSubmit}
+                className="absolute flex flex-col items-center px-8 pt-6 pb-8 mb-4 -translate-x-1/2 -translate-y-1/2 rounded shadow-md top-1/2 left-1/2 bg-stone-950 w-96"
+            >
+                <div className="relative inline-flex items-center justify-center w-20 h-20 mb-4 overflow-hidden bg-gray-100 rounded-full dark:bg-gray-600">
+                    <span className="text-3xl font-medium text-gray-600 dark:text-gray-300">
                         JL
                     </span>
                 </div>
 
-                <div class="mb-4 self-stretch">
+                <div className="self-stretch mb-4">
                     <label
-                        class="block text-purple_mood text-sm font-bold mb-2"
-                        for="username"
+                        className="block mb-2 text-sm font-bold text-purple_mood"
+                        htmlFor="username"
                     >
                         Username
                     </label>
                     <input
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        className="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                         id="username"
                         type="text"
                         placeholder="Username"
+                        defaultValue={data.name}
+                        onChange={(e) => setData("name", e.target.value)}
                     />
+                    {errors?.name || errors.name !== null ? (
+                        <p className="text-xs italic text-red-500">
+                            {errors.name}
+                        </p>
+                    ) : null}
                 </div>
 
-                <div class="mb-4 self-stretch">
+                <div className="self-stretch mb-4">
                     <label
-                        class="block text-purple_mood text-sm font-bold mb-2"
-                        for="password"
+                        className="block mb-2 text-sm font-bold text-purple_mood"
+                        htmlFor="password"
                     >
-                        Password
+                        Confirm password
                     </label>
                     <input
-                        class="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+                        className="w-full px-3 py-2 mb-3 leading-tight text-gray-700 border border-red-500 rounded shadow appearance-none focus:outline-none focus:shadow-outline"
                         id="password"
                         type="password"
-                        placeholder="******************"
+                        value={data.password}
+                        placeholder="input password to confirm edit"
+                        onChange={(e) => setData("password", e.target.value)}
                     />
-                    <p class="text-red-500 text-xs italic">
-                        Please choose a password.
-                    </p>
+                    {errors?.password || errors.password !== null ? (
+                        <p className="text-xs italic text-red-500">
+                            {errors.password}
+                        </p>
+                    ) : null}
                 </div>
 
-                <div class="flex items-center justify-between mt-2 self-stretch">
+                <div className="flex items-center self-stretch justify-between mt-2">
                     <button
-                        class="inline-block align-baseline font-bold text-sm text-purple_mood_hard hover:text-purple_mood_slow"
-                        href="#"
-                    >
-                        Reset
-                    </button>
-                    <button
-                        class="bg-purple_mood hover:bg-purple_mood_hard text-stone-950 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                        type="button"
+                        className="px-4 py-2 font-bold rounded bg-purple_mood hover:bg-purple_mood_hard text-stone-950 focus:outline-none focus:shadow-outline"
+                        type="submit"
                     >
                         Edit !
                     </button>
                 </div>
             </form>
-        </div>
+        </>
     );
 }

@@ -2,9 +2,10 @@ import { Link, router, useForm } from "@inertiajs/react";
 import ButtonOnSubmit from "../ui/ButtonOnSubmit";
 import Checkbox from "../ui/Checkbox";
 import Input from "../ui/Input";
+import { toast } from "react-hot-toast";
 
 export default function LoginPage() {
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const { data, setData, errors, setError } = useForm({
         email: "",
         password: "",
     });
@@ -12,10 +13,19 @@ export default function LoginPage() {
     function submit(e) {
         e.preventDefault();
 
-        router.post("/login", {
-            ...data,
-            _token: router.page.props.csrf_token,
-        });
+        router.post(
+            "/login",
+            {
+                ...data,
+                _token: router.page.props.csrf_token,
+            },
+            {
+                onError: (e) => {
+                    setError("email", e.email);
+                    toast.error(e.email);
+                },
+            }
+        );
     }
 
     return (
@@ -43,6 +53,12 @@ export default function LoginPage() {
                                 type="email"
                                 name="email"
                                 label="Email"
+                                border={errors.email ? "border-red-500" : null}
+                                focusBorderColor={
+                                    errors.email
+                                        ? "focus:border-red-500"
+                                        : "focus:border-purple_mood"
+                                }
                                 autoFocus={true}
                                 setValue={(val) => setData("email", val)}
                             />
@@ -53,6 +69,12 @@ export default function LoginPage() {
                                 type="password"
                                 name="password"
                                 label="Password"
+                                border={errors.email ? "border-red-500" : null}
+                                focusBorderColor={
+                                    errors.email
+                                        ? "focus:border-red-500"
+                                        : "focus:border-purple_mood"
+                                }
                                 setValue={(val) => setData("password", val)}
                             />
 
