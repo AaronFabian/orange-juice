@@ -80,11 +80,17 @@ function StreamProvider({ children }) {
         setIsCurrentStreamLoading(true);
 
         try {
-            const res = await fetch(`${URL_ANIME_STREAMING_LINK}/${id}`);
-            const data = await res.json();
+            const { data } = await axios.get(
+                `${URL_ANIME_STREAMING_LINK}/${id}`
+            );
 
             const sources = data.sources;
-            if (!sources) throw new Error("Fatal: sources not found :(");
+            if (!sources) {
+                toast.error(
+                    "Fatal error. looks like the source gone, check your connection and refresh the page"
+                );
+                throw new Error("Fatal: sources not found :(");
+            }
 
             setCurrentStreamSrc(sources);
             setEpisodeId(id);

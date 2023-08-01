@@ -22,7 +22,7 @@ export default function SelectEpisodePage({ currentPage, setCurrentPage }) {
                         key={index}
                     >
                         {index * 25 + 1} -{" "}
-                        {(index + 1) * 25 <= episodesLength + 1
+                        {(index + 1) * 25 <= episodesLength
                             ? (index + 1) * 25
                             : episodesLength}
                     </option>

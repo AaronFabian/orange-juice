@@ -46,16 +46,13 @@ export default function Register() {
                             alt="oshi no ko background"
                             className="absolute top-0 left-0 object-cover h-full -z-10 blur-sm"
                         />
-                        <h1
-                            className="from-[#C991E9] to-[#D38AA8] text-transparent bg-clip-text bg-gradient-to-r text-5xl font-semibold text-center pt-6 sm:pt-0 sm:mt-8
-                    "
-                        >
+                        <h1 className="from-[#C991E9] to-[#D38AA8] text-transparent bg-clip-text bg-gradient-to-r text-5xl font-semibold text-center pt-6 sm:pt-0 sm:mt-8">
                             登録
                         </h1>
                         <h2 className="text-xl tracking-widest text-center sm:text-2xl text-stone-50">
                             Register
                         </h2>
-                        <div className="absolute z-10 w-11/12 sm:w-1/2 mx-auto -translate-x-1/2 -translate-y-1/2 border rounded-md h-[30rem] top-1/2 left-1/2 border-stone-50/50 group focus:border-purple_mood">
+                        <div className="absolute z-10 w-11/12 sm:w-1/2 mx-auto -translate-x-1/2 -translate-y-1/2 border rounded-md h-[30rem] top-1/2 left-1/2 border-stone-50/50 group focus:border-purple_mood mt-4 sm:mt-0">
                             <div className="w-11/12 mx-auto sm:w-4/5 ">
                                 <Input
                                     type="text"

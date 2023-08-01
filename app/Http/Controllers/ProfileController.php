@@ -58,11 +58,9 @@ class ProfileController extends Controller
             $user = User::find(auth()->user()->email);
 
             if (!Hash::check($request->password, $user->password))
-                throw new Exception(
-                    'Failed to edit. Unauthorized user !'
-                );
+                throw new Exception('Failed to edit. Unauthorized user !');
 
-            // Begin edit
+            // Begin update
             $user->name = $request->name;
 
             if ($user->isClean())

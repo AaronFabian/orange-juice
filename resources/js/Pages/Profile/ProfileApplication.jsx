@@ -15,7 +15,7 @@ export default function ProfileApplication() {
 
         clearErrors();
         axios
-            .patch("/profile", { ...data })
+            .patch("/profile", data)
             .then(({ data }) => {
                 toast.success(data.message);
                 setData("password", "");
@@ -29,14 +29,12 @@ export default function ProfileApplication() {
 
                     case 422:
                         const fieldError = response.data.errors;
-                        if (fieldError?.password) {
-                            // get arr here
+                        // get arr here
+                        if (fieldError?.password)
                             setError("password", fieldError.password[0]);
-                        }
 
-                        if (fieldError?.name) {
+                        if (fieldError?.name)
                             setError("name", fieldError.name[0]);
-                        }
 
                         toast.error("Please check form requirements.");
                         break;
