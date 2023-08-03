@@ -28,8 +28,6 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [WebpageController::class, 'index'])->name('home');
 
-// Route::get('explore', [WebpageController::class, 'explore'])->name('explore');
-
 Route::get('manga', [WebpageController::class, 'index']);
 
 Route::get('drama', [WebpageController::class, 'index']);
@@ -39,16 +37,15 @@ Route::get('news', [WebpageController::class, 'index']);
 Route::get('community', [WebpageController::class, 'index']);
 
 // Public Api TODO: should remove all API to API route folder !
-Route::get('comment/getComment/{anime_id}/{episode_id}', [CommentController::class, 'index'])
-    ->name('getComment');
+Route::get('comment/{anime_id}/{episode_id}', [CommentController::class, 'index']);
 
 Route::middleware('guest')->group(function () {
 
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])->name('login');
+    Route::get('login', [AuthenticatedSessionController::class, 'create']);
 
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
-    Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
+    Route::get('register', [RegisteredUserController::class, 'create']);
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
@@ -71,39 +68,34 @@ Route::middleware('auth')->group(function () {
 
     Route::patch('profile', [ProfileController::class, 'update']);
 
-    Route::get('verify-email', EmailVerificationPromptController::class)->name('verification.notice');
-
-    Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');
-
-    Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
-        ->middleware(['signed', 'throttle:6,1'])
-        ->name('verification.verify');
-
-    Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-        ->middleware('throttle:6,1')
-        ->name('verification.send');
-
-    Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
-
     Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
-    Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])
-        ->name('logout');
+    Route::get('logout', [AuthenticatedSessionController::class, 'destroy']);
 
     // API
-    Route::post('favorite/addToFavorite', [FavoriteAnimeController::class, 'store'])
-        ->name('addToFavorite');
+    Route::post('favorite', [FavoriteAnimeController::class, 'store']);
 
-    Route::post('favorite/deleteFavorite', [FavoriteAnimeController::class, 'destroy'])
-        ->name('deleteFavorite');
+    Route::delete('favorite', [FavoriteAnimeController::class, 'destroy']);
 
-    Route::post('comment/addComment', [CommentController::class, 'store'])
-        ->name('addComment');
+    Route::post('comment', [CommentController::class, 'store']);
 });
 
-Route::get('not-found', [WebpageController::class, 'error'])->name('not-found');
+Route::get('not-found', [WebpageController::class, 'error']);
 
+// Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
+// Route::get('verify-email', EmailVerificationPromptController::class)->name('verification.notice');
+
+// Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])->name('password.confirm');
+
+// Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
+//     ->middleware(['signed', 'throttle:6,1'])
+//     ->name('verification.verify');
+
+// Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
+//     ->middleware('throttle:6,1')
+//     ->name('verification.send');
+        
 // require __DIR__ . '/auth.php';
 
 

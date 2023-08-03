@@ -1,4 +1,5 @@
 import { router, useForm, usePage } from "@inertiajs/react";
+import { useState } from "react";
 import { toast } from "react-hot-toast";
 
 export default function ProfileApplication() {
@@ -9,9 +10,12 @@ export default function ProfileApplication() {
         name: auth.user.name,
         password: "",
     });
+    const [allowSubmit, setAllowSubmit] = useState(true);
 
     function onSubmit(e) {
         e.preventDefault();
+        if (!allowSubmit) return;
+        setAllowSubmit(false);
 
         clearErrors();
         axios
@@ -42,7 +46,8 @@ export default function ProfileApplication() {
                     default:
                         throw new Error("Unexpected behaviour.");
                 }
-            });
+            })
+            .finally(() => setAllowSubmit(true));
     }
 
     return (
@@ -93,6 +98,7 @@ export default function ProfileApplication() {
                         value={data.password}
                         placeholder="input password to confirm edit"
                         onChange={(e) => setData("password", e.target.value)}
+                        required
                     />
                     {errors?.password || errors.password !== null ? (
                         <p className="text-xs italic text-red-500">
@@ -103,10 +109,11 @@ export default function ProfileApplication() {
 
                 <div className="flex items-center self-stretch justify-between mt-2">
                     <button
-                        className="px-4 py-2 font-bold rounded bg-purple_mood hover:bg-purple_mood_hard text-stone-950 focus:outline-none focus:shadow-outline"
+                        className={`px-4 py-2 font-bold rounded bg-purple_mood hover:bg-purple_mood_hard text-stone-950 focus:outline-none focus:shadow-outline disabled:cursor-wait`}
                         type="submit"
+                        disabled={!allowSubmit}
                     >
-                        Edit !
+                        {allowSubmit ? "Edit !" : "Sending..."}
                     </button>
                 </div>
             </form>

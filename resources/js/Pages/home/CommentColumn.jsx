@@ -17,9 +17,7 @@ export default function CommentColumn({ commentCache, onSetCommentCache }) {
     async function handleGetComments(gotoPage) {
         try {
             const { status, data } = await axios.get(
-                `/comment/getComment/${animeId}/${episodeId}?page=${
-                    gotoPage ?? 1
-                }`
+                `/comment/${animeId}/${episodeId}?page=${gotoPage ?? 1}`
             );
             if (status !== 200 || typeof data === "string")
                 throw new Error("Something gone wrong :(");

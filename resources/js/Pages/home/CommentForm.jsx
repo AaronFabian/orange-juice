@@ -23,7 +23,7 @@ export default function CommentForm({ onHandleGetComments }) {
         setIsLoading(true);
 
         axios
-            .post("/comment/addComment", {
+            .post("/comment", {
                 ...data,
                 anime_id: animeId,
                 episode_id: episodeId,

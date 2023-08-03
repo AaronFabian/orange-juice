@@ -26,32 +26,46 @@ class FavoriteAnimeController extends Controller
      */
     public function store(Request $request)
     {
-        $isDeleted = false;
-        $body = json_decode($request->all()['body']);
-        $user = auth()->user();
+        try {
+            $body = $request->favorite;
+            $user = auth()->user();
 
-        $toggle = FavoriteAnime::where('user_email', '=', $user->email)->where('anime_id', '=', $body->anime_id);
+            $toggle = FavoriteAnime::where('user_email', '=', $user->email)
+                ->where('anime_id', '=', $body['anime_id']);
 
-        if ($toggle->first()) :
-            $toggle->delete();
-            $isDeleted = true;
-        else :
-            FavoriteAnime::create([
-                'anime_id' => $body->anime_id,
-                'user_email' => $user->email,
-                'title' => $body->title,
-                'poster' => $body->poster,
-                'season' => $body->season,
-                'last_episode' => $body->last_episode,
-            ]);
-        endif;
+            if ($toggle->first()) :
+                $toggle->delete();
+                return response()->json(
+                    status: 204
+                );
 
-        return response()->json(
-            status: $isDeleted ? 204 : 200,
-            data: [
-                'isDeleted' => $isDeleted
-            ]
-        );
+            else :
+                FavoriteAnime::create([
+                    'anime_id' => $body['anime_id'],
+                    'user_email' => $user->email,
+                    'title' => $body['title'],
+                    'poster' => $body['poster'],
+                    'season' => $body['season'],
+                    'last_episode' => $body['last_episode'],
+                ]);
+
+                return response()->json(
+                    status: 200,
+                    data: [
+                        'status' => 'success',
+                        'message' => 'added to favorite.'
+                    ]
+                );
+            endif;
+        } catch (\Throwable $th) {
+            return response()->json(
+                status: 400,
+                data: [
+                    'status' => 'failed',
+                    'message' => $th->getMessage(),
+                ]
+            );
+        }
     }
 
     /**
@@ -75,18 +89,24 @@ class FavoriteAnimeController extends Controller
      */
     public function destroy(Request $request, FavoriteAnime $favoriteAnime)
     {
-        $body = json_decode($request->all()['body']);
-        $user = auth()->user();
-
         try {
-            $favoriteAnime::where('user_email', '=', $user->email)->where('anime_id', '=', $body->id)->delete();
+            $user = auth()->user();
 
-            return response()->json(status: 204, data: [
-                'response' => 'ok',
-                'status' => true,
-            ],);
+            $favoriteAnime::where('user_email', '=', $user->email)
+                ->where('anime_id', '=', $request->id)
+                ->delete();
+
+            return response()->json(
+                status: 204
+            );
         } catch (\Throwable $th) {
-            return response()->json(status: 400, data: ['status' => false, 'message' => 'something gone wrong :(', 'error' => $th]);
+            return response()->json(
+                status: 400,
+                data: [
+                    'status' => false,
+                    'message' => $th->getMessage()
+                ]
+            );
         }
     }
 }

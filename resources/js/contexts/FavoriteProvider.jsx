@@ -94,22 +94,7 @@ const FavoriteContext = createContext();
 
 function FavoriteProvider({ children }) {
     const { props } = usePage();
-    const [
-        {
-            nowWatching,
-            favoriteList,
-            episodeList,
-            currentEpsNumber,
-            currentQuality,
-            qualitySrc,
-            animeId,
-            isLoading,
-            isError,
-            isChangingEpisode,
-            animeDetails,
-        },
-        dispatch,
-    ] = useReducer(reducer, initialState);
+    const [state, dispatch] = useReducer(reducer, initialState);
 
     useEffect(function () {
         dispatch({
@@ -122,20 +107,20 @@ function FavoriteProvider({ children }) {
         const history = getHistory();
 
         try {
-            const currentAnime = history?.animes[animeId];
+            const currentAnime = history?.animes[state.animeId];
 
             // in case user delete all history
             if (!history)
                 generateHistory(
-                    animeDetails.id,
-                    animeDetails.title,
-                    animeDetails.image
+                    state.animeDetails.id,
+                    state.animeDetails.title,
+                    state.animeDetails.image
                 );
 
             let response = "";
             if (currentAnime === undefined || !currentAnime?.url) {
                 // get eps 1
-                const epsId = episodeList[0].id;
+                const epsId = state.episodeList[0].id;
                 response = await axios.get(
                     `${URL_ANIME_STREAMING_LINK}/${epsId}`
                 );
@@ -166,7 +151,7 @@ function FavoriteProvider({ children }) {
 
             autoPlaySource(data.sources, lastEps, dispatch);
 
-            overWriteHistory(animeId, lastEps, epsId);
+            overWriteHistory(state.animeId, lastEps, epsId);
         } catch (error) {
             console.error(error);
             dispatch({ type: FAVORITE.SET_ERROR });
@@ -176,17 +161,7 @@ function FavoriteProvider({ children }) {
     return (
         <FavoriteContext.Provider
             value={{
-                animeId,
-                nowWatching,
-                currentEpsNumber,
-                currentQuality,
-                qualitySrc,
-                isLoading,
-                isError,
-                isChangingEpisode,
-                episodeList,
-                favoriteList,
-                animeDetails,
+                ...state,
 
                 // fn
                 dispatch,

@@ -1,16 +1,24 @@
-import { useEffect } from "react";
+import { lazy, useEffect } from "react";
 import { Head } from "@inertiajs/react";
-import { HomeProvider } from "@/contexts/HomeProvider";
 import { Toaster, toast } from "react-hot-toast";
+import { HomeProvider } from "@/contexts/HomeProvider";
 
 import WindowLayout from "./partials/WindowLayout";
-import Login from "./login/Login";
-import Home from "./home/Home";
-import Community from "./community/Community";
-import History from "./history/History";
-import Edit from "./profile/Edit";
-import Favorite from "./favorite/Favorite";
-import NotFound from "./NotFound";
+// import Login from "./login/Login";
+// import Home from "./home/Home";
+// import Community from "./community/Community";
+// import History from "./history/History";
+// import Edit from "./profile/Edit";
+// import Favorite from "./favorite/Favorite";
+// import NotFound from "./NotFound";
+
+const Home = lazy(() => import("./home/Home"));
+const Login = lazy(() => import("./login/Login"));
+const Community = lazy(() => import("./community/Community"));
+const History = lazy(() => import("./history/History"));
+const Edit = lazy(() => import("./profile/Edit.jsx"));
+const Favorite = lazy(() => import("./favorite/Favorite"));
+const NotFound = lazy(() => import("./NotFound"));
 
 import "./main.css";
 
@@ -61,12 +69,14 @@ export default function Main(props) {
         [props.flash.message]
     );
 
+    const userWidthSceen = window.innerWidth;
+
     return (
         <>
             <Head title={`${title} - Orange Juice`} />
             <WindowLayout>{currentPage}</WindowLayout>
             <Toaster
-                position="top-right"
+                position={userWidthSceen > 640 ? "top-right" : "top-center"}
                 gutter={12}
                 containerStyle={{ margin: "8px" }}
                 toastOptions={{

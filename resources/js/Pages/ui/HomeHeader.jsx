@@ -32,7 +32,7 @@ export default function HomeHeader() {
                         }
                     />
                     <button
-                        className="absolute px-[6px] py-1 border border-purple_mood text-red-500 bg-white rounded-full -translate-x-1/2 sm:-translate-x-full top-2 right-2 cursor-pointer"
+                        className="absolute px-[6px] py-1 border border-purple_mood text-red-500 bg-white rounded-full -translate-x-1/2 sm:-translate-x-full top-2 right-2 xl:right-3 cursor-pointer"
                         type="submit"
                         value={input}
                     >

@@ -9,9 +9,7 @@ export default function FavoriteAside() {
 
     function removeFavorite(animeId) {
         axios
-            .post("/favorite/deleteFavorite", {
-                body: JSON.stringify({ id: animeId }),
-            })
+            .delete("favorite", { data: { id: animeId } })
             .then((_) => {
                 dispatch({
                     type: FAVORITE.SET_FAVORITE_LIST,

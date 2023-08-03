@@ -28,7 +28,12 @@ function Anime({ anime, onHandleChangeScreen }) {
                 href="#"
                 className="flex items-center p-2 text-gray-900 rounded-lg cursor-pointer dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
             >
-                <img className="h-16 w-14" src={image} alt={title} />
+                <img
+                    className="h-16 w-14"
+                    src={image}
+                    alt={title}
+                    loading="lazy"
+                />
                 <div className="self-start ml-3 leading-tight ">
                     <p className="text-sm line-clamp-2 text-purple_mood">
                         {title}

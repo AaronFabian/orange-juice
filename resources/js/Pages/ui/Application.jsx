@@ -98,9 +98,10 @@ function AnimeCard({ title, episodes, imgSrc, animeId }) {
             onClick={() => handleChangeScreen("stream", animeId)}
         >
             <img
-                src={`${imgSrc}`}
+                src={imgSrc}
                 alt={title}
                 className="object-cover object-center w-full h-full align-middle duration-300 group-hover:scale-110"
+                loading="lazy"
             />
             <div className="absolute bottom-0 left-0 right-0 z-10 flex flex-col items-center justify-center h-16 duration-300 bg-stone-950/60">
                 <h3

@@ -5,7 +5,7 @@
    <meta charset="utf-8">
    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-   <link rel="icon" href="/img/orange-juice.png">
+   <link rel="icon" href="/img/orange_juice_logo_icon.png">
    <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
    <!-- Fonts -->
@@ -14,7 +14,7 @@
    {{-- <link rel="stylesheet" href="build/assets/app-c16d918b.css"> --}}
 
    <!-- Scripts -->
-   @routes
+   {{-- @routes --}}
    @viteReactRefresh
    @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])
    {{-- <script src="build/assets/app-20b3de94.js" type="module"></script> --}}

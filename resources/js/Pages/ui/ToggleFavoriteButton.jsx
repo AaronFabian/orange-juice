@@ -20,14 +20,12 @@ export default function ToggleFavoriteButton({
             title: title,
             poster: image,
             season: season,
-            last_episode: "",
+            last_episode: "_",
         };
 
-        // TODO: move this code to stream provider and refactor axios
+        // TODO: move this code to stream provider
         axios
-            .post("/favorite/addToFavorite", {
-                body: JSON.stringify(favorite),
-            })
+            .post("favorite", { favorite })
             .then((_) => {
                 if (toggleFavorite)
                     router.page.props.favoriteAnimes = [
@@ -47,12 +45,12 @@ export default function ToggleFavoriteButton({
                         : "Added to favorite."
                 );
                 setToggleFavorite(!toggleFavorite);
-                setPreventClick(false);
             })
             .catch((err) => {
                 console.error(err);
                 toast.error("Something gone wrong :(");
-            });
+            })
+            .finally(() => setPreventClick(false));
     }
 
     useEffect(
@@ -70,15 +68,17 @@ export default function ToggleFavoriteButton({
         <button
             className="text-sm text-stone-400 hover:text-stone-50 active:text-gray-400"
             onClick={handleAddToFavorite}
+            disabled={preventClick}
         >
-            &#x2665; Added to Favorite
+            &#x2665; {preventClick ? "Adding..." : "Added to Favorite"}
         </button>
     ) : (
         <button
             className="text-sm text-stone-400 hover:text-stone-50 active:text-gray-400"
             onClick={handleAddToFavorite}
+            disabled={preventClick}
         >
-            &#x2661; Add to Favorite !
+            &#x2661; {preventClick ? "Adding..." : "Add to Favorite !"}
         </button>
     );
 }

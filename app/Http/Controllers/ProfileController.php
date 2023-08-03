@@ -4,17 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\User;
-use Exception;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Validation\Rules;
+use Exception;
 
 
 class ProfileController extends Controller
@@ -56,18 +51,17 @@ class ProfileController extends Controller
 
         try {
             $user = User::find(auth()->user()->email);
-
             if (!Hash::check($request->password, $user->password))
                 throw new Exception('Failed to edit. Unauthorized user !');
 
-            // Begin update
+            // Begin updating
             $user->name = $request->name;
 
             if ($user->isClean())
                 return response()->json(
                     status: 200,
                     data: [
-                        'status' => 'ok',
+                        'status' => 'success',
                         'message' => 'Nothing changed.',
                     ]
                 );
@@ -77,9 +71,8 @@ class ProfileController extends Controller
             return response()->json(
                 status: 200,
                 data: [
-                    'status' => 'ok',
+                    'status' => 'success',
                     'message' => 'Profile edited !',
-                    'test' => '$isOk',
                 ]
             );
         } catch (\Throwable $th) {
@@ -97,21 +90,21 @@ class ProfileController extends Controller
     /**
      * Delete the user's account.
      */
-    public function destroy(Request $request): RedirectResponse
+    public function destroy(Request $request)
     {
-        $request->validate([
-            'password' => ['required', 'current_password'],
-        ]);
+        // $request->validate([
+        //     'password' => ['required', 'current_password'],
+        // ]);
 
-        $user = $request->user();
+        // $user = $request->user();
 
-        Auth::logout();
+        // Auth::logout();
 
-        $user->delete();
+        // $user->delete();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        // $request->session()->invalidate();
+        // $request->session()->regenerateToken();
 
-        return Redirect::to('/');
+        // return Redirect::to('/');
     }
 }

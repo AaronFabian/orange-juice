@@ -29,8 +29,8 @@ class CommentController extends Controller
             );
         } catch (\Throwable $th) {
             return response()->json(
-                status: 404,
-                data: ['status' => 'failed', 'error' => $th]
+                status: 400,
+                data: ['status' => 'failed', 'error' => $th->getMessage()]
             );
         }
     }
@@ -60,9 +60,9 @@ class CommentController extends Controller
             );
         } catch (\Throwable $th) {
             return response()->json(
-                status: 404,
+                status: 400,
                 data: [
-                    'status' => 'failed', 'message' => $th
+                    'status' => 'failed', 'message' => $th->getMessage()
                 ]
             );
         }
