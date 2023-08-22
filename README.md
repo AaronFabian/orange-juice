@@ -32,7 +32,7 @@ https://ice-chocolate.com
 
 | Register Page                           |
 | ---------------------------------------- |
-| ![login page](public/img/pages_imgs/register_page.png) |
+| ![login page](public/img/pages_img/register_page.png) |
 
 | Streaming Page                           |
 | ------------------------------------- |
