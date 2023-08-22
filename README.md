@@ -24,27 +24,27 @@ https://ice-chocolate.com
 ## Screenshot
 | Main Page                           |
 | --------------------------------------- |
-| ![login page](public/img/pages_images/main_page.png) |
+| ![login page](public/img/pages_img/main_page.png) |
 
 | Login Page                           |
 | ------------------------------------ |
-| ![login page](public/img/pages_images/login_page.png) |
+| ![login page](public/img/pages_img/login_page.png) |
 
 | Register Page                           |
 | ---------------------------------------- |
-| ![login page](public/img/pages_images/register_page.png) |
+| ![login page](public/img/pages_imgs/register_page.png) |
 
 | Streaming Page                           |
 | ------------------------------------- |
-| ![login page](public/img/pages_images/watch_page.png) |
+| ![login page](public/img/pages_img/watch_page.png) |
 
 | Streaming Page (comment section)                           |
 | ------------------------------------ |
-| ![login page](public/img/pages_images/watch_page_comment.png) |
+| ![login page](public/img/pages_img/watch_page_comment.png) |
 
 | Favorite Page                           |
 | --------------------------------------- |
-| ![login page](public/img/pages_images/favorite_page.png) |
+| ![login page](public/img/pages_img/favorite_page.png) |
 
 ## Installation
 
