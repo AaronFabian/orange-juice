@@ -1,4 +1,4 @@
-<h1 align="left">Orange Juice</h1>
+# Orange Juice
 A simple anime streaming website, build with react.js and laravel
 
 ## Techologies
