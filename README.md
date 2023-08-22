@@ -21,12 +21,6 @@ A simple anime streaming website, build with react and laravel
 
 https://ice-chocolate.com
 
-/*
-| Email Address  | Password |
-| -------------- | -------- |
-| test@gmail.com | 12345678 |
-*/
-
 ## Screenshot
 
 | Login Page                           |
