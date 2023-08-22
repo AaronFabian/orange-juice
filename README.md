@@ -9,6 +9,7 @@ A simple anime streaming website, build with react.js and laravel
 - JavaScript
 - Inertia.js
 - Laravel
+- MySQL
 - React.js
 - React Icons
 - React Hot Toast
@@ -63,5 +64,5 @@ php artisan serve
 npm run dev
 
 # important
-don't forget to setup you mysql and .env
+don't forget to setup your mysql and .env
 ```
