@@ -14,6 +14,7 @@ A simple anime streaming website, build with react and laravel
 - React Icons
 - React Hot Toast
 - PHP
+- Tailwind.css
 - Video.js
 - Vite
 
