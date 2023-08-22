@@ -1,5 +1,5 @@
 <h1 align="left">Orange Juice</h1>
-<h3 align="left">A simple anime streaming website, build with react.js and laravel </h3>
+A simple anime streaming website, build with react.js and laravel
 
 ## Techologies
 
