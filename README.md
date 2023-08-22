@@ -1,4 +1,4 @@
-[![MasterHead](public/img/orange_juice_logo_icon.png)]
+[![MasterHead](public/img/orange-juice.png)]
 <h1 align="center">Orange Juice</h1>
 <h3 align="center">A simple anime streaming website, build with react.js and laravel </h3>
 
