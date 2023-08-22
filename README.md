@@ -51,8 +51,8 @@ https://ice-chocolate.com
 Clone and move to the repository
 
 ```bash
-git clone https://github.com/AlvonJ/the-wild-oasis
-cd the-wild-oasis
+git clone https://github.com/AaronFabian/orange-juice.git
+cd orange-juice
 
 # install packages
 composer install
