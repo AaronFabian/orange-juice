@@ -1,5 +1,5 @@
 # Orange Juice
-A simple anime streaming website, build with react.js and laravel
+A simple anime streaming website, built with react.js and laravel. Aiming for every user and user experience.
 
 ## Techologies
 
