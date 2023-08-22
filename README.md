@@ -22,34 +22,29 @@ A simple anime streaming website, build with react and laravel
 https://ice-chocolate.com
 
 ## Screenshot
+| Main Page                           |
+| --------------------------------------- |
+| ![login page](public/img/pages_images/main_page.png) |
 
 | Login Page                           |
 | ------------------------------------ |
-| ![login page](public/login-page.png) |
+| ![login page](public/img/pages_images/login_page.png) |
 
-| Dashboard Page                           |
+| Register Page                           |
 | ---------------------------------------- |
-| ![login page](public/dashboard-page.png) |
+| ![login page](public/img/pages_images/register_page.png) |
 
-| Bookings Page                           |
-| --------------------------------------- |
-| ![login page](public/bookings-page.png) |
-
-| Cabins Page                           |
+| Streaming Page                           |
 | ------------------------------------- |
-| ![login page](public/cabins-page.png) |
+| ![login page](public/img/pages_images/watch_page.png) |
 
-| Users Page                           |
+| Streaming Page (comment section)                           |
 | ------------------------------------ |
-| ![login page](public/users-page.png) |
+| ![login page](public/img/pages_images/watch_page_comment.png) |
 
-| Settings Page                           |
+| Favorite Page                           |
 | --------------------------------------- |
-| ![login page](public/settings-page.png) |
-
-| Edit user Page                           |
-| ---------------------------------------- |
-| ![login page](public/edit-user-page.png) |
+| ![login page](public/img/pages_images/favorite_page.png) |
 
 ## Installation
 
@@ -60,8 +55,13 @@ git clone https://github.com/AlvonJ/the-wild-oasis
 cd the-wild-oasis
 
 # install packages
+composer install
 npm i
+
 # run the server
+php artisan serve
 npm run dev
 
+# important
+don't forget to setup you mysql and .env
 ```
