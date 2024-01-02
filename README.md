@@ -55,8 +55,8 @@ Clone and move to the repository
 don't forget to setup your mysql and .env
 
 ```bash
-git clone https://github.com/AaronFabian/orange-juice.git
-cd orange-juice
+git clone https://github.com/AaronFabian/orange-juice.git;
+cd orange-juice;
 ```
 
 # install packages
