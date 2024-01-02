@@ -52,17 +52,21 @@ https://ice-chocolate.com
 Clone and move to the repository
 
 ```bash
+# important
+don't forget to setup your mysql and .env
+
 git clone https://github.com/AaronFabian/orange-juice.git
 cd orange-juice
 
 # install packages
-composer install
-npm i
+composer install; (backend terminal)
+npm i; (frontend terminal)
+
+# create the database
+php artisan migrate:fresh;
 
 # run the server
-php artisan serve
-npm run dev
+php artisan serve; (backend terminal)
+npm run dev; (frontend terminal)
 
-# important
-don't forget to setup your mysql and .env
 ```
