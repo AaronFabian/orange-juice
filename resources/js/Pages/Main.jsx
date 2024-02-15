@@ -19,6 +19,7 @@ const History = lazy(() => import("./history/History"));
 const Edit = lazy(() => import("./profile/Edit.jsx"));
 const Favorite = lazy(() => import("./favorite/Favorite"));
 const NotFound = lazy(() => import("./NotFound"));
+const Register = lazy(() => import("./Auth/Register.jsx"));
 
 import "./main.css";
 
@@ -37,6 +38,10 @@ export default function Main(props) {
 
         case "Login":
             currentPage = <Login />;
+            break;
+
+        case "Register":
+            currentPage = <Register />;
             break;
 
         case "Profile":

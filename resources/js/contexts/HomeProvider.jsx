@@ -39,7 +39,7 @@ function HomeProvider({ children }) {
 
             try {
                 const { data, status } = await axios.get(
-                    "https://api.consumet.org/anime/gogoanime/top-airing"
+                    "http://localhost:3000/anime/gogoanime/top-airing"
                 );
 
                 if (status !== 200)
@@ -76,7 +76,7 @@ function HomeProvider({ children }) {
             setIsSearchLoading(true);
 
             const { data, status } = await axios.get(
-                `https://api.consumet.org/anime/gogoanime/${inputedAnime}`
+                `http://localhost:3000/anime/gogoanime/${inputedAnime}`
             );
 
             if (status !== 200) throw new Error("Something gone wrong");
@@ -102,7 +102,7 @@ function HomeProvider({ children }) {
     async function loadRecentAnime() {
         try {
             const { data, status } = await axios.get(
-                "https://api.consumet.org/anime/gogoanime/recent-episodes"
+                "http://localhost:3000/anime/gogoanime/recent-episodes"
             );
 
             if (status !== 200)

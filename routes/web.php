@@ -95,7 +95,7 @@ Route::get('not-found', [WebpageController::class, 'error']);
 // Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
 //     ->middleware('throttle:6,1')
 //     ->name('verification.send');
-        
+
 // require __DIR__ . '/auth.php';
 
 
