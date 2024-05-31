@@ -79,8 +79,7 @@ php artisan serve;
 frontend
 ```bash
 npm run dev;
-
-Web Design by Jonathan Malvin
 ```
 
+Web Design by Jonathan Malvin
 
