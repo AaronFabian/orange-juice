@@ -1,0 +1,20 @@
+version: "3.8"
+
+services:
+  phplaravel:
+    build: .
+    container_name: phplaravel_c
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - /app/vendor
+
+  phpvite:
+    build: .
+    container_name: phpvite_c
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules

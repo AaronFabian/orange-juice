@@ -54,4 +54,12 @@ class AuthenticatedSessionController extends Controller
 
         return redirect('/')->with('message', 'You are logged out.');
     }
+
+    /**
+     * Unexpected behavior from authenticated user but already logout.
+     */
+    public function errorAuth(Request $request): RedirectResponse
+    {
+        return redirect()->intended(RouteServiceProvider::HOME)->with('message', 'Unexpected behavior');
+    }
 }
