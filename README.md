@@ -72,7 +72,7 @@ npm i;
 # create the database
 
 ```bash
-php artisan migrate:fresh;
+php artisan migrate;
 ```
 
 # run the server
