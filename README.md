@@ -21,7 +21,7 @@ A simple anime streaming website, built with react.js and laravel. Aiming for ev
 
 ## Link Website
 
-https://ice-chocolate.com (currently inactivenpm)
+https://imakeyouhappy.site
 
 ## Screenshot
 
@@ -72,7 +72,7 @@ npm i;
 # create the database
 
 ```bash
-php artisan migrate:fresh;
+php artisan migrate;
 ```
 
 # run the server
