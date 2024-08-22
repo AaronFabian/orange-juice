@@ -80,7 +80,7 @@ Route::middleware('auth')->group(function () {
     Route::post('comment', [CommentController::class, 'store']);
 });
 
-Route::get('not-found', [WebpageController::class, 'error']);
+Route::get('not-found', [WebpageController::class, 'error'])->name('not-found');
 
 // Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 

@@ -21,7 +21,7 @@ A simple anime streaming website, built with react.js and laravel. Aiming for ev
 
 ## Link Website
 
-https://ice-chocolate.com (currently inactive)
+https://ice-chocolate.com (currently inactivenpm)
 
 ## Screenshot
 
