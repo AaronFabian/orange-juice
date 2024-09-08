@@ -12,6 +12,7 @@ import WindowLayout from "./partials/WindowLayout";
 // import Favorite from "./favorite/Favorite";
 // import NotFound from "./NotFound";
 
+// PATH
 const Home = lazy(() => import("./home/Home"));
 const Login = lazy(() => import("./login/Login"));
 const Community = lazy(() => import("./community/Community"));
