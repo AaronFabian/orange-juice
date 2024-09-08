@@ -30,8 +30,8 @@ export default function LoginPage() {
 
     return (
         <form action="" onSubmit={submit}>
-            <main className="grid grid-rows-2 rounded-md sm:grid-rows-none grid-rows sm:grid-cols-2 bg-stone-950 sm:h-app_height">
-                <div className="overflow-hidden">
+            <main className="grid h-screen grid-rows-2 pt-16 sm:pt-0 sm:rounded-md sm:grid-rows-none grid-rows sm:grid-cols-2 bg-stone-950 sm:h-app_height">
+                <div className="hidden overflow-hidden sm:block rounded-l-md">
                     <img
                         src="img/login.png"
                         alt="Login image"
@@ -78,7 +78,7 @@ export default function LoginPage() {
                                 setValue={(val) => setData("password", val)}
                             />
 
-                            <Checkbox text="Remember me" />
+                            {/* <Checkbox text="Remember me" /> */}
 
                             <ButtonOnSubmit>SIGN IN</ButtonOnSubmit>
 

@@ -1,11 +1,10 @@
 import { Head, Link, router, useForm } from "@inertiajs/react";
 
-import WindowLayout from "../partials/WindowLayout";
-import Section from "../partials/Section";
-import Input from "../ui/Input";
-import Checkbox from "../ui/Checkbox";
-import ButtonOnSubmit from "../ui/ButtonOnSubmit";
 import { toast } from "react-hot-toast";
+import Section from "../partials/Section";
+import WindowLayout from "../partials/WindowLayout";
+import ButtonOnSubmit from "../ui/ButtonOnSubmit";
+import Input from "../ui/Input";
 
 export default function Register() {
     const { data, setData } = useForm({
@@ -39,12 +38,12 @@ export default function Register() {
         <WindowLayout>
             <Head title="Register" />
             <Section>
-                <div className="relative w-full h-screen sm:h-app_height sm:rounded-md bg-stone-950/70">
+                <div className="relative w-full h-screen sm:h-app_height sm:rounded-md sm:bg-stone-950/70 bg-stone-950">
                     <form action="" onSubmit={submit}>
                         <img
                             src="/img/register-bg.jpg"
                             alt="oshi no ko background"
-                            className="absolute top-0 left-0 object-cover h-full -z-10 blur-sm"
+                            className="absolute top-0 left-0 hidden object-cover h-full sm:block -z-10 blur-sm"
                         />
                         <h1 className="from-[#C991E9] to-[#D38AA8] text-transparent bg-clip-text bg-gradient-to-r text-5xl font-semibold text-center pt-6 sm:pt-0 sm:mt-8">
                             登録
@@ -52,7 +51,7 @@ export default function Register() {
                         <h2 className="text-xl tracking-widest text-center sm:text-2xl text-stone-50">
                             Register
                         </h2>
-                        <div className="absolute z-10 w-11/12 sm:w-1/2 mx-auto -translate-x-1/2 -translate-y-1/2 border rounded-md h-[30rem] top-1/2 left-1/2 border-stone-50/50 group focus:border-purple_mood mt-4 sm:mt-0">
+                        <div className="absolute z-10 w-11/12 h-auto py-5 mx-auto mt-4 -translate-x-1/2 -translate-y-1/2 border rounded-md sm:w-1/2 top-1/2 left-1/2 border-stone-50/50 group focus:border-purple_mood sm:mt-0">
                             <div className="w-11/12 mx-auto sm:w-4/5 ">
                                 <Input
                                     type="text"
@@ -60,7 +59,7 @@ export default function Register() {
                                     label="Username"
                                     autoFocus={true}
                                     setValue={(val) => setData("name", val)}
-                                    margin="mt-5 mb-2.5"
+                                    margin="mb-2.5"
                                 />
                                 {errors?.name && (
                                     <p className="text-xs italic text-red-400/80">
@@ -95,15 +94,16 @@ export default function Register() {
                                     type="password"
                                     name="password_confirmation"
                                     label="Re-confirmed password"
+                                    margin='mt-5 mb-5'
                                     setValue={(val) =>
                                         setData("password_confirmation", val)
                                     }
                                 />
 
-                                <Checkbox
+                                {/* <Checkbox
                                     text="Policy & Agreement"
                                     padding="pt-2 pb-6"
-                                />
+                                /> */}
 
                                 <ButtonOnSubmit>Register</ButtonOnSubmit>
 
