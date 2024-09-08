@@ -81,13 +81,13 @@ function StreamProvider({ children }) {
 
         try {
             const { data } = await axios.get(
-                `${URL_ANIME_STREAMING_LINK}/${id}`
+                `${URL_ANIME_STREAMING_LINK}/watch/${id}`
             );
 
             const sources = data.sources;
             if (!sources) {
                 toast.error(
-                    "Fatal error. looks like the source gone, check your connection and refresh the page"
+                    "Fatal error. looks like the source gone or check your connection and refresh the page"
                 );
                 throw new Error("Fatal: sources not found :(");
             }

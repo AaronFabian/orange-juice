@@ -122,13 +122,13 @@ function FavoriteProvider({ children }) {
                 // get eps 1
                 const epsId = state.episodeList[0].id;
                 response = await axios.get(
-                    `${URL_ANIME_STREAMING_LINK}/${epsId}`
+                    `${URL_ANIME_STREAMING_LINK}/watch/${epsId}`
                 );
             } else {
                 // get continue eps
                 const epsId = currentAnime.url;
                 response = await axios.get(
-                    `${URL_ANIME_STREAMING_LINK}/${epsId}`
+                    `${URL_ANIME_STREAMING_LINK}/watch/${epsId}`
                 );
             }
 
@@ -146,7 +146,7 @@ function FavoriteProvider({ children }) {
 
         try {
             const { data } = await axios.get(
-                `${URL_ANIME_STREAMING_LINK}/${epsId}`
+                `${URL_ANIME_STREAMING_LINK}/watch/${epsId}`
             );
 
             autoPlaySource(data.sources, lastEps, dispatch);

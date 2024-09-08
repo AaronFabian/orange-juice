@@ -43,24 +43,24 @@ function Navbar() {
 
                         {auth.user && (
                             <>
-                                <NavLinkIcon
+                                {/* <NavLinkIcon
                                     href="/history"
                                     icon={<PiTelevisionLight />}
                                 >
                                     History
-                                </NavLinkIcon>
+                                </NavLinkIcon> */}
                                 <NavLinkIcon
                                     href="/favorite"
                                     icon={<PiHeartStraightLight />}
                                 >
                                     Favorite
                                 </NavLinkIcon>
-                                <NavLinkIcon
+                                {/* <NavLinkIcon
                                     href="/community"
                                     icon={<PiPersonArmsSpreadThin />}
                                 >
                                     Community
-                                </NavLinkIcon>
+                                </NavLinkIcon> */}
                             </>
                         )}
 
@@ -74,12 +74,18 @@ function Navbar() {
                             </NavLinkIcon>
                         ) : (
                             <div className="flex ms-auto">
-                                <NavLinkIcon
+                                {/* <NavLinkIcon
                                     href="/"
                                     icon={<PiPersonArmsSpreadThin />}
                                 >
                                     Community
-                                </NavLinkIcon>
+                                </NavLinkIcon> */}
+                                {/* <NavLinkIcon
+                                    href="/history"
+                                    icon={<PiTelevisionLight />}
+                                >
+                                    History
+                                </NavLinkIcon> */}
                                 <NavLinkIcon
                                     href="/register"
                                     icon={<PiNotePencilLight />}

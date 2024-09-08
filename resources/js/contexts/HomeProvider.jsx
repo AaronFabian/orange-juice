@@ -1,3 +1,4 @@
+import { URL_ANIME_STREAMING_LINK } from '@/utils.jsx';
 import { createContext, useContext, useEffect, useState } from "react";
 
 const initialState = {
@@ -39,7 +40,7 @@ function HomeProvider({ children }) {
 
             try {
                 const { data, status } = await axios.get(
-                    "http://localhost:3000/anime/gogoanime/top-airing"
+                    `${URL_ANIME_STREAMING_LINK}/top-airing`
                 );
 
                 if (status !== 200)
@@ -76,7 +77,7 @@ function HomeProvider({ children }) {
             setIsSearchLoading(true);
 
             const { data, status } = await axios.get(
-                `http://localhost:3000/anime/gogoanime/${inputedAnime}`
+                `${URL_ANIME_STREAMING_LINK}/${inputedAnime}`
             );
 
             if (status !== 200) throw new Error("Something gone wrong");
@@ -102,7 +103,7 @@ function HomeProvider({ children }) {
     async function loadRecentAnime() {
         try {
             const { data, status } = await axios.get(
-                "http://localhost:3000/anime/gogoanime/recent-episodes"
+                `${URL_ANIME_STREAMING_LINK}/recent-episodes`
             );
 
             if (status !== 200)

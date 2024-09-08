@@ -1,9 +1,9 @@
 export const orangeJuice = "orange-juice";
 
 export const URL_ANIME_STREAMING_LINK =
-    "http://localhost:3000/anime/gogoanime/watch";
+    "https://personal-registry-857364608527.asia-northeast1.run.app/anime/gogoanime";
 
-export const URL_ANIME_DETAIL = "http://localhost:3000/anime/gogoanime/info";
+export const URL_ANIME_DETAIL = "https://personal-registry-857364608527.asia-northeast1.run.app/anime/gogoanime/info";
 
 export function convertISODate(date) {
     return new Date(date)
