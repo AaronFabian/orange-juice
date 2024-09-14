@@ -1,30 +1,21 @@
-import { useFavorite } from "@/contexts/FavoriteProvider";
-import SelectEpisodePage from "./SelectEpisodePage";
-import SelectEpisode from "./SelectEpisode";
-import { useState } from "react";
-import SelectQuality from "./SelectQuality";
+import { useFavorite } from '@/contexts/FavoriteProvider';
+import { useState } from 'react';
+import SelectEpisode from '@/Pages/favorite/SelectEpisode.jsx';
+import SelectEpisodePage from './SelectEpisodePage';
+import SelectQuality from './SelectQuality';
 
 export default function EpisodeController() {
-    const { currentEpsNumber } = useFavorite();
-    const [currentEpisode, setCurrentEpisode] = useState(currentEpsNumber);
-    const [currentPage, setCurrentPage] = useState(
-        Math.ceil(currentEpsNumber / 25)
-    );
+	const { currentEpsNumber } = useFavorite();
+	const [currentEpisode, setCurrentEpisode] = useState(currentEpsNumber);
+	const [currentPage, setCurrentPage] = useState(Math.ceil(currentEpsNumber / 25));
 
-    return (
-        <>
-            <SelectEpisodePage
-                currentPage={currentPage}
-                setCurrentPage={setCurrentPage}
-            />
+	return (
+		<>
+			<SelectEpisodePage currentPage={currentPage} setCurrentPage={setCurrentPage} />
 
-            <SelectEpisode
-                currentPage={currentPage}
-                currentEpisode={currentEpisode}
-                setCurrentEpisode={setCurrentEpisode}
-            />
+			<SelectEpisode currentPage={currentPage} currentEpisode={currentEpisode} setCurrentEpisode={setCurrentEpisode} />
 
-            <SelectQuality />
-        </>
-    );
+			<SelectQuality />
+		</>
+	);
 }
